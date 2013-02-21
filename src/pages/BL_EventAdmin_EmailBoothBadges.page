@@ -1,0 +1,15 @@
+<apex:page controller="BL_EventAdmin_EmailBoothBadgesCon" renderAs="pdf">
+ <table><tr><td style="width:15%"></td>
+    <td align="left" colspan="2">
+    <font face="TimesNewRoman" color="green" style="font-size:36pt;"></font>{!QrcodeDisplay.BT_Id__c}</td></tr>
+    <tr><td style="width:15%"></td>
+    <td align="left" colspan="2">
+    <font style="font-size:24pt;padding:0px;margin:0px;" face="TimesNewRoman" color="#808080"></font></td></tr>
+    <tr><td align="left" width="20%" valign="middle">
+    <apex:image value="https://chart.googleapis.com/chart?chs=100x100&cht=qr&chl={!QrcodeDisplay.Name}{!QrcodeDisplay.EV_id__c}"/></td>
+    <td align="left" style="padding-left:25px;" width="100%">
+    <font face="TimesNewRoman" color="red" style="font-size:18pt;padding-bottom:15pt;"></font>
+    </td></tr>
+</table>
+
+</apex:page>

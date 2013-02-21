@@ -1,0 +1,30 @@
+<apex:page showHeader="false" controller="popupTestCon">
+      
+<apex:form >
+<script type="text/javascript">
+function disp_prompt()
+  {
+  var fname=prompt("Please enter your name:","Your name")
+ 
+  hitMe(fname)
+  
+  }
+</script>
+
+
+        <apex:actionFunction name="hitMe" action="{!iWantMyJSValues}" rerender="jsvalues">
+            <apex:param name="one" value="" />
+         </apex:actionFunction>
+        
+        <apex:outputPanel id="jsvalues">
+            <apex:outputText value="Value one: {!valueOne}" /><br/>
+           </apex:outputPanel>
+        
+        
+       <a onclick="disp_prompt();">click</a>
+       
+    </apex:form>
+    
+    
+ 
+</apex:page>

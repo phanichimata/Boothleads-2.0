@@ -1,0 +1,634 @@
+<apex:page controller="QRCode_EventScheduleCon" sidebar="false" showHeader="false" standardStylesheets="false" cache="true" >
+
+
+<apex:stylesheet value="{!URLFOR($Resource.QRCode_CSS,"css/screen.css")}"/>
+
+<apex:stylesheet value="{!URLFOR($Resource.QRCode_CSS,"css/pro_dropline_ie.css")}"/>
+
+
+
+
+
+    
+<style>
+    
+
+    .roundedcorner{
+        -moz-border-radius-bottomleft:0px; 
+        -webkit-border-bottom-left-radius:0px;
+         
+        -moz-border-radius-bottomright:0px; 
+        -webkit-border-bottom-right-radius:6px; 
+        border-radius:0 0 0px 0px; 
+       /* -moz-box-shadow:0 0 45px #CCCCCC; 
+        -webkit-box-shadow:0 0 45px #CCCCCC; 
+        box-shadow:0 0 45px #CCCCCC;
+        background-color:#F3F3F3;*/
+        background: #336699; /* for non-css3 browsers */
+        background: -webkit-gradient(linear, left top, left bottom, from(#37C3D0), to(#8FE1F2));
+        background: -moz-linear-gradient(top, #37C3D0, #8FE1F2);
+        background-image: -o-linear-gradient(top, #37C3D0, #8FE1F2);
+        background-image: -ms-linear-gradient(top, #37C3D0, #8FE1F2);
+        filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#37C3D0', endColorstr='#8FE1F2');
+    }
+    
+    
+    .roundedcornerAdd{
+            -moz-border-radius-bottomleft:0px;
+            -webkit-border-bottom-left-radius:0px;
+            
+            -moz-border-radius-bottomright:0px;
+            -webkit-border-bottom-right-radius:6px;
+            border-radius:0 0 0px 0px;
+            /* -moz-box-shadow:0 0 45px #CCCCCC;
+            -webkit-box-shadow:0 0 45px #CCCCCC;
+            box-shadow:0 0 45px #CCCCCC;
+            background-color:#F3F3F3;*/
+            background: #06132e; /* for non-css3 browsers */
+            background: -webkit-gradient(linear, left top, left bottom, from(#5b6375), to(#06132e));
+            background: -moz-linear-gradient(top, #5b6375, #06132e);
+            background-image: -o-linear-gradient(top, #5b6375, #06132e);
+            background-image: -ms-linear-gradient(top, #5b6375, #06132e);
+            filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#5b6375', endColorstr='#06132e');
+        }
+
+    
+    
+    
+    
+</style>
+
+
+<!-- Start: page-top-outer -->
+<div id="page-top-outer">    
+
+<!-- Start: page-top -->
+<div id="page-top">
+
+    <!-- start logo -->
+    <div id="logo">
+    <a href="#">
+      
+      
+     <!-- <img 
+
+src="{!URLFOR($Resource.QRCode_CSS,"css/images/shared/logo.png")}"/> -->
+     </a>
+    </div>
+    <!-- end logo -->
+         
+    <!--  start top-search -->
+    <div id="top-search">
+     
+        <table border="0" cellpadding="0" cellspacing="0">
+        <tr>
+            
+        
+        <td Class="welcome">
+        
+        <b><font>Welcome : </font>
+                   <font size="2" color="sky blue">{!$User.Firstname}&nbsp;{!$User.Lastname} </font></b>
+        
+      <!--  <apex:inputText value="{!searchstr}" 
+
+styleClass="top-search-inp" />  </td>
+        
+        <td>
+        
+       <apex:commandButton action="{!search}" value="search" image="{!URLFOR($Resource.QRCode_CSS,"css/images/shared/top_search_btn.gif")}"/> -->
+       
+        </td>
+        </tr>
+        </table>
+    </div>
+    <!--  end top-search -->
+    <div class="clear"></div>
+
+</div>
+<!-- End: page-top -->
+
+</div>
+<!-- End: page-top-outer -->
+    
+<div class="clear">&nbsp;</div>
+ 
+<!--  start 
+
+nav-outer-repeat.........................................................
+
+........................................ START -->
+<div class="nav-outer-repeat"> 
+<!--  start nav-outer -->
+<div class="nav-outer"> 
+
+<!-- Start Nav Right-->
+        <div id="nav-right">
+        
+            <!--<div class="nav-divider">&nbsp;</div>
+            <div class="showhide-account"><img src="images/shared/nav/nav_myaccount.gif" width="93" height="14" alt=""/></div>-->
+            <!--<div class="nav-divider">&nbsp;</div>
+            <a id="logout">
+            
+            <img 
+
+src="{!URLFOR($Resource.QRCode_CSS,"css/images/shared/nav/nav_logout.gif")}"    value="{!$Site.Prefix}/secur/logout.jsp" 
+
+rendered="{!NOT(ISPICKVAL($User.UserType,'Guest'))}">{!$Label.site.logout}</img>
+            
+           </a>-->
+           
+           
+           <!----LOGOUT ACTION -->
+           <div class="nav">
+        <div class="table">
+        <apex:form >
+            <div class="nav-divider">&nbsp;</div>
+            <apex:commandLink action="{!ProfileSettings}" style="text-style:bold; color:#FFFFFF; padding:10px 15px 0 0;" value="Profile"/>
+            <div class="nav-divider">&nbsp;</div>
+            <apex:commandLink action="{!$Site.Prefix}/secur/logout.jsp" rendered="{!NOT(ISPICKVAL($User.UserType,'Guest'))}" style="text-style:bold; color:#FFFFFF; padding:10px 15px 0 0;">{!$Label.site.logout}</apex:commandLink>
+        </apex:form>
+            </div></div>
+           
+           <!----LOGOUT ACTION END--->
+           
+           
+            <div class="clear">&nbsp;</div>
+        
+            <!--  start account-content --> 
+            <div class="account-content">
+            <div class="account-drop-inner">
+                <a href="" id="acc-settings">Settings</a>
+                <div class="clear">&nbsp;</div>
+                <div class="acc-line">&nbsp;</div>
+                <a href="" id="acc-details">Personal details </a>
+                <div class="clear">&nbsp;</div>
+                <div class="acc-line">&nbsp;</div>
+                <a href="" id="acc-project">Project details</a>
+                <div class="clear">&nbsp;</div>
+                <div class="acc-line">&nbsp;</div>
+                <a href="" id="acc-inbox">Inbox</a>
+                <div class="clear">&nbsp;</div>
+                <div class="acc-line">&nbsp;</div>
+                <a href="" id="acc-stats">Statistics</a> 
+            </div>
+            </div>
+            <!--  end account-content -->
+        
+        </div>
+        <!-- end nav-right -->
+
+
+        <!--  start nav -->
+        <div class="nav">
+        <div class="table">
+        
+        <ul class="select"><li>
+        
+        
+      <!--  <apex:commandLink action="{!hometabdirection}"><b>Home</b></apex:commandLink> -->
+        <!-- <a href="index.html"><b>Home</b></a> -->
+       
+        <div class="select_sub">
+            <ul class="sub">
+                <li><a href="#"></a></li>
+                <li><a href="#"></a></li>
+                <li><a href="#"></a></li>
+            </ul>
+        </div>
+       
+        </li>
+        </ul>
+        
+       <div class="nav-divider">&nbsp;</div>
+                            
+         <ul class="select"><li>
+        <apex:form >
+             <apex:commandLink action="{!Events}"><b>Events</b></apex:commandLink>
+        </apex:form> 
+        <!--[if lte IE 6]><table><tr><td><![endif]-->
+        <div class="select_sub show">
+            <ul class="sub">
+                <li><a href="#"></a></li>
+                <li class="sub_show"><a href="#"></a></li>
+                <li><a href="#"></a></li>
+            </ul>
+        </div>
+        <!--[if lte IE 6]></td></tr></table></a><![endif]-->
+        </li>
+        </ul>
+        
+        
+        <div class="nav-divider">&nbsp;</div>
+        
+        
+         <ul class="select"><li><apex:form >
+        <apex:commandLink action="{!CustomerAdminAct}" ><b>Booths</b> </apex:commandLink>
+      </apex:form>
+        <div class="select_sub">
+            <ul class="sub">
+                <li><a href="#"></a></li>
+                <li><a href="#"></a></li>
+                <li><a href="#nogo"></a></li>
+             
+            </ul>
+        </div>
+       
+        </li>
+        </ul>
+        
+        
+        
+   
+        
+
+
+        <div class="nav-divider">&nbsp;</div>
+        
+       <ul class="current"><li>
+       <apex:form >
+       <apex:commandLink action="{!Attendees}" ><b>Attendees</b> </apex:commandLink></apex:form>
+        <!--[if lte IE 6]><table><tr><td><![endif]-->
+        <div class="select_sub">
+            <ul class="sub">
+                <li><a href="#"></a></li>
+                <li><a href="#"></a></li>
+                <li><a href="#"></a></li>
+            </ul>
+        </div>
+        <!--[if lte IE 6]></td></tr></table></a><![endif]-->
+        </li>
+        </ul>
+        
+             
+        <div class="nav-divider">&nbsp;</div>
+        
+      <!--  <ul class="current"><li>
+        <apex:commandLink action="{!DataImportAct}" ><b>DataImport</b> </apex:commandLink>
+      
+        <div class="select_sub">
+            <ul class="sub">
+                <li><a href="#"></a></li>
+                <li><a href="#"></a></li>
+                <li><a href="#nogo"></a></li>
+             
+            </ul>
+        </div>
+       
+        </li>
+        </ul>
+        
+        
+        
+        <div class="nav-divider">&nbsp;</div>
+        -->
+        <ul class="select"><li><apex:form >
+        <apex:commandLink action="{!reportact}" ><b>Reports</b> </apex:commandLink></apex:form>
+      
+        <div class="select_sub">
+            <ul class="sub">
+                <li><a href="#"></a></li>
+                <li><a href="#"></a></li>
+                <li><a href="#nogo"></a></li>
+             
+            </ul>
+        </div>
+       
+        </li>
+        </ul>
+        
+        
+        
+        
+        
+        <div class="clear"></div>
+        </div>
+        <div class="clear"></div>
+        </div>
+        <!--  start nav -->
+        
+
+</div>
+<div class="clear"></div>
+<!--  start nav-outer -->
+</div>
+<!--  start 
+
+nav-outer-repeat................................................... END -->
+
+ <div class="clear"></div>
+ 
+<!-- start content-outer 
+
+........................................................................................................................START -->
+<div id="content-outer">
+<!-- start content -->
+<div id="content">
+
+    <!--  start page-heading --><div id="page-heading">
+    
+    </div>
+    <!-- end page-heading -->
+
+    <table border="0" width="100%" cellpadding="0" cellspacing="0" id="content-table">
+    <tr>
+        <th rowspan="3" class="sized">
+        
+        <img src="{!URLFOR($Resource.QRCode_CSS,"css/images/shared/side_shadowleft.jpg")}" width="20" height="100" alt="" /></th>
+        <th class="topleft"></th>
+        <td align="right" valign="middle" id="tbl-border-top">&nbsp;</td>
+        <th class="topright"></th>
+        <th rowspan="3" class="sized">
+        <img src="{!URLFOR($Resource.QRCode_CSS,"css/images/shared/side_shadowright.jpg")}" width="20" height="100" alt="" /></th>
+    </tr>
+    <tr>
+        <td id="tbl-border-left"></td>
+        <td>
+        <!--  start content-table-inner ...................................................................... START -->
+        <div id="content-table-inner"  overflow="scroll" border="1">
+        
+            <!--  start table-content  rendered="{!showselectCSV}"-->
+            <div id="table-content">
+            
+            <div Width="100%"  style="padding-right:40px;pading-top:10px;text-decaration:none;-webkit-border-radius:3px;  -moz-border-radius:3px;">
+           <apex:form >
+               <apex:commandButton value="+" action="{!AddSchedule}"/>
+           </apex:form>
+         
+         <apex:form id="mainform">
+            <apex:dataTable border="1" value="{!eventSchedule}" var="le" id="maingrid" style="border:1px solid #FF0000; width:100%;"> 
+                <apex:column headerValue="Time" style="width:8%">
+                   <table style="width:100%;">
+                        <apex:repeat value="{!le.stime}" var="ll">
+                           <tr> <td width="150px;" height="25px" align="right"> {!ll}</td></tr>
+                        </apex:repeat>
+                        </table>
+                </apex:column>  
+                <!--apex:column value="{!le.schedule.ES_Description__c}" headerValue="Description" style="{!le.color}"/-->
+                
+                        
+                <apex:column headerValue="Program Name" style="width:25%;vertical-align:top;" styleClass="{!le.stylecls}">
+                    <apex:outputText value="{!le.schedule.ES_ProgramName__c}"></apex:outputText>
+                    <apex:outputPanel rendered="{!NOT(le.noval)}">
+                        <table style="width:100%;">
+                        <apex:repeat value="{!le.stime}" var="ll">
+                           <tr> <td width="150px;" height="25px" style="border-bottom: 1px solid #CCCCCC;"> &nbsp;</td></tr>
+                        </apex:repeat>
+                        </table>
+                    </apex:outputPanel>
+                  </apex:column> 
+                    
+                  
+                <apex:column headerValue="Presenter" style="width:25%;vertical-align:middle;" styleClass="{!le.stylecls}">
+                    <apex:outputText value="{!le.schedule.ES_Presenter__c}"></apex:outputText>
+                    <apex:outputPanel rendered="{!NOT(le.noval)}">
+                        <table style="width:100%;" >
+                        <apex:repeat value="{!le.stime}" var="ll">
+                           <tr> <td width="150px;" height="25px" style="border-bottom: 1px solid #CCCCCC;"> &nbsp;</td></tr>
+                        </apex:repeat>
+                        </table>
+                    </apex:outputPanel>
+                  </apex:column>   
+                    
+                  <apex:column headerValue="Location" styleClass="{!le.stylecls}" style="width:25%; vertical-align:bottom;">
+                    <apex:outputText value="{!le.schedule.ES_Location__c}"></apex:outputText>
+                    <apex:outputPanel rendered="{!NOT(le.noval)}">
+                        <table style="width:100%;">
+                        <apex:repeat value="{!le.stime}" var="ll">
+                           <tr> <td width="150px;" height="25px" style="border-bottom: 1px solid #CCCCCC;"> &nbsp;</td></tr>
+                        </apex:repeat>
+                        </table>
+                    </apex:outputPanel>
+                  </apex:column> 
+                   
+                   
+                   <apex:column headerValue="Action" styleClass="{!le.stylecls}" style="width:25%; vertical-align:bottom;">
+                    <apex:outputPanel rendered="{!le.noval}">
+                        <apex:commandLink value="Edit" action="{!editSchedule}" >
+                            <apex:param value="{!le.schedule.id}" assignTo="{!mallik}" name="editSch" />
+                        </apex:commandLink>
+                        &nbsp;
+                        <apex:commandLink value="Delete" action="{!deleteSchedule}" reRender="mainform">
+                           <apex:param value="{!le.eventschid}" name="deleteSch" />  
+                        </apex:commandLink>
+                        
+                    </apex:outputPanel>
+                    
+                    
+                    <apex:outputPanel rendered="{!NOT(le.noval)}">
+                        <table style="width:100%;">
+                        <apex:repeat value="{!le.stime}" var="ll">
+                           <tr> <td width="150px;" height="25px" style="border-bottom: 1px solid #CCCCCC;"> &nbsp;</td></tr>
+                        </apex:repeat>
+                        </table>
+                    </apex:outputPanel>
+                  </apex:column> 
+                   
+                <!--apex:column value="{!le.schedule.ES_StartTime__c}" headerValue="Start Time" style="{!le.color}" styleClass="{!le.stylecls}"/>
+                <apex:column value=" {!le.schedule.ES_EndTime__c}" headerValue="EndTime" style="{!le.color}" styleClass="{!le.stylecls}"/-->
+                
+                
+            </apex:dataTable>
+          </apex:form>
+       <!-------------------------- ADD Schedule POP-UP  --------------------->
+         <apex:form id="pop">    
+         <apex:outputPanel id="popback" styleClass="popupBackground" layout="block" rendered="{!addScheduleBool}"  style="width:100%"/>
+         <apex:outputPanel id="popmain" styleClass="custPopup" layout="block"  rendered="{!addScheduleBool}"  style="width:40%;-moz-border-radius:10px;-webkit-border-radius:10px; border-radius:10px">
+                   
+                   
+                   
+                   <table width="100%" border="0" align="center" cellpadding="0" cellspacing="8" style="background-color:#06132e;-moz-border-radius:10px;-webkit-border-radius:10px; border-radius:10px; padding-bottom:0px;" class="roundedcornerAdd">
+                       
+                        
+                        <tr>
+                            <td style="padding-left:0px;padding-top:0px;padding-right:3px;padding-bottom:0px;" valign="top" >
+                                <apex:commandButton value="ADD" style="align:left;padding-top:3px;padding-left:3px;-moz-border-radius:10px;-webkit-border-radius:10px;" action="{!SaveSchedule}" reRender="mainGrid,mainform,pop"/> 
+                                <apex:commandButton value="Cancel" style="align:right;padding-top:3px;padding-left:3px;-moz-border-radius:10px;-webkit-border-radius:10px;"  action="{!CancelSchedule}"/>
+                            </td>
+                       </tr>
+                        <tr><td style="padding-left:20px;padding-right:20px;padding-bottom:0px;padding-top:10px;">        
+                            <table bgcolor="#d4d6db" style="padding-bottom:10px;-moz-border-radius:10px;-webkit-border-radius:10px; border-radius:10px" width="90%"> <tr><td align="center" valign="top"> 
+                            
+                              
+                   <table width="90%" border="0" align="center" cellpadding="0" cellspacing="0" style="background-color:#999999; margin:10px auto;-moz-border-radius:10px;-webkit-border-radius:10px;border-radius:10px">
+                     <tr>
+                       <td bgcolor="#f7f7f7" style="border-bottom:1px solid #999;"> Program Name :</td>
+                       <td> <apex:inputText value="{!addsch.ES_ProgramName__c}" /></td>
+                     </tr> 
+                     
+                     <tr>
+                       <td bgcolor="#f7f7f7" style="border-bottom:1px solid #999;"> Presenter :</td>
+                       <td> <apex:inputText value="{!addsch.ES_Presenter__c}" /></td>
+                     </tr>
+                      
+                     <tr>
+                       <td bgcolor="#f7f7f7" style="border-bottom:1px solid #999;"> Location :</td>
+                       <td> <apex:inputText value="{!addsch.ES_Location__c}" /></td>
+                     </tr>
+                     
+                     <tr>
+                       <td bgcolor="#f7f7f7" style="border-bottom:1px solid #999;"> Start Time :</td>
+                       <td> 
+                           <apex:selectList value="{!addSch.ES_StartTime__c}"  size="1" >
+                             <apex:actionSupport action="{!actionStatusForTime}" event="onchange"/>
+                               <apex:selectOptions value="{!remainingTime}" />
+                           </apex:selectList>
+                       
+                       </td>
+                     </tr>
+                     
+                     <tr>
+                       <td bgcolor="#f7f7f7" style="border-bottom:1px solid #999;"> End Time :</td>
+                       <td> 
+                           <apex:selectList value="{!addSch.ES_EndTime__c}" size="1" disabled="{!bb}">
+                               <apex:selectOptions value="{!editvalues}"/>
+                           </apex:selectList>
+                       </td>
+                     </tr>
+                     
+                     
+                     
+                     
+                     
+                   </table>  
+                            
+                 </td></tr>
+                </table></td>
+              </tr>
+           </table>
+                                               
+                   
+                   
+                   
+                   
+          </apex:outputpanel>
+       </apex:form>
+          
+          
+           <!----------------------------------End Of ADD Schedule POP-UP----------------------------------->
+           
+           <!-------------------------- EDIT Schedule POP-UP  --------------------->
+         <apex:form id="editpop">    
+         <apex:outputPanel id="popback" styleClass="popupBackground" layout="block" rendered="{!editScheduleBool}"  style="width:100%"/>
+         <apex:outputPanel id="popmain" styleClass="custPopup" layout="block"  rendered="{!editScheduleBool}"  style="width:40%;-moz-border-radius:10px;-webkit-border-radius:10px; border-radius:10px">
+                   
+                   
+                   
+                   <table width="100%" border="0" align="center" cellpadding="0" cellspacing="8" style="background-color:#06132e;-moz-border-radius:10px;-webkit-border-radius:10px; border-radius:10px; padding-bottom:0px;" class="roundedcornerAdd">
+                       
+                        
+                        <tr>
+                            <td style="padding-left:0px;padding-top:0px;padding-right:3px;padding-bottom:0px;" valign="top" >
+                                <apex:commandButton value="Update" style="align:left;padding-top:3px;padding-left:3px;-moz-border-radius:10px;-webkit-border-radius:10px;" action="{!SaveSchedule}" reRender="mainGrid,mainform,pop"/> 
+                                <apex:commandButton value="Cancel" style="align:right;padding-top:3px;padding-left:3px;-moz-border-radius:10px;-webkit-border-radius:10px;"  action="{!CancelSchedule}"/>
+                            </td>
+                       </tr>
+                        <tr><td style="padding-left:20px;padding-right:20px;padding-bottom:0px;padding-top:10px;">        
+                            <table bgcolor="#d4d6db" style="padding-bottom:10px;-moz-border-radius:10px;-webkit-border-radius:10px; border-radius:10px" width="90%"> <tr><td align="center" valign="top"> 
+                            
+                              
+                   <table width="90%" border="0" align="center" cellpadding="0" cellspacing="0" style="background-color:#999999; margin:10px auto;-moz-border-radius:10px;-webkit-border-radius:10px;border-radius:10px">
+                     <tr>
+                       <td bgcolor="#f7f7f7" style="border-bottom:1px solid #999;"> Program Name :</td>
+                       <td> <apex:inputText value="{!editsch.ES_ProgramName__c}" /></td>
+                     </tr> 
+                     
+                     <tr>
+                       <td bgcolor="#f7f7f7" style="border-bottom:1px solid #999;"> Presenter :</td>
+                       <td> <apex:inputText value="{!editsch.ES_Presenter__c}" /></td>
+                     </tr>
+                      
+                     <tr>
+                       <td bgcolor="#f7f7f7" style="border-bottom:1px solid #999;"> Location :</td>
+                       <td> <apex:inputText value="{!editsch.ES_Location__c}" /></td>
+                     </tr>
+                     
+                     <tr>
+                       <td bgcolor="#f7f7f7" style="border-bottom:1px solid #999;"> Start Time :</td>
+                       <td> 
+                           <apex:selectList value="{!editsch.ES_StartTime__c}"  size="1" >
+                             <apex:actionSupport action="{!EditActionSupport}" event="onchange"/>
+                               <apex:selectOptions value="{!editStartTime}" />
+                           </apex:selectList>
+                       
+                       </td>
+                     </tr>
+                     
+                     <tr>
+                       <td bgcolor="#f7f7f7" style="border-bottom:1px solid #999;"> End Time :</td>
+                       <td> 
+                           <apex:selectList value="{!editsch.ES_EndTime__c}" size="1" disabled="{!editDisabled}">
+                               <apex:selectOptions value="{!editEndTime}"/>
+                           </apex:selectList>
+                       </td>
+                     </tr>
+                     
+                   </table>  
+                            
+                 </td></tr>
+                </table></td>
+              </tr>
+           </table>
+                                               
+                   
+                   
+                   
+                   
+          </apex:outputpanel>
+       </apex:form>
+          
+          
+           <!----------------------------------End Of ADD Schedule POP-UP----------------------------------->
+           
+           
+           
+           
+           
+           
+           
+               </div>
+            </div>
+            <!--  end content-table  -->
+            
+           
+            
+            
+              <!--  start actions-box 
+
+............................................... -->
+            <!-- end actions-box........... -->
+            
+            
+            <div class="clear"></div>
+         
+        </div>
+        <!--  end content-table-inner 
+
+............................................END  -->
+        </td>
+        <td id="tbl-border-right"></td>
+    </tr>
+    <tr>
+        <th class="sized bottomleft"></th>
+        <td id="tbl-border-bottom">&nbsp;</td>
+        <th class="sized bottomright"></th>
+    </tr>
+    </table>
+    <div class="clear">&nbsp;</div>
+
+</div>
+<!--  end content -->
+<div class="clear">&nbsp;</div>
+</div>
+<!--  end content-outer........................................................END -->
+
+<div class="clear">&nbsp;</div>
+    
+<!-- start footer -->         
+<apex:include pageName="QRCode_Footertemplate"/>
+<!-- end footer -->
+ 
+
+
+
+  
+</apex:page>

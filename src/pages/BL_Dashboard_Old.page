@@ -1,0 +1,665 @@
+<apex:page controller="Dashboardcntrl" showHeader="false" standardStylesheets="false">
+<apex:form >
+
+<script type="text/javascript" charset="utf-8" src="http://cdn.sencha.io/ext-4.0.7-gpl/ext-all.js"></script>
+<link rel="stylesheet" type="text/css" href="http://cdn.sencha.io/ext-4.0.7-gpl/resources/css/ext-all.css"/>
+
+ <apex:stylesheet value="{!URLFOR($Resource.dashboard,"menu_assets/styles.css")}"/>
+ <apex:stylesheet value="{!URLFOR($Resource.dashboard,"menu_assets/style.css")}"/>
+ <apex:stylesheet value="{!URLFOR($Resource.dashboard,"menu_assets/layout.css")}"/>
+
+<head>
+<style > 
+
+.report-icon
+{
+background:url(http://cdn1.iconfinder.com/data/icons/humano2/24x24/apps/gnumeric.png) no-repeat top left; 
+padding-right: 25px;
+padding-bottom: 25px;
+}  
+
+.chart-icon
+{
+background:url(http://cdn1.iconfinder.com/data/icons/iconza/iconza_16x16_0097d9/line_graph.png) no-repeat; 
+}
+.grid-icon
+{
+background:url(http://cdn1.iconfinder.com/data/icons/momenticons-gloss-basic/momenticons-gloss-basic/16/table.png) no-repeat; 
+}
+
+
+.geo-icon
+{
+background:url(http://cdn1.iconfinder.com/data/icons/realistiK-new/16x16/apps/package_network.png) no-repeat; 
+padding-top:17px;
+} 
+.ind-icon
+{
+background:url(http://cdn1.iconfinder.com/data/icons/REALVISTA/project_managment/png/16/agency.png) no-repeat; 
+padding-top:17px;
+}  
+
+</style>
+</head>
+
+<!-- topbar block start-->
+<div id="topbarblock">
+    <div id="topbarleft">
+        <div id="logo"></div>
+    </div>
+    <div id="topbarright">
+    <table width="90%" border="0" align="right" cellpadding="0" cellspacing="0" style="margin-right:15px;">
+  <tr>
+    <td width="17%" height="30" align="center" valign="middle" bgcolor="#0079B2" class="whitebold">Welcome :</td>
+    <td width="21%" height="30" align="left" valign="middle" bgcolor="#0079B2" class="txtnormal">Jeffery Johnson</td>
+    <td width="1%" align="center" valign="middle" bgcolor="#0079B2" class="txtnormal">|</td>
+    <td width="8%" height="30" align="center" valign="middle" bgcolor="#0079B2" class="txtnormal">
+    <img src="{!URLFOR($Resource.dashboard,"menu_assets/images/settings.png")}"  />
+    </td>
+    <td width="14%" height="30" bgcolor="#0079B2"><a href="#" class="menuanchorclass white" rel="anylinkmenu1">Settings</a></td>
+    <td width="1%" height="30" align="center" valign="middle" bgcolor="#0079B2" class="txtnormal">|</td>
+    <td width="18%" height="30" align="center" valign="middle" bgcolor="#0079B2" class="txtnormal"><a href="#" class="white">Support</a></td>
+    <td width="1%" height="30" align="center" valign="middle" bgcolor="#0079B2" class="txtnormal">|</td>
+    <td width="19%" height="30" align="center" valign="middle" bgcolor="#0079B2" class="txtnormal"><a href="#" class="white">Logout</a></td>
+  </tr>
+</table>
+
+  </div>
+</div>
+<!-- topbar block end-->
+<!--MENU START-->
+<div class='cssmenu'>
+<ul>
+   <li class='active'><a href='#'><span>Dashboard </span></a></li>
+   <li><a href='#'><span>My Events</span></a>
+     <!-- <ul>
+         <li><a href='#'><span>Product 1</span></a></li>
+         <li><a href='#'><span>Product 2</span></a></li>
+      </ul>-->
+   </li>
+   <li><a href='#'><span>Booths</span></a></li>
+   <li><a href='#'><span>Attendees</span></a></li>
+   <li><a href='#'><span>Reports</span></a></li>
+    <li><a href='#'><span>My Profile</span></a></li>
+</ul>
+</div>
+<div style="clear:both; margin: 0 0 3px 0;">&nbsp;</div>
+<!--MENU END-->
+<!--content start-->
+
+<table width="950" border="0" align="center" cellpadding="0" cellspacing="0" class="table" height="150px">
+  <tr>
+    <td>
+    
+    
+    <table width="100%" border="0" align="center" cellpadding="0" cellspacing="0">
+  <tr>
+    <td align="center" valign="top">
+    
+    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+      <tr>
+        <td width="33%" height="45" align="left">Overview</td>
+        <td width="34%" height="30">&nbsp;</td>
+        <td width="33%" height="30" align="right">4 New Messages |Help ?</td>
+      </tr>
+    </table>
+    
+    </td>
+  </tr>
+  <tr>
+    <td align="center" valign="top">
+    
+    <table width="100%" border="0" cellspacing="0" cellpadding="0" style="border-top:1px solid #000;">
+      <tr>
+        <td width="33%" height="30" align="left" style="padding-left:25px; padding-top:15px;">Total No.of Booths:20
+            <div style="float:right; width:100%;padding-right:30px; text-align:right;"> >> more </div>
+        </td>
+        <td width="34%" height="40" style="border-left:2px dashed #666666;border-right:2px dashed #666666; padding-left:25px; padding-top:15px;">Currents Events:3
+            <div style="float:right; width:100%;padding-right:30px; text-align:right;">>> more</div>
+        </td>
+        <td width="33%" height="30" align="left" style="padding-left:25px; padding-top:15px;">Total No. of Attendees: 324
+            <div style="float:right; width:100%;padding-right:30px; text-align:right;">>> more</div>
+        </td>
+      </tr>
+      
+    </table>
+    <tr>
+        <td><hr /></td>
+    </tr>
+    </td>
+  </tr>
+</table>
+    <!-- you can put content here -->
+
+
+
+
+</td>
+  </tr>
+</table>
+<div style="clear:both; margin: 0 0 3px 0;">&nbsp;</div>
+
+
+
+<table width="1000" border="0" align="center" cellpadding="0" cellspacing="0" class="table" style="min-height:330px;">
+<tr>
+<td width="715" align="left" valign="top"><table width="717" border="0" cellpadding="0" cellspacing="0">
+<tr>
+<td align="center" valign="top" bgcolor="#FFFFFF" id="content">
+
+</td>
+        </tr>
+      </table>
+     
+
+    </td>
+   
+  </tr>
+</table>
+<div style="clear:both; margin: 0 0 3px 0;">&nbsp;</div>
+<script type="text/javascript">  
+
+Ext.require('Ext.chart.*');  
+Ext.require('Ext.grid.*');  
+Ext.onReady(function ()  
+{
+
+var store = Ext.create('Ext.data.JsonStore', {  
+fields: ['namegeo', 'datageo'], 
+data: [
+<apex:repeat value="{!grphy}" var="a"> 
+{
+'namegeo' : '{!a.geogy}',  
+'datageo' :{!a.georecords}
+}, 
+</apex:repeat>  
+]
+});
+
+Ext.create('Ext.data.Store', {  
+storeId:'simpsonsStore',
+fields:['name', 'email', 'phone'],
+data:{'items':[
+{ 'name': 'Lisa',  "email":"lisa@simpsons.com",  "phone":"555-111-1224"  }, 
+{ 'name': 'Bart',  "email":"bart@simpsons.com",  "phone":"555-222-1234"  }, 
+{ 'name': 'Homer', "email":"home@simpsons.com",  "phone":"555-222-1244"  }, 
+{ 'name': 'Marge', "email":"marge@simpsons.com", "phone":"555-222-1254"  },
+{ 'name': 'Lisa',  "email":"lisa@simpsons.com",  "phone":"555-111-1224"  }, 
+{ 'name': 'Bart',  "email":"bart@simpsons.com",  "phone":"555-222-1234"  }, 
+{ 'name': 'Homer', "email":"home@simpsons.com",  "phone":"555-222-1244"  }, 
+{ 'name': 'Marge', "email":"marge@simpsons.com", "phone":"555-222-1254"  } 
+]},
+proxy: {
+type: 'memory',
+reader: {
+type: 'json',
+root: 'items'
+}
+}
+});
+
+var store1 = Ext.create('Ext.data.JsonStore', { 
+fields: ['nameindus', 'dataI'],
+data: [
+<apex:repeat value="{!indus}" var="a">
+{
+'nameindus' : '{!a.industry}',  
+'dataI' :{!a.indusrec}
+},
+</apex:repeat>
+]
+});
+
+
+var navigate = function(panel,direction){
+var layout = panel.getLayout();
+layout[direction]();
+Ext.getCmp('chartid').setDisabled(!layout.getPrev());
+Ext.getCmp('gridid').setDisabled(!layout.getNext()); 
+};
+
+
+Ext.create('Ext.Panel', { 
+width: 900,
+height: 690,
+margin:'25%',
+iconCls: 'report-icon',
+title: 'Reports Dashboard',        
+renderTo: 'content',
+border: 0,
+title: false,
+header: false,
+headerCfg: false,     
+layout: 
+{
+type: 'table',
+columns: 3,
+tableAttrs: {
+style: {
+width: '100%', 
+height: '100%',
+}
+}
+},
+
+
+items: [{
+title: '',
+border:false,
+columnWidth:0.05,
+rowspan:2
+},
+
+
+
+{
+xtype: 'panel',    
+title: 'Geography Chart', 
+width: 440,
+height: 330,
+iconCls : 'geo-icon',
+collapsible: true,
+tools:[{
+type: 'gear',
+},
+{
+type:'Close'}
+],
+renderTo: Ext.getBody(), 
+layout: 'card', 
+headerCfg:{
+Cls:'xpanel',
+},
+tbar: [
+
+{ 
+xtype: 'tbspacer', 
+width: 375
+},
+{
+xtype : 'button', 
+title:'Chart',
+id:'chartid',
+iconCls : 'chart-icon',  
+layout: 'autofit',
+handler: function(btn) 
+{
+navigate(btn.up("panel"), "prev");
+},
+disabled: true   
+},
+{
+xtype:'tbseparator'
+},
+{
+xtype : 'button',
+text : null,
+id:'gridid',
+iconCls : 'grid-icon',
+layout: 'autofit',
+handler: function(btn) 
+{
+navigate(btn.up("panel"), "next");
+}
+}   
+],
+items: 
+[{
+xtype: 'chart',
+id: 'chartCmp',
+animate: false,
+store: store,
+height: 330,
+width: 440,
+legend: {
+position: 'right'
+},
+insetPadding: 45,
+theme: 'Base:gradients',
+series: [{
+type: 'pie',
+field: 'datageo',
+layout: 'autofit',
+showInLegend: true,
+tips: 
+{
+trackMouse: true,
+width: 280,
+height: 80,
+renderer: function(storeItem, item) 
+{
+//calculate percentage.
+var total = 0;
+store.each(function(rec) {
+total += rec.get('datageo');
+});
+this.setTitle(storeItem.get('namegeo') + ' : ' + storeItem.get('datageo') +  '-Attendees'); 
+}
+},
+highlight: 
+{
+segment: 
+{
+margin: 10
+}
+},
+label: 
+{
+field: 'namegeo',
+display: 'rotate',
+contrast: true,
+font: '15px Arial' 
+}
+}],
+},
+{
+xtype:'grid',  
+width: 440, 
+height: 330, 
+closeAction: 'hide', 
+renderTo: Ext.getBody(), 
+title: 'Event Information', 
+id:'gridpanel', 
+store: Ext.data.StoreManager.lookup('simpsonsStore'),    
+columns: [
+{ header: 'Name',  dataIndex: 'name' },       
+{ header: 'Email', dataIndex: 'email', flex: 1 },             
+{ header: 'Phone', dataIndex: 'phone' }        
+],
+}],
+},
+
+ 
+ 
+ 
+ 
+ 
+ 
+   
+{
+xtype: 'panel',   
+title: 'Geography Chart', 
+iconCls : 'geo-icon',
+width: 440,
+height: 330,
+collapsible:true,
+renderTo: Ext.getBody(), 
+tools:[{
+type: 'gear',
+},
+{
+type:'Close'}],
+layout: 'fit',
+tbar: [
+{ 
+xtype: 'tbspacer', 
+width: 375
+},
+{
+xtype : 'button',
+text : null,
+iconCls : 'chart-icon',
+layout: 'autofit',
+enableToggle: true,
+pressed: false,
+toggleHandler: function(btn, pressed) 
+{
+var chart = Ext.getCmp('chartCmp');
+chart.series.first().donut = pressed ? 35 : false;
+chart.refresh();
+}
+},
+{
+xtype:'tbseparator'
+},
+{
+xtype : 'button',
+text : null,
+iconCls : 'grid-icon',
+layout: 'autofit',
+}],
+items: 
+{
+xtype: 'chart',    
+store: store,
+align:'center',
+shadow: true,
+legend: 
+{
+position: 'right'
+},
+insetPadding: 45,
+theme: 'Base:gradients',
+series: [{
+type: 'pie',
+field: 'datageo',
+showInLegend: true,
+tips: {
+trackMouse: true,
+width: 280,
+height: 50,
+renderer: function(storeItem, item) {
+//calculate percentage.
+var total = 0;
+store.each(function(rec) {
+total += rec.get('datageo');
+});
+this.setTitle(storeItem.get('namegeo') + ' : ' + storeItem.get('datageo') +  '-Attendees');
+}
+},
+highlight: {
+segment: {
+margin: 10
+}
+},
+label: {
+field: 'namegeo',
+display: 'rotate',
+contrast: true,
+font: '15px Arial'
+}
+}]
+}
+},
+
+
+
+
+
+
+
+
+
+{
+xtype: 'panel',  
+title: 'Geography Chart', 
+iconCls : 'geo-icon',
+width: 440,
+height: 330,
+collapsible: true,
+renderTo: Ext.getBody(),
+tools:[{
+type: 'gear',
+},
+{
+type:'Close'}],
+layout: 'fit',
+tbar: [
+{ 
+xtype: 'tbspacer', 
+width: 375
+},
+{
+xtype : 'button',
+text : null,
+iconCls : 'chart-icon',
+layout: 'autofit',
+enableToggle: true,
+pressed: false,
+toggleHandler: function(btn, pressed) 
+{
+var chart = Ext.getCmp('chartCmp');
+chart.series.first().donut = pressed ? 35 : false;
+chart.refresh();
+}
+},
+{
+xtype:'tbseparator'
+},
+{
+xtype : 'button',
+text : null,
+iconCls : 'grid-icon',
+layout: 'autofit',
+}],
+items: 
+{
+xtype: 'chart',
+store: store,
+align:'center',
+shadow: true,
+legend: {
+position: 'right'
+},
+insetPadding: 45,
+theme: 'Base:gradients',
+series: [{
+type: 'pie',
+field: 'datageo',
+showInLegend: true,
+tips: {
+trackMouse: true,
+width: 280,
+height: 50,
+renderer: function(storeItem, item) {
+//calculate percentage.
+var total = 0;
+store.each(function(rec) {
+    total += rec.get('datageo');
+});
+ this.setTitle(storeItem.get('namegeo') + ' : ' + storeItem.get('datageo') +  '-Attendees');
+}
+},
+highlight: {
+segment: {
+margin: 10
+}
+},
+label: {
+field: 'namegeo',
+display: 'rotate',
+contrast: true,
+font: '15px Arial'
+}
+}]
+}
+},
+
+
+
+
+
+
+
+
+
+{
+xtype: 'panel',
+title: 'Industry Chart',    
+width: 440,
+height: 330,
+iconCls: 'ind-icon',
+collapsible:true,
+tools:[{
+type: 'gear',
+},
+{
+type:'Close'
+}],
+renderTo: Ext.getBody(),
+layout: 'fit',
+tbar: [
+{ 
+xtype: 'tbspacer', 
+width: 375
+},
+{
+xtype : 'button',
+text : null,
+iconCls : 'chart-icon',
+layout: 'autofit',
+},
+{
+xtype:'tbseparator'
+},
+{
+xtype : 'button',
+text : null,
+iconCls : 'grid-icon',
+layout: 'autofit',
+
+}],
+items: [{
+xtype: 'chart',
+id:'chartcmp1',
+shadow: true,
+store: store1,
+axes: [{
+type: 'Numeric',
+position: 'left',
+fields: ['dataI'],
+title: false,
+grid: true,
+minimum: 0,
+maximum: 15,
+steps:3,
+}, {
+type: 'Category',
+position: 'bottom',
+fields: ['nameindus'],
+title: false
+}],
+series: [{
+type: 'column',
+axis: 'left',
+gutter: 80,
+xField: 'nameindus',
+yField: ['dataI'],
+tips: {
+trackMouse: true,
+width: 280,
+height: 80,
+renderer: function(storeItem, item) 
+{
+this.setTitle(storeItem.get('nameindus') + ': ' + storeItem.get('dataI') + '-Attendees ');
+}
+},
+}]
+}]
+
+}] 
+});    
+});
+
+</script>
+<!--content end-->
+
+<!--footer START-->
+
+<div id="footerblock">
+  <div id="footer">        
+            <div id="footerleft">
+            Copyright@ 2012 - Globalnest, LLc.
+            </div>
+            <div id="footerright">
+            <ul>
+            <li><a href="#">Privacy Policy</a></li>
+            <li>|</li>
+            <li><a href="#">Terms of Use</a></li>
+            </ul>
+            </div>
+    </div>
+</div>
+<!--footer end-->
+</apex:form>
+</apex:page>

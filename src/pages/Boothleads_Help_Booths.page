@@ -1,0 +1,108 @@
+<apex:page showHeader="false" standardStylesheets="false">
+
+<apex:stylesheet value="{!URLFOR($Resource.helpstyle,"documenter_style.css")}"/> 
+
+<script type="text/javascript" src="{!$Resource.helpstyle}/jquery.1.6.4.js"></script>
+<script type="text/javascript" src="{!$Resource.helpstyle}/script1.js"></script>
+<style>
+        html{background-color:#F3F3F3;color:#585858;background-image:url(assets/images/image_15.png);background-repeat:repeat;background-attachment:fixed;}
+        ::-moz-selection{background:#111111;color:#F1F1F1;}
+        ::selection{background:#111111;color:#F1F1F1;}
+        #documenter_sidebar #documenter_logo{background-image:url(assets/images/loginLogo.png);}
+        a{color:#111111;}
+        table td { padding: 10px; }
+        hr{border-top:1px solid #E5E5E5;border-bottom:1px solid #F9F9F9;}
+        #documenter_sidebar, #documenter_sidebar ol a{background-color:#333333;color:#F1F1F1;background-image:url(assets/images/image_17.gif);background-repeat:repeat-y;}
+        #documenter_sidebar ol a{-webkit-text-shadow:1px 1px 0px #444444;-moz-text-shadow:1px 1px 0px #444444;text-shadow:1px 1px 0px #444444;}
+        #documenter_sidebar ol{border-top:1px solid #222222;}
+        #documenter_sidebar ol a{border-top:1px solid #444444;border-bottom:1px solid #222222;color:#F1F1F1;}
+        #documenter_sidebar ol a:hover{background:#111111;color:#F1F1F1;border-top:1px solid #111111;}
+        #documenter_sidebar ol a.current{background:#111111;color:#F1F1F1;border-top:1px solid #111111;}
+        #documenter_copyright{display:block !important;visibility:visible !important;}
+    </style>
+
+  <div id="documenter_sidebar">
+        <a href="#documenter_cover" id="documenter_logo"></a>
+        <ol id="documenter_nav">
+            <li><a class="current" href="#documenter_cover">Booth And Booth Admin</a></li>
+            <li><a href="#features">Features</a></li>
+            
+        </ol>
+        
+    </div>
+    
+    <div id="documenter_content">
+    
+        <section id="documenter_cover">
+            <h1>It's Brain - Premium admin template</h1>
+            <h2>Full documentation</h2>
+            
+            <ul>
+                <li>Created: 28/11/2011</li>
+                <li>latest Update: 28/11/2011</li>
+                <li>By: Eugene Kopyov</li>
+            </ul>
+            
+            <p>First of all i want to thank you for purchasing my theme. If you have any questions that are beyond the scope of this help file, please feel free to email via my user page contact form here. Thanks so much!</p>
+        </section>
+        
+        <section id="features">
+            <h3>It's Brain main features:</h3><hr class="notop" />
+            <ul>    
+                <li><strong>Fixed</strong> 2 columns layout</li>
+                <li>Integrated Flot charts
+                    <ul>
+                        <li>Lines</li>
+                        <li>Bars</li>
+                        <li>Pies</li>
+                    </ul>
+                </li>
+                <li>Form elements:
+                    <ul>
+                        <li>Default text input fields with placeholder, autofocus, on hover tooltip, read only, disabled, with maximum length and predefined value.</li>
+                        <li>Textarea with <strong>fixed height and autogrowing feature</strong></li>
+                        <li><strong>Filtering data rows with filters</strong> - letters only, numbers only, regular expressions, alpha only, auto converting to uppercase characters.</li>
+                        <li>Dropdown and select lists</li>
+                        <li><strong>Spinner with mousewheel support</strong>: simple number input, decimal, currency, inline data, inline data with links</li>
+                        <li>Checkboxes and radio buttons</li>
+                        <li>File uploader with <strong>auto select of HTML version, which your current browser supports (HTML4/HTML5)</strong>. For HTML5 version there is a <strong>drag-n-drop function, progress bar, file size and multi select</strong>, for HTML4 - it's a usual single file uploader with status bar.</li>
+                        <li>WYSIWYG editor</li>
+                        <li>Integrated <strong>validation engine</strong></li>
+                        <li>3 label position versions</li>
+                    </ul>
+                </li>
+                <li>Interface elements:
+                    <ul>
+                        <li><strong>4 color styles</strong> for statistic buttons</li>
+                        <li>UI sliders: usual, with increments, with fixed minimum, with fixed maximum, range slider, multiple vertical sliders</li>
+                        <li>Usual date picker</li>
+                        <li>Inline date picker</li>
+                        <li>Color picker</li>
+                        <li><strong>10 types of AJAX loaders</strong></li>
+                        <li><strong>Progress bars</strong>: usual one, <strong>with percentages and timer, with percentages and timer + delay on start</strong></li>
+                        <li><strong>7 button colors</strong>: light grey, red, green, blue, grey/blue, sea, black</li>
+                        <li><strong>Growl notification</strong>: sticky, basic, with header, long live message</li>
+                        <li>2 types of tabs: as a widget or full width area</li>
+                        <li><strong>2 breadcrumbs types</strong>: static and with auto hiding</li>
+                        <li><strong>Modal alert boxes</strong>: usual alert, confirmation dialog, prompt dialog, dialog with HTML support </li>
+                        <li><strong>4 notification messages</strong>: warning, success, error, information</li>
+                        <li><strong>Custom pagination</strong></li>
+                        <li><strong>4 tooltip directions</strong>: south, north, west, east</li>
+                    </ul>
+                </li>
+                <li>Code view with <strong>syntax highlighting</strong></li>
+                <li>4 unordered list icons with 4 colors for each icon</li>
+                <li>5 types of tables styling: dynamic table with search, pagination and sorting; usual static table; table, integrated into tabs; table with info button on the header right side; table with resizable columns</li>
+                <li>Calendar with schedule</li>
+                <li>Images gallery</li>
+                <li><strong>11 widgets</strong>: latest orders; latest support tickets; accordion; toggles group; tabs; widget with AJAX loader; collapsible block closed and opened by default; website statistics; user details widget; custom search widget</li>
+                <li>File manager</li>
+                <li><strong>300+ icons in 2 sizes</strong>; buttons with icons</li>
+                <li>Organized <strong>contacts list</strong></li>
+                <li><strong>5 error pages</strong> and Website is offline page</li>
+            </ul>
+        </section>
+
+
+    </div>
+</apex:page>

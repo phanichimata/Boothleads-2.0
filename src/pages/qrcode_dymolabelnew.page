@@ -1,0 +1,51 @@
+<apex:page controller="Eventattendees" renderAs="pdf">
+<style>
+html{padding:0px; margin:0px;}
+</style>
+
+ <!-- QRCode_viewbadge, 
+ <apex:stylesheet value="{!$Resource.pdfstyle_css}"/>-->
+<apex:stylesheet value="{!URLFOR($Resource.advancedpdfresource, 'qstylesnew.css')}"/>
+<!--apex:commandButton value="pdf" action="{!generatepdf}"/-->
+
+
+<apex:repeat value="{!attendeeslist}" var="att">
+
+<table  cellspacing="0" cellpadding="0" border="0"    style="margin:10px 3px -13px 3px;">
+
+<tr>
+<td align="Left" rowspan="2" style="width:20%" valign="top"><apex:outputPanel rendered="{!Logo}">
+<apex:image url="/servlet/servlet.FileDownload?file={!attach.EV_EventLogo__c}" style="{!logo};width:80px;height:45px;"/>
+</apex:outputPanel>
+</td>
+<td  align="right" style="font-size:8pt;" rowspan="2">
+{!att.AS_id__r.Registration_type__c}
+</td>
+</tr>
+<tr>
+<!--
+<td style="width:100%;padding:0;margin:0;font-size:8pt;" align="center" colspan="2">
+{!att.Event_Id__r.Event_Title__c}
+</td>
+-->
+</tr>
+<tr><td align="center" style="padding:0;margin:0;font-size:20pt"  colspan="2">
+{!att.AS_id__r.AS_FirstName__c} {!att.AS_id__r.AS_LastName__c}
+
+<div style="position:absolute; width:98%; float:left;font-size:8pt;padding-top:25px;text-align:center; padding:30px;padding-right:20px;  ">{!eventatt.AS_id__r.AS_Title__c}</div>
+</td></tr>
+<tr><td align="Left" style="padding-top:1px;" valign="top"> <!-----{!eventselected}---->
+<apex:image value="https://chart.googleapis.com/chart?chs=100x100&cht=qr&chl={!att.EA_AttendeeBarcode__c}"/></td>
+<td style="width:80%;font-size:12pt" >
+{!att.AS_id__r.AS_Company__c}
+</td></tr>
+</table>
+
+</apex:repeat>
+
+ <script>
+ alert('QQQQQQQQQQQQQQQQ' );
+ </script>
+ 
+ 
+</apex:page>

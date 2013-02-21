@@ -1,0 +1,33 @@
+<apex:page controller="dynamicColumns">
+ 
+     <apex:Form >
+          <apex:pageBlock >
+                <apex:pageBlockButtons location="top">
+                    <apex:commandButton action="{!refreshTable}" value="Refresh Table"/>
+                </apex:pageBlockButtons>
+                
+                <apex:pageBlockSection >
+                    <apex:pageBlockSectionItem >
+                        <apex:outputLabel value="No of Colums">
+                        </apex:outputLabel>
+                        <apex:inputText value="{!noOfColumns}" />
+                    </apex:pageBlockSectionItem>
+                </apex:pageBlockSection>
+                
+                <apex:pageBlockSection collapsible="true" title="Search Result" columns="1">
+            
+            <apex:PageBlockTable columns="{!listFieldToShow.size}" value="{!listTableResult}" var="rowItem">
+               
+                <apex:repeat value="{!listFieldToShow}" var="colItem">
+                    <apex:column >
+                        <apex:facet name="header" >{!mapFieldToShow[colItem]}</apex:facet>
+                        <apex:outputLabel value="{!rowItem[mapFieldToShow[colItem]]}"></apex:outputLabel>
+                    </apex:column>
+                </apex:repeat>
+                
+            </apex:PageBlockTable>
+            
+        </apex:pageBlockSection>
+          </apex:pageBlock>
+     </apex:Form>
+</apex:page>

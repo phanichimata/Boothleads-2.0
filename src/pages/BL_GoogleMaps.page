@@ -1,0 +1,34 @@
+<apex:page showHeader="false" sidebar="false">
+
+  <script type='text/javascript' src='https://www.google.com/jsapi'></script>
+  <script type='text/javascript'>
+   google.load('visualization', '1', {'packages': ['geomap']});
+   google.setOnLoadCallback(drawMap);
+
+  function drawMap() 
+  {
+   var data = google.visualization.arrayToDataTable([
+        ['Country']
+   ]);
+   var options = {};
+   options['dataMode'] = 'regions';
+   options['region'] = 'world';
+   options['width'] = '1000px'; 
+   options['height'] = '590px';
+
+   var container = document.getElementById('map_canvas');
+   var geomap = new google.visualization.GeoMap(container);
+   geomap.draw(data, options);
+   google.visualization.events.addListener(geomap, 'regionClick', 
+   function(e) 
+   {
+    alert(e['region']);
+   });
+  };
+  </script>
+
+<body>
+  <div id='map_canvas'></div>
+</body>
+
+</apex:page>

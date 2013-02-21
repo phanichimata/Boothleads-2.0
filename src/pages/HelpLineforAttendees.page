@@ -1,0 +1,145 @@
+<apex:page standardStylesheets="false" showHeader="false" controller="helplineatt">
+<apex:form ><!--
+<table width="100%" border="5" style="background-color:#f3f3f3;" >
+<tr><td width="20%" valign="top" > 
+<table valign="top" style="padding-top:1px;"><tr><td>
+<apex:commandLink value="Add Attendee"  action="{!addatthelp}"/>
+</td><td>
+<apex:image url="{!$Resource.AddAttendee1}"/></td></tr><br/>
+<tr><td>
+<apex:commandLink value="Import Attendees" action="{!importhelp}"/>
+</td><td>
+<apex:image url="{!$Resource.Import1}"/></td></tr><br/>
+<tr><td>
+<apex:commandLink value="Print Badge" action="{!Printinghelp}"/></td><td>
+<apex:image url="{!$Resource.PrintBadge1}"/></td></tr>
+
+
+</table>
+</td>
+
+
+<td width="80%">
+<apex:outputPanel rendered="{!total}" style="text-decoration:none;color:#0750F9;font-weight:bold;font-size:14px;">
+  &nbsp;&nbsp;&nbsp;&nbsp;Attendees are the persons who are attending for an event.In Booth leads it plays a major role.In this page we are providing list of events to register an attendee for a perticular event.with out selecting an event attendee can not be registered.
+  To add more no of attendees at a time, there is a feature called "Import Attendees". And there are other features like "Delete", "print the badges" ,"email Badges" and "Profile update notification".   <br/>&nbsp;&nbsp;
+ 
+
+
+   i)Add Attendee<br/>&nbsp;&nbsp;
+   ii)Import Attendees<br/>&nbsp;&nbsp;
+   iii)Print Badges<br/>&nbsp;&nbsp;
+   iv)Export <br/>&nbsp;&nbsp;
+   v)Email Badges<br/>&nbsp;&nbsp;
+   vi)Profile Update Notification.<br/>&nbsp;&nbsp;
+   in the screen user can see the list of attendees of selected event in the grid formate.In the grid user can <apex:image url="{!$Resource.Qrcode_edit}"/>&nbsp;<b>edit</b> and&nbsp; <apex:image url="{!$Resource.Qrcode_delete}"/> &nbsp;<b>delete</b> an attendee under Action column.
+   First Name,Last Name,Emal,Phone and company are the information of that perticular attendee and the column "status" describes wether that attendee badge is printed or not and Profile update notifcation has been sent or not but this is editable column.  
+   if the attendee adds his image while adding his information that image will be displayed in the greid under image  column.
+
+
+</apex:outputpanel>
+<apex:outputPanel rendered="{!addren}" id="ADD" style="text-decoration:none;color:#1bb8f1;font-weight:bold;font-size:14px;" >
+ &nbsp;&nbsp;<U>Add Attendee</U>:-<br/>&nbsp;
+ This helps the Event Admin to add an attendee for the selected event.
+ 
+
+</apex:outputPanel>
+<apex:outputPanel rendered="{!importren}" id="EDIT" style="text-decoration:none;color:#1bb8f1;font-weight:bold;font-size:14px;" >
+Import Attendees
+</apex:outputPanel>
+
+<apex:outputPanel rendered="{!printren}" id="Print" style="text-decoration:none;color:#1bb8f1;font-weight:bold;font-size:14px;" >
+Print Badge
+</apex:outputPanel>
+
+
+
+
+</td></tr></table>
+-->
+
+
+
+<apex:stylesheet value="{!URLFOR($Resource.helpstyle,"documenter_style.css")}"/> 
+
+<script type="text/javascript" src="{!$Resource.helpstyle}/jquery.1.6.4.js"></script>
+<script type="text/javascript" src="{!$Resource.helpstyle}/script1.js"></script>
+<style>
+        html{background-color:#F3F3F3;color:#585858;background-image:url(assets/images/image_15.png);background-repeat:repeat;background-attachment:fixed;}
+        ::-moz-selection{background:#111111;color:#F1F1F1;}
+        ::selection{background:#111111;color:#F1F1F1;}
+        #documenter_sidebar #documenter_logo{background-image:url(assets/images/loginLogo.png);}
+        a{color:#111111;}
+        table td { padding: 10px; }
+        hr{border-top:1px solid #E5E5E5;border-bottom:1px solid #F9F9F9;}
+        #documenter_sidebar, #documenter_sidebar ol a{background-color:#333333;color:#F1F1F1;background-image:url(assets/images/image_17.gif);background-repeat:repeat-y;}
+        #documenter_sidebar ol a{-webkit-text-shadow:1px 1px 0px #444444;-moz-text-shadow:1px 1px 0px #444444;text-shadow:1px 1px 0px #444444;}
+        #documenter_sidebar ol{border-top:1px solid #222222;}
+        #documenter_sidebar ol a{border-top:1px solid #444444;border-bottom:1px solid #222222;color:#F1F1F1;}
+        #documenter_sidebar ol a:hover{background:#111111;color:#F1F1F1;border-top:1px solid #111111;}
+        #documenter_sidebar ol a.current{background:#111111;color:#F1F1F1;border-top:1px solid #111111;}
+        #documenter_copyright{display:block !important;visibility:visible !important;}
+    </style>
+
+  <div id="documenter_sidebar">
+        <a href="#documenter_cover" id="documenter_logo"></a>
+        <ol id="documenter_nav">
+            <li><a class="current" href="#documenter_cover">Attendee Overview</a></li>
+            <li><a href="#addattendee">Add Attendee</a></li>
+            <li><a href="#importattendees">Import Attendees</a></li>
+            <li><a href="#Printbadge">Print Badge</a></li>
+            <li><a href="#Export">Export</a></li>
+            <li><a href="#emailbadge">Email Badge</a></li>
+            <li><a href="#profileupdatenotification">Profile update notification</a></li>
+            
+        </ol>
+        
+    </div>
+    
+    <div id="documenter_content">
+    
+        <section id="documenter_cover">
+            <h1>Attendees</h1>
+           <apex:outputPanel rendered="{!total}" style="text-decoration:none;color:#0750F9;font-weight:bold;font-size:14px;">
+  &nbsp;&nbsp;&nbsp;&nbsp;Attendees are the persons who are attending for an event.In Booth leads it plays a major role.In this page we are providing list of events to register an attendee for a perticular event.with out selecting an event attendee can not be registered.
+  To add more no of attendees at a time, there is a feature called "Import Attendees". And there are other features like "Delete", "print the badges" ,"email Badges" and "Profile update notification".   <br/>&nbsp;&nbsp;
+ 
+
+
+   i)Add Attendee<br/>&nbsp;&nbsp;
+   ii)Import Attendees<br/>&nbsp;&nbsp;
+   iii)Print Badges<br/>&nbsp;&nbsp;
+   iv)Export <br/>&nbsp;&nbsp;
+   v)Email Badges<br/>&nbsp;&nbsp;
+   vi)Profile Update Notification.<br/>&nbsp;&nbsp;
+   in the screen user can see the list of attendees of selected event in the grid formate.In the grid user can <apex:image url="{!$Resource.Qrcode_edit}"/>&nbsp;<b>edit</b> and&nbsp; <apex:image url="{!$Resource.Qrcode_delete}"/> &nbsp;<b>delete</b> an attendee under Action column.
+   First Name,Last Name,Emal,Phone and company are the information of that perticular attendee and the column "status" describes wether that attendee badge is printed or not and Profile update notifcation has been sent or not but this is editable column.  
+   if the attendee adds his image while adding his information that image will be displayed in the greid under image  column.
+
+
+</apex:outputpanel>
+        </section>
+        
+        <section id="addattendee">
+        <apex:outputPanel id="ADD" style="text-decoration:none;color:#1bb8f1;font-weight:bold;font-size:14px;" >
+            <h3>Adding an attendee:</h3><hr class="notop" />
+              Add attendee is for adding single attendee at a time. By clicking on this button it opens with a popup where user has to fill attendee information. For every event First name, Last name, Company and email id are required and remaining varies event to event based on the Attendee settings. Registration type shows the types of registrations Event Admin created for particular event. After filling the form we provide two options say “Save” and “Save and Print” where save indicates saving of the attendee information and where as “save and print” pops up with printing the badge option simultaneously.
+</apex:outputpanel>
+        </section>
+        <section id="importattendees">
+            <h3>Import Attendees:</h3><hr class="notop" />
+              
+        </section>
+         <section id="Printbadge">
+            <h3>Print Badge:</h3><hr class="notop" />
+              
+        </section>
+        <section id="Export">
+            <h3>Export attendees infrmation:</h3><hr class="notop" />
+              
+        </section>
+
+
+    </div>
+</apex:form>
+</apex:page>

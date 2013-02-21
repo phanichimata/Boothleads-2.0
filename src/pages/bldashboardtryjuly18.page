@@ -1,0 +1,373 @@
+<apex:page controller="Dashboardcntrljuly18" standardStylesheets="false" showheader="false">
+
+ 
+ 
+ <table border="1" width="500" height="250">
+ <tr>
+ <td>
+ <table border="1" width="450" height="200">
+ <tr>
+ <td>
+ 
+<apex:form >
+       <script type="text/javascript" charset="utf-8" src="http://cdn.sencha.io/ext-4.0.7-gpl/ext-all.js"></script>
+       <link rel="stylesheet" type="text/css" href="http://cdn.sencha.io/ext-4.0.7-gpl/resources/css/ext-all.css"/>
+       
+ <script type="text/javascript"> 
+ Ext.require('Ext.chart.*');
+ 
+
+Ext.onReady(function () {
+
+ var store1 = Ext.create('Ext.data.JsonStore', {
+   fields: ['nameindus', 'dataI'],
+   data: [
+   <apex:repeat value="{!indus}" var="a">
+   {
+   'nameindus' : '{!a.industry}',  
+   'dataI' :{!a.indusrec}
+   },
+   </apex:repeat>    
+    
+   ]
+});
+
+
+
+Ext.create('Ext.chart.Chart', {
+    renderTo: Ext.getBody(),
+    width: 480,
+    height: 300,
+    animate: true,
+    store: store1,
+    layout : 'hbox',
+    layoutConfig : {
+        align : 'right'
+    },
+
+  
+    axes: [
+        {
+            type: 'Numeric',
+            position: 'left',
+            fields: ['dataI'],
+            label: {
+                renderer: Ext.util.Format.numberRenderer('0,0')
+            },
+            title: 'Attendees',
+            grid: true,
+            minimum: 0,
+            maximum:100
+        },
+   
+        {
+            type: 'Category',
+            position: 'bottom',
+            fields: ['nameindus'],
+            title: 'Sample Events'
+        }
+    ],
+    series: [
+        {
+            type: 'column',
+            axis: 'left',
+            highlight: true,
+            tips: {
+              trackMouse: true,
+              width: 140,
+              height: 28,
+              renderer: function(storeItem, item) {
+                this.setTitle(storeItem.get('nameindus') + ': ' + storeItem.get('dataI') + ' $');
+              }
+            },
+            label: {
+              display: 'insideEnd',
+              'text-anchor': 'middle',
+                field: 'dataI',
+                renderer: Ext.util.Format.numberRenderer('0'),
+                orientation: 'vertical',
+                color: '#333'
+            },
+            xField: 'nameindus',
+            yField: 'dataI'
+        }
+    ]
+});
+
+
+
+});
+</script>
+</apex:form>
+ 
+ </td>
+ </tr>
+ </table>
+ </td>
+ </tr>
+ </table>
+ 
+ <!--
+
+  <script type="text/javascript" charset="utf-8" src="http://cdn.sencha.io/ext-4.0.7-gpl/ext-all.js"></script>
+  <link rel="stylesheet" type="text/css" href="http://cdn.sencha.io/ext-4.0.7-gpl/resources/css/ext-all.css"/>
+  
+  
+ <head>
+  <style > 
+   .chart-icon
+   {
+    background:url(http://png-2.findicons.com/files//icons/1581/silk/16/chart_curve_error.png) no-repeat; 
+   }
+  </style>
+  
+  <style>
+   .grid-icon
+   {
+    background:url(http://nnnpro.com/sites/all/themes/nnnproV1/images/icon-grid.png) no-repeat; 
+   }
+  </style>
+ </head>
+ 
+ 
+<script type="text/javascript"> 
+
+Ext.require('Ext.chart.*');
+ 
+Ext.onReady(function () 
+{
+   var store = Ext.create('Ext.data.JsonStore', {
+       fields: ['namegeo', 'datageo'],
+       data: [
+       <apex:repeat value="{!grphy}" var="a">
+       {
+        'namegeo' : '{!a.geogy}',  
+        'datageo' :{!a.georecords}
+       },
+       </apex:repeat>  
+     ]
+  });
+   var donut = true,
+   panel1 = Ext.create('Ext.panel.Panel', {
+   width: 400,
+   height: 300,
+   closeAction: 'show',
+   title: 'Geography Chart',
+   
+   renderTo: Ext.getBody(),
+   layout: 'fit',
+   tbar: [{
+        text: 'Reload Data',
+        handler: function() {
+        var store = Ext.create('Ext.data.JsonStore', { 
+            fields: ['namegeo', 'datageo'],
+            data: [
+            <apex:repeat value="{!grphy}" var="a">
+            {
+            'namegeo' : '{!a.geogy}',  
+            'datageo' :{!a.georecords}
+            },
+           </apex:repeat>
+            ]
+    });
+        }
+    }, {
+        enableToggle: true,
+        pressed: false,
+        text: 'Donut',
+        toggleHandler: function(btn, pressed) {
+            var chart = Ext.getCmp('chartCmp');
+            chart.series.first().donut = pressed ? 35 : false;
+            chart.refresh();
+        }
+    },
+    { 
+    xtype: 'tbspacer', 
+    width: 210
+    },
+    {
+     xtype : 'button',
+     text : null,
+     iconCls : 'chart-icon',
+     layout: 'autofit',
+     width : 25,
+     height : 25,
+     enableToggle: true,
+     pressed: false,
+     toggleHandler: function(btn, pressed) 
+     {
+      var chart = Ext.getCmp('chartCmp');
+      chart.series.first().donut = pressed ? 35 : false;
+      chart.refresh();
+     }
+    },
+    {
+     xtype:'tbseparator'
+    },
+    {
+     xtype : 'button',
+     text : null,
+     iconCls : 'grid-icon',
+     layout: 'autofit',
+     width : 25,
+     height : 25
+         }],
+    items: 
+    {
+        xtype: 'chart',
+        id: 'chartCmp',
+        animate: true,
+        store: store,
+        align:'center',
+        shadow: true,
+        legend: {
+            position: 'right'
+        },
+        insetPadding: 60,
+        theme: 'Base:gradients',
+        series: [{
+            type: 'pie',
+            field: 'datageo',
+            showInLegend: true,
+            donut: donut,
+            tips: {
+              trackMouse: true,
+              width: 280,
+              height: 50,
+              renderer: function(storeItem, item) {
+                //calculate percentage.
+                var total = 0;
+                store.each(function(rec) {
+                    total += rec.get('datageo');
+                });
+                 this.setTitle(storeItem.get('namegeo') + ' : ' + storeItem.get('datageo') +  '-Attendees');
+              }
+            },
+            highlight: {
+              segment: {
+                margin: 20
+              }
+            },
+            label: {
+                field: 'namegeo',
+                display: 'rotate',
+                contrast: true,
+                font: '15px Arial'
+            }
+        }]
+      }
+ });
+   
+   
+   
+   
+   
+    
+  var store1 = Ext.create('Ext.data.JsonStore', {
+    fields: ['nameindus', 'dataI'],
+    data: [
+    <apex:repeat value="{!indus}" var="a">
+    {
+    'nameindus' : '{!a.industry}',  
+    'dataI' :{!a.indusrec}
+    },
+    </apex:repeat>
+    ]
+ });   
+      
+ var panel2=Ext.create('Ext.panel.Panel', {
+            width: 400,
+            height: 300,
+            title: 'Industry Chart',
+            renderTo: Ext.getBody(),
+            layout: 'fit',
+       tbar: [{
+        text: 'Reload Data',
+        handler: function() {
+        var store = Ext.create('Ext.data.JsonStore', { 
+            fields: ['nameindus', 'dataI'],
+            data: [
+            <apex:repeat value="{!indus}" var="a">
+            {
+            'nameindus' : '{!a.industry}',  
+            'dataI' :{!a.indusrec}
+            },
+           </apex:repeat>
+            ]
+          });
+         }
+        },      
+        { 
+        xtype: 'tbspacer', 
+        width: 255
+        },
+        {
+         xtype : 'button',
+         text : null,
+         iconCls : 'chart-icon',
+         layout: 'autofit',
+         width : 25,
+         height : 25,
+         enableToggle: true,
+         pressed: false,
+         toggleHandler: function(btn, pressed) 
+         {
+          var chart = Ext.getCmp('chartcmp1');
+          chart.series.first().donut = pressed ? 35 : false;
+          chart.refresh();
+         }
+        },
+        {
+         xtype:'tbseparator'
+        },
+        {
+         xtype : 'button',
+         text : null,
+         iconCls : 'grid-icon',
+         layout: 'autofit',
+         width : 25,
+         height : 25
+         }],
+            items: [{
+            xtype: 'chart',
+            id:'chartcmp1',
+            animate: true,
+            shadow: true,
+            store: store1,
+            axes: [{
+                type: 'Numeric',
+                position: 'left',
+                fields: ['dataI'],
+                title: false,
+                grid: true,
+                minimum: 0,
+                maximum: 100
+            }, {
+                type: 'Category',
+                position: 'bottom',
+                fields: ['nameindus'],
+                title: false
+            }],
+            series: [{
+                type: 'column',
+                axis: 'left',
+                gutter: 80,
+                xField: 'nameindus',
+                yField: ['dataI'],
+                  tips: {
+                  trackMouse: true,
+                  width: 280,
+                  height: 80,
+                  renderer: function(storeItem, item) 
+                  {
+                   this.setTitle(storeItem.get('nameindus') + ': ' + storeItem.get('dataI') + '-Attendees ');
+                  }
+                },
+            }]
+        }]
+    });    
+});
+</script>
+-->
+ 
+</apex:page>

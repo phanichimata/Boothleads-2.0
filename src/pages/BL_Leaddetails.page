@@ -1,0 +1,1097 @@
+<apex:page showHeader="false" controller="BL_AttendeesCon" action="{!login}" standardStylesheets="false">
+ <apex:stylesheet value="{!URLFOR($Resource.FormultiEvent,"css/screen.css")}"/>
+ 
+<apex:stylesheet value="{!URLFOR($Resource.FormultiEvent,"css/datePicker.css")}"/>
+ 
+ <title>Boothleads</title>
+ <script type="text/javascript">
+   
+function blank(a) { if(a.value == a.defaultValue) a.value = ""; }
+function unblank(a) { if(a.value == "") a.value = a.defaultValue; }</script>
+<style>
+x-grid3-hd-inner x-grid3-hd-GlobalNestEM__Event_Title__c
+{
+background-color: #FFFFFF;
+}
+#leadround{border-radius: 4px;
+    border:1px solid #75b9fe;
+     -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
+    -khtml-border-radius: 4px;
+    border-radius: 4px;
+     width:98%; margin-top:5px;
+}
+.clear1{height:5px;}
+
+#leadround h3{ background-color:#75b9fe; color:#FFF; padding:0px; margin:0px; padding:5px;
+-moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
+    -khtml-border-radius: 4px;
+    border-radius: 4px; width:100%;}
+</style>
+
+
+
+<!-- Start: page-top-outer -->
+<div id="page-top-outer">    
+
+<!-- Start: page-top -->
+<div id="page-top">
+
+    <!-- start logo -->
+    <div id="logo">
+   
+      
+    </div>
+    <!-- end logo -->
+    
+    <!--  start top-search -->
+    <div id="top-search">
+        <table border="0" cellpadding="0" cellspacing="0">
+        <tr>
+        <td class="welcome"> 
+         Welcome  :
+                   <span class="username"> {!$User.Firstname}&nbsp;{!$User.Lastname}    </span>
+        
+        <!--<apex:area/>inputText value="{!searchstr}" styleClass="top-search-inp" />-->  </td>
+        
+        
+        
+        </tr>
+        </table>
+    </div>
+    <!--  end top-search -->
+    <div class="clear"></div>
+
+</div>
+<!-- End: page-top -->
+
+</div>
+<!-- End: page-top-outer -->
+    
+<div class="clear">&nbsp;</div>
+ 
+<!--  start nav-outer-repeat................................................................................................. START -->
+<div class="nav-outer-repeat"> 
+<!--  start nav-outer -->
+<div class="nav-outer"> 
+
+<!-- Start Nav Right-->
+        <div id="nav-right">
+        
+          
+           <!----LOGOUT ACTION -->
+           <div class="nav">
+        <div class="table">
+        
+       <apex:form >
+        
+       
+        <div class="nav-divider">&nbsp;</div>
+        
+     <!--  <apex:commandLink action="{!profileaction}"  style="text-style:bold; color:#FFFFFF; padding:10px 15px 0 0;">Profile</apex:commandLink> -->
+      <apex:outputLink value="Bl_Profile?url=Bl_attendees"  style="text-style:bold; color:#FFFFFF; padding:10px 15px 0 0;">Profile </apex:outputLink>
+      
+       <div class="nav-divider">&nbsp;</div>
+        <apex:commandLink action="{!$Site.Prefix}/secur/logout.jsp" rendered="{!NOT(ISPICKVAL($User.UserType,'Guest'))}" style="text-style:bold; color:#FFFFFF; padding:10px 15px 0 0;">{!$Label.site.logout}</apex:commandLink>
+        </apex:form>
+
+            </div></div>
+           
+           <!----LOGOUT ACTION END--->
+           
+           
+            <div class="clear">&nbsp;</div>
+        
+            <!--  start account-content --> 
+            <div class="account-content">
+            <div class="account-drop-inner">
+                <a href="" id="acc-settings">Settings</a>
+                
+                <a href="" id="acc-stats">Statistics</a> 
+            </div>
+            </div>
+            <!--  end account-content -->
+        
+        </div>
+        <!-- end nav-right -->
+
+
+        <!--  start nav -->
+        <div class="nav">
+        <div class="table">
+        <apex:outputPanel rendered="{!booleanforDisplayBoothadminTab}">
+        <ul class="select"><li>
+        <apex:form >
+       <!--  <apex:commandLink action="{!Dashboard}"><b>Dashboard</b></apex:commandLink> -->
+       
+        <apex:outputLink value="BL_BoothAdmin_Dashboard"><b>Dashboard</b> </apex:outputLink>
+        </apex:form>
+       
+        </li>
+        </ul>  
+    
+         </apex:outputPanel> 
+        
+        
+      
+       
+        
+        <div class="nav-divider">&nbsp;</div>
+                            
+        <ul class="select"><li>
+        <apex:form >
+          <apex:outputLink value="BL_Eventadmin_events"><b>Events</b> </apex:outputLink>
+      <!--  <apex:commandLink action="{!EventAction}"><b>Events</b></apex:commandLink> -->
+        </apex:form>
+      
+        </li>
+        </ul>
+        
+        
+        
+        <div class="nav-divider">&nbsp;</div>
+        <apex:outputPanel rendered="{!booleanforDisplayBoothadminTab}">
+        <ul class="select"><li>
+        <apex:form >
+          <apex:outputLink value="BL_boothpersonnels"><b>Booth Users</b> </apex:outputLink>
+       <!-- <apex:commandlink action="{!Customeraction}"><b>Booth Users</b></apex:commandlink> -->
+        </apex:form>
+       
+        </li>
+        </ul>
+        <div class="nav-divider">&nbsp;</div>
+         </apex:outputPanel> 
+        <ul class="current"><li>
+        <apex:form >
+          <apex:outputLink value="Bl_attendees"><b>Leads </b> </apex:outputLink>
+       <!-- <apex:commandLink action="{!AttendeesAction}" ><b>Leads </b> </apex:commandLink> -->
+        </apex:form>
+       
+        </li>
+        </ul>
+        
+        
+        
+        <div class="nav-divider">&nbsp;</div>
+        
+        <ul class="select"><li>
+       <apex:form > <!--<apex:commandlink action="{!Reportsaction}"><b>Reports</b></apex:commandlink> -->
+         <apex:outputLink value="Bl_Reports"><b>Reports</b> </apex:outputLink>
+        </apex:form>
+        
+        </li>
+        </ul>
+        
+       <div class="nav-divider">&nbsp;</div>
+         <apex:outputPanel rendered="{!booleanforDisplayBoothadminTab}">
+        <ul class="select"><li>
+        <apex:form >
+         <apex:outputLink value="BL_BoothQr"><b>Booth Qrcodes</b> </apex:outputLink>
+       <!-- <apex:commandlink action="{!boothaction}"><b>Booth Qrcodes</b></apex:commandlink> -->
+        </apex:form>
+       
+        </li>
+        </ul>  
+         <div class="nav-divider">&nbsp;</div>
+         </apex:outputPanel> 
+        
+        
+        <div class="clear"></div>
+        </div>
+        <div class="clear"></div>
+        </div>
+        <!--  start nav -->
+        
+
+</div>
+
+<!--  start nav-outer -->
+</div>
+<!--  start nav-outer-repeat................................................... END -->
+
+               
+<!-- start content-outer ........................................................................................................................START -->
+<div id="content-outer">
+<div id="content">
+    <!--  start page-heading -->
+    <div id="page-heading">
+    <apex:form >
+  <table width="98%">
+  <tr><td width="30%" align="left" style="padding-left:10px;">
+    
+    <apex:outputText value="Events:    " style="font-weight:BOLD; Font-color:#RR0000;"></apex:outputText>  
+      <apex:selectList value="{!eventSelected}" multiselect="false" size="1">
+       <apex:selectOptions value="{!selectEvents}"/>
+      <apex:actionSupport action="{!getEvents}" event="onchange" reRender="frm2,pagemesageerror"/>
+      </apex:selectList></td> <td width="40%" style="color:red;font-weight:bold;"><apex:pageMessages id="pagemesageerror" /></td>
+      
+      <td width="30%" align="right" style="padding-right:10px;"> <apex:inputText value="{!searchString}" style="color:#6D7B8D;font-size:17px;" onfocus="blank(this)" onblur="unblank(this)" size="20"/> 
+      &nbsp;&nbsp; <apex:commandButton value="Go" action="{!search}" styleClass="awesome" reRender="frm2,pagemesageerror"/>
+       </td>
+    </tr></table> </apex:form>
+     
+                                  
+        
+    </div>
+    <table border="0" width="100%" cellpadding="0" cellspacing="0" id="content-table">
+    <tr>
+        <th rowspan="3" class="sized">
+        
+        <img src="{!URLFOR($Resource.QRCode_CSS,"css/images/shared/side_shadowleft.jpg")}" width="20" height="300" alt="" /></th>
+        <th class="topleft"></th>
+        <td align="right" valign="middle" id="tbl-border-top">&nbsp;</td>
+        <th class="topright"></th>
+        <th rowspan="3" class="sized">
+        <img src="{!URLFOR($Resource.QRCode_CSS,"css/images/shared/side_shadowright.jpg")}" width="20" height="300" alt="" /></th>
+    </tr>
+    <tr>
+        <td id="tbl-border-left"></td>
+        <td>
+        <!--  start content-table-inner ...................................................................... START -->
+        <div id="content-table-inner">
+        
+            <!--  start table-content  -->
+            <div id="table-content">
+
+    <style>
+    .reply-text {
+    /*margin:15px  !important;
+    white-space:pre-wrap !important;
+    display:inline-block;
+    */
+}
+</style>
+    
+      
+        
+    
+<apex:form id="frm2">
+<table width="100%" border="0" cellpadding="0" cellspacing="0">
+<tr align="right"><td  align="left">
+<apex:repeat value="{!strAlfhabets}" var="e">&nbsp;
+<apex:commandLink value="{!e}" action="{!valuesOfeventswithselectedvalue}" style="color:blue;" reRender="frm2,pagemesageerror">
+ <apex:param value="{!e}" name="valu" />
+</apex:commandLink>&nbsp; |
+
+</apex:repeat>
+</td><td align="right" valign="top" style="margin-bottom:3px;"> 
+<apex:commandButton value="Export" onclick="functioncall();" action="{!seltoexport}" styleClass="awesome" />&nbsp;
+<apex:commandButton value="Forward Leads" onclick="functioncall();" action="{!EmailCsv}" styleClass="awesome"/><div style="height:5px;"></div>
+</td></tr>
+
+
+</table>
+   <script>
+    
+        var hdneventName;
+        var recordId2; 
+    function functioncall()
+    {  
+     hdneventName.value=temp;    
+    }
+         function ModalPopupsCustom1() 
+        {     
+            ModalPopups.Custom('idCustom1','Update Current Status Details',    
+                '<div style=\'padding: 25px;\'>' +    
+                '<table>' +
+                '<tr height=\'20\'><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td><font color=\'red\'>*</font>=Required</td></tr>' +
+                '<tr height=\'20\'><td></td><td></td></tr>' +   
+                
+                '<tr height=\'20\'><td></td><td></td></tr>' +
+                '</table>' +    
+                '</div>',    
+                 {   
+                  width: 650,   
+                  buttons:'ok,cancel',    
+                  okButtonText: 'Save',   
+                  cancelButtonText: 'Cancel',   
+                  onOk: 'ModalPopupsCustom1Save()',   
+                  onCancel: 'ModalPopupsCustom1Cancel()'  
+                 }   
+                ); 
+               
+        }
+         
+    
+</script>
+   <script type="text/javascript" charset="utf-8" src="http://cdn.sencha.io/ext-4.0.7-gpl/ext-all.js"></script>
+<link rel="stylesheet" type="text/css" href="http://cdn.sencha.io/ext-4.0.7-gpl/resources/css/ext-all.css"/> 
+<!--
+<link rel="Stylesheet" type="text/css" href="{!$Resource.extjs4_5}/extjs4_5/resources/css/ext-all.css"/>
+<script type="text/javascript" src="{!$Resource.extjs4_1}/extjs4_1/ext-all.js"></script>
+<script type="text/javascript" src="{!$Resource.extjs4_3}/extjs4_3/examples/ux/data/PagingMemoryProxy.js"></script>
+<script type="text/javascript" src="{!$Resource.extjs4_3}/extjs4_3/examples/ux/ProgressBarPager.js"></script>
+<script type="text/javascript" src="{!$Resource.extjs4_3}/extjs4_2/examples/grid-plugins.js"></script>
+<script type="text/javascript" src="{!$Resource.extjs4_3}/extjs4_2/examples/paging.js"></script>
+<script type="text/javascript" src="{!$Resource.extjs4_3}/extjs4_3/examples/ux/CheckColumn.js"></script>
+<script type="text/javascript" src="{!$Resource.extjs4_5}/extjs4_5/src/selection/CheckboxModel.js"></script>
+<link rel="Stylesheet" type="text/css" href="{!$Resource.extjs4_3}/extjs4_3/examples/ux/grid/css/GridFilters.css"/>
+-->
+        
+       
+<script>
+var temp= new Array();
+</script>  
+        
+<script type="text/javascript"> 
+// -------------------------------------------- ExtJS Grid Start ---------------------------------------------------      
+
+Ext.define('Ext.ux.grid.plugin.PagingSelectionPersistence', {
+alias: 'plugin.pagingselectpersist',
+extend: 'Ext.AbstractPlugin',
+pluginId: 'pagingSelectionPersistence',
+
+//array of selected records
+selection: [],
+//hash map of record id to selected state
+selected: {},
+    
+init: function(grid) {
+ 
+ this.grid = grid;
+ this.selModel = this.grid.getSelectionModel();
+ this.isCheckboxModel = (this.selModel.$className == 'Ext.selection.CheckboxModel');
+ this.origOnHeaderClick = this.selModel.onHeaderClick;
+ this.bindListeners();
+},
+
+
+destroy: function() {
+ this.selection = [];
+ this.selected = {};
+ this.disable();
+},
+
+enable: function() {
+ var me = this;
+ if(this.disabled && this.grid) {
+  this.grid.getView().on('refresh', this.onViewRefresh, this);
+  this.selModel.on('select', this.onRowSelect, this);
+  this.selModel.on('deselect', this.onRowDeselect, this);
+  if(this.isCheckboxModel) {
+   this.selModel.onHeaderClick = function(headerCt, header, e) {
+   var isChecked = header.el.hasCls(Ext.baseCSSPrefix + 'grid-hd-checker-on');
+   me.origOnHeaderClick.apply(this, arguments);        
+   if(isChecked) {
+    me.onDeselectPage();
+   }
+   else {
+    me.onSelectPage();
+    }
+   };
+  }
+ }
+ this.callParent();
+},
+    
+disable: function() {
+ if(this.grid) {
+  this.grid.getView().un('refresh', this.onViewRefresh, this);
+  this.selModel.un('select', this.onRowSelect, this);
+  this.selModel.un('deselect', this.onRowDeselect, this);
+  this.selModel.onHeaderClick = this.origOnHeaderClick;
+ }
+ this.callParent();
+},
+
+
+bindListeners: function() {
+ var disabled = this.disabled;
+ this.disable();
+ if(!disabled) {
+  this.enable();
+ }
+},
+
+   
+onViewRefresh : function(view, eOpts) {
+ var store = this.grid.getStore(),
+ sel = [],
+ hdSelectState,
+ rec,
+ i;
+ this.ignoreChanges = true;
+ for(i = store.getCount() - 1; i >= 0; i--) {
+  rec = store.getAt(i);
+  if(this.selected[rec.getId()]) {
+   sel.push(rec);
+  }
+ }
+ this.selModel.select(sel, false);
+
+ if(this.isCheckboxModel) {
+  hdSelectState = (this.selModel.selected.getCount() === this.grid.getStore().getCount());
+  this.selModel.toggleUiHeader(hdSelectState);
+ }
+ this.ignoreChanges = false;
+},
+    
+onRowSelect: function(sm, rec, idx, eOpts) {
+ if(this.ignoreChanges === true) {
+  return;
+ }
+ if(!this.selected[rec.getId()]) 
+ {  
+  this.selection.push(rec);
+  this.selected[rec.getId()] = true;
+ }
+  var r = grid.getSelectionModel().getSelection();  
+   for(i=0; i<=r.length-1; i++){
+    var checkarray=r[i].get('id');   
+   }
+  temp.push(checkarray);
+},
+   
+    
+onRowDeselect: function(sm, rec, idx, eOpts) {
+ var i; 
+ if(this.ignoreChanges === true) {
+  return;
+ }    
+ if(this.selected[rec.getId()])
+ {  
+  for(i = this.selection.length - 1; i >= 0; i--) {
+   if(this.selection[i].getId() == rec.getId()) {
+    this.selection.splice(i, 1);
+    this.selected[rec.getId()] = false;
+    break;
+   }
+  }
+ }
+ var r = grid.getSelectionModel().getSelection();  
+  for(i=0; i<=r.length-1; i++){
+   var checkarray=r[i].get('id');   
+  }
+ temp.pop(checkarray);
+},
+    
+onSelectPage: function(){ 
+ var sel = this.selModel.getSelection(),
+ selectedCheckboxLength= this.getPersistedSelection().length, 
+ i;
+ for(i = 0; i < sel.length; i++) {
+  selection1=this.onRowSelect(this.selModel, sel[i]); 
+ }
+ if(selectedCheckboxLength!== this.getPersistedSelection().length) {
+  this.selModel.fireEvent('selectionchange', this.selModel, [], {});
+ }
+ var r = grid.getSelectionModel().getSelection();  
+  for(i=0; i<=r.length-1; i++){  
+   var checkarray=r[i].get('id');  
+   temp.push(checkarray);
+  }
+},
+ 
+    
+onDeselectPage: function() {
+ var store = this.grid.getStore(),
+ selectedCheckboxLength= this.getPersistedSelection().length,
+ i;
+    
+ for(i = store.getCount() - 1; i >= 0; i--) {
+  this.onRowDeselect(this.selModel, store.getAt(i));
+ }        
+ if(selectedCheckboxLength!== this.getPersistedSelection().length) {
+  this.selModel.fireEvent('selectionchange', this.selModel, [], {});
+ }
+ var r = grid.getSelectionModel().getSelection();  
+  for(i=0; i<=r.length-1; i++){  
+   var checkarray=r[i].get('id');  
+   temp.pop(checkarray);
+  }
+},
+  
+    
+getPersistedSelection: function() {
+  return [].concat(this.selection);
+},    
+clearPersistedSelection: function(){ 
+    var changed = (this.selection.length > 0);   
+    this.selection = [];
+    this.selected = {};
+    this.onViewRefresh();    
+    if(changed) {
+     this.selModel.fireEvent('selectionchange', this.selModel, [], {});
+   }
+}
+
+});
+
+
+var grid, store;
+var GridTitle='Leads';   
+Ext.onReady(function(){
+
+ var myData1=new Array();
+
+<apex:repeat value="{!bvsList}" var="row1">   
+ <apex:repeat value="{!row1}" var="row"> 
+ 
+  var rowArray=new Array();
+  rowArray[0]=  '{!row.id}';
+                  
+  var sfName="{!row.BVS_FirstName__c} {!row.BVS_LastName__c}";
+  rowArray[1]= sfName.replace(/\'/g,'\'');
+         
+  var cName= "{!row.BVS_Company__c}";
+  rowArray[2]=cName.replace(/\'/g,'\'');  
+            
+  var fName ="{!row.BVS_Email__c}";
+  rowArray[3]=fName.replace(/\'/g,'\'');
+  
+  var comm ="{!row.User_id__r.Name}";
+  rowArray[4]=comm.replace(/\'/g,'\''); 
+              
+  var followup="{!row.BVS_FollowUps__c}";
+  rowArray[5]=followup.replace(/\'/g,'\''); 
+              
+  var note="{!row.BVS_Notes__c}";
+  rowArray[6]=note.replace(/\'/g,'\''); 
+           
+                        
+  var dummayvalue ="{!row.Dummy__c}"; 
+  if(dummayvalue!=''){
+    rowArray[7]="{!row.Dummy__c}"; 
+  }
+  else{
+   rowArray[7]="{!row.EA_AttendeeBarcode__r.AS_id__r.AS_ImageUrl__c}"; 
+  }
+            
+  rowArray[8]="<apex:outputText value="{0,date,MM/dd/yyyy hh:mm:ss}">
+                <apex:param value="{!row.ScanTime__c}"/>
+               </apex:outputText>"; 
+            
+  myData1.push(rowArray); 
+       
+  </apex:repeat>    
+ </apex:repeat>  
+ 
+ var myDirectfn = function(opts, fn, proxy) {
+    var start = opts.start,
+        end = opts.limit+opts.start,
+        data = [];
+    if (end > myData1.length) end = myData1.length;
+    for (var i = start; i < end; i++)
+        data.push(myData1[i]);
+    data.total = myData1.length;
+    fn(data, {
+        status: true,
+        result: data
+    });
+};
+
+myDirectfn.directCfg = {
+    method: {len:1}
+};
+
+
+if(myData1.length<=0)
+{
+ GridTitle=GridTitle+' - <span style=\'padding-left:200px\'><font color=\'red\'>No Records Found</font></span>';
+ tSize=0;        
+}
+
+
+store = new Ext.data.SimpleStore({
+fields:[{name:'id'},{name:'FirstName'},{name:'Company'},{name:'Email'},{name:'ScanedByName'},{name:'followup'},{name:'note'},{name:'img'},{name:'scan'}],
+pageSize: 50,
+proxy: {
+type: 'direct',
+directFn: myDirectfn,
+reader: {
+type: 'array'
+}
+},
+});
+store.loadData(myData1);
+
+function openrender(value, p, r)
+{
+ return String.format('<a <href="#" onClick="selectOneCheckBox(\'{0}\')" style="color:blue;text-decoration:none;">{0}</a>',value, r.data.state, r.data.ptt, 'Open');
+}       
+
+grid = Ext.create('Ext.grid.Panel',{
+store: store, 
+selModel: Ext.create('Ext.selection.CheckboxModel'),
+plugins: [{ptype : 'pagingselectpersist'}],
+viewConfig: {
+id: 'gv',
+trackOver: true,
+stripeRows: true,
+loadMask: false
+}, 
+listeners:
+{
+afterrender: function (component)
+{
+component.down('#refresh').hide();
+}
+},        
+columns: [
+{header:'id', dataIndex: 'id',hidden:true },             
+{header:"<b>Image</b>",flex:1, dataIndex:'img',renderer: function(value,p,r){
+ if(value !=''){
+  if(value.indexOf('015O')!=-1){
+    return '<image src="/servlet/servlet.ImageServer?id='+value+'&oid=00DO000000097JW" height="30px" width="30px"/>';
+ }
+ else{
+  return '<image src="/servlet/servlet.FileDownload?file='+value+'" height="30px" width="30px"/>';
+ }
+ }else{
+   return '<image src="/servlet/servlet.ImageServer?id=015O0000000En6b&oid=00DO000000097JW" height="30px" width="30px"/>';
+ }
+ }            
+}, 
+{   
+header:"<b>Name</b>",flex:2, dataIndex:'FirstName',
+ renderer: function(value,p,r){
+  return '<a href="#" onClick="deailpage(\''+ r.data['id']+'\')" style=\"color:blue;text-decoration:underline;\"> '+r.data['FirstName']+'</a>';
+ }
+}, 
+{header: "<b>Company</b>",flex:1.5, dataIndex: 'Company'},
+{
+header: "<b>E-Mail</b>",flex:2.5, dataIndex: 'Email',
+ renderer: function(value, p, r){
+  return '<a href="mailto:'+ r.data['Email'] +'" style=\"color:blue;text-decoration:underline;\"> '+r.data['Email'] +'</a>';
+ }
+},              
+{ header: "<b>Follow Up Type</b>",flex:2, dataIndex: 'followup'},    
+{ header: "<b>Notes</b>",flex:2, dataIndex: 'note'},
+{ header: "<b>Scanned By</b>",flex:2,  dataIndex: 'ScanedByName' }, 
+{ header: "<b>Scan Time</b>",flex:2, dataIndex: 'scan'},
+],
+height: 350, 
+width: '100%',
+title: GridTitle,
+stripeRows:true,
+bbar: new Ext.PagingToolbar({
+        store: store,
+        pageSize: 50,
+        displayInfo: true  
+}),
+renderTo: 'items-grid1'                            
+});
+
+  
+store.loadPage(1);
+
+});
+// -------------------------------------- Grid End --------------------------------------
+      
+  
+  function selectOneCheckBox(selection1)
+  {
+   hdneventName.value=selection1;
+   getEventDetails(selection1);
+  }
+  
+  function deailpage(eventName)
+  {
+   hdneventName.value=eventName;
+   getEventDetails(eventName);
+  }
+  
+  function Email(eventName)
+  {
+   hdneventName.value=eventName;
+   EmailCsv(eventName); 
+  }
+    
+ </script>
+       
+
+ <div id="items-grid1"/>
+  
+  <apex:inputHidden value="{!eventName}" id="eventNameValue"/>
+
+  <apex:actionFunction action="{!getEventDetails}" name="getEventDetails"  reRender="BVSform"/>
+         
+  <script> 
+   hdneventName = document.getElementById("{!$Component.eventNameValue}");
+  </script>  
+        
+</apex:form>   
+    
+<!------------------------------- START Of BVS Detail and Transfer Leads Page------------------------->
+<!-------------------------------START of Booth Visit Summary Detail ---------------------------------->
+
+
+<apex:form id="BVSform">
+ <apex:outputPanel id="BVSdetail">
+<apex:outputPanel layout="block" styleClass="popupBackground"
+rendered="{!BVSDetail}" />
+<apex:outputPanel layout="block" styleClass="custPopup"
+rendered="{!BVSDetail}" style="width:90%">
+ <!--lead details start--> 
+  
+  <table width="98%" border="0" cellspacing="3" cellpadding="0" align="center" style="margin:0px auto;">
+  <tr>
+    <td width="24%" align="center" valign="top"><img src="img_dummy_user.gif" width="150" height="150" /></td>
+    <td width="76%" align="center" valign="top"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+      <tr>
+        <td align="center" valign="top"><div id="leadround"><table width="98%" border="0" align="center" cellpadding="0" cellspacing="0">
+          <tr>
+            <td><h3>Attendee Information</h3></td>
+            </tr>
+          <tr>
+            <td align="center" valign="top"><table border="0" width="100%" cellpadding="0" cellspacing="0"  align="center">
+              <tr>
+                <td width="13%" height="25" align="left" valign="middle" bgcolor="#f3f3f3" style="padding-left:8px;">Prefix:</td>
+                <td width="17%" height="25" align="left" valign="middle" bgcolor="#f3f3f3"><input type="text" size="12" /></td>
+                <td width="14%" height="25" align="left" valign="middle" bgcolor="#f3f3f3" style="padding-left:8px;">First Name:</td>
+                <td width="20%" height="25" align="left" valign="middle" bgcolor="#f3f3f3"><input type="text" size="12" /></td>
+                <td width="16%" height="25" align="left" valign="middle" bgcolor="#f3f3f3"><span style="padding-left:8px;">Last Name:</span></td>
+                <td width="20%" height="25" align="left" valign="middle" bgcolor="#f3f3f3"><input type="text" size="12" /></td>
+                </tr>
+              <tr>
+                <td height="25" align="left" valign="middle" style="padding-left:8px;">Suffix:</td>
+                <td height="25" align="left" valign="middle"><input type="text" size="12" /></td>
+                <td height="25" align="left" valign="middle" style="padding-left:8px;">Email ID:</td>
+                <td height="25" align="left" valign="middle"><input type="text" size="12" /></td>
+                <td height="25" align="left" valign="middle" style="padding-left:8px;">Company Name:</td>
+                <td height="25" align="left" valign="middle"><input type="text" size="12" /></td>
+                </tr>
+              <tr>
+                <td height="25" align="left" valign="middle" bgcolor="#F3F3F3" style="padding-left:8px;">Designation:</td>
+                <td height="25" align="left" valign="middle" bgcolor="#F3F3F3"><input type="text" size="12" /></td>
+                <td height="25" align="left" valign="middle" bgcolor="#F3F3F3" style="padding-left:8px;">Mobile Number:</td>
+                <td height="25" align="left" valign="middle" bgcolor="#F3F3F3"><input type="text" size="12" /></td>
+                <td height="25" align="left" valign="middle" bgcolor="#F3F3F3" style="padding-left:8px;">Work Phone Number:</td>
+                <td height="25" align="left" valign="middle" bgcolor="#F3F3F3"><input type="text" size="12" /></td>
+                </tr>
+              <tr>
+                <td height="25" align="left" valign="middle" style="padding-left:8px;">Age:</td>
+                <td height="25" align="left" valign="middle"><input type="text" size="12" /></td>
+                <td height="25" align="left" valign="middle" style="padding-left:8px;">Gender:</td>
+                <td height="25" align="left" valign="middle"><input type="text" size="12" /></td>
+                <td height="25" align="left" valign="middle" style="padding-left:8px;">DOB:</td>
+                <td height="25" align="left" valign="middle"><input type="text" size="12" /></td>
+                </tr>
+              <tr>
+                <td height="25" align="left" valign="middle" bgcolor="#F3F3F3" style="padding-left:8px;">Follow Up Date:</td>
+                <td height="25" align="left" valign="middle" bgcolor="#F3F3F3"><input type="text" size="12" /></td>
+                <td height="25" align="left" valign="middle" bgcolor="#F3F3F3" style="padding-left:8px;">Notes:</td>
+                <td height="25" align="left" valign="middle" bgcolor="#F3F3F3"><input type="text" size="12" /></td>
+                <td height="25" align="left" valign="middle" bgcolor="#F3F3F3" style="padding-left:8px;">Rating:</td>
+                <td height="25" align="left" valign="middle" bgcolor="#F3F3F3"><input type="text" size="12" /></td>
+                </tr>
+              <tr>
+                <td height="25" align="left" valign="middle" style="padding-left:8px;">Scanned By:</td>
+                <td height="25" align="left" valign="middle"><input type="text" size="12" /></td>
+                <td height="25" align="left" valign="middle" style="padding-left:8px;">Follow Up Type:</td>
+                <td height="25" align="left" valign="middle"><input type="text" size="12" /></td>
+                <td height="25" align="left" valign="middle" style="padding-left:8px;">&nbsp;</td>
+                <td height="25" align="left" valign="middle">&nbsp;</td>
+                </tr>
+              </table></td>
+            </tr>
+          </table></div></td>
+      </tr>
+    </table></td>
+  </tr>
+  
+ 
+  <tr>
+    <td colspan="2" align="center" valign="top"><table width="100%" border="0" cellspacing="4" cellpadding="0">
+      <tr>
+        <td width="70%" align="center" valign="top">
+          
+          <div id="leadround"><table width="100%" border="0" align="center" cellpadding="0" cellspacing="0" >
+            
+            <tr>
+              <td align="center" valign="top">
+                
+                <table width="98%" border="0" align="center" cellpadding="0" cellspacing="0"  >
+                  
+                  <tr>
+                    <td align="center" valign="top"><table width="100%" border="0" align="center" cellpadding="0" cellspacing="0">
+                      <tr>
+                        <td><h3>Business Information</h3></td>
+                        </tr>
+                      <tr>
+                        <td align="center" valign="top"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+                          <tr>
+                            <td width="22%" height="25" align="left" valign="middle" bgcolor="#F3F3F3" style="padding-left:8px;">Primary Business Category:</td>
+                            <td width="23%" height="25" align="left" valign="middle" bgcolor="#F3F3F3"><input type="text" /></td>
+                            <td width="30%" height="25" align="left" valign="middle" bgcolor="#F3F3F3" style="padding-left:8px;">Secondary Business Category:</td>
+                            <td width="25%" height="25" align="left" valign="middle" bgcolor="#F3F3F3"><input type="text" /></td>
+                            </tr>
+                          <tr>
+                            <td height="25" align="left" valign="middle" style="padding-left:8px;">No of Employees:</td>
+                            <td height="25" align="left" valign="middle"><input type="text" /></td>
+                            <td height="25" align="left" valign="middle" style="padding-left:8px;">Business Established Date:</td>
+                            <td height="25" align="left" valign="middle"><input type="text" /></td>
+                            </tr>
+                          <tr>
+                            <td height="25" align="left" valign="middle" bgcolor="#F3F3F3" style="padding-left:8px;">Business Revenue:</td>
+                            <td height="25" align="left" valign="middle" bgcolor="#F3F3F3"><input type="text" /></td>
+                            <td height="25" align="left" valign="middle" bgcolor="#F3F3F3" style="padding-left:8px;">Business Tax ID:</td>
+                            <td height="25" align="left" valign="middle" bgcolor="#F3F3F3"><input type="text" /></td>
+                            </tr>
+                          <tr>
+                            <td height="25" align="left" valign="middle" style="padding-left:8px;">Business Duns Number:</td>
+                            <td height="25" align="left" valign="middle"><input type="text" /></td>
+                            <td height="25" align="left" valign="middle" style="padding-left:8px;">Website URL:</td>
+                            <td height="25" align="left" valign="middle"><input type="text" /></td>
+                            </tr>
+                          <tr>
+                            <td height="25" align="left" valign="top" bgcolor="#F3F3F3" style="padding-left:8px;">Blog URL:</td>
+                            <td height="25" align="left" valign="top" bgcolor="#F3F3F3"><input type="text" /></td>
+                            <td height="25" align="left" valign="top" bgcolor="#F3F3F3" style="padding-left:8px;">Business Description:</td>
+                            <td height="25" align="left" valign="middle" bgcolor="#F3F3F3"><textarea name="textarea" style="width:150px;"></textarea></td>
+                            </tr>
+                          <tr>
+                            <td height="25" align="left" valign="middle" style="padding-left:8px;"><strong>Diversity Type</strong></td>
+                            <td height="25" align="left" valign="middle">&nbsp;</td>
+                            <td height="25" align="left" valign="middle" style="padding-left:8px;">&nbsp;</td>
+                            <td height="25" align="left" valign="middle">&nbsp;</td>
+                            </tr>
+                          <tr>
+                            <td height="26" colspan="2" align="left" valign="middle" bgcolor="#F3F3F3" style="padding-left:8px; border-top:1px solid #cccccc;">1</td>
+                            <td height="26" colspan="2" align="left" valign="middle" bgcolor="#F3F3F3" style="padding-left:8px; border-top:1px solid #cccccc;">2</td>
+                            </tr>
+                          <tr>
+                            <td height="26" colspan="2" align="left" valign="middle" style="padding-left:8px;">3</td>
+                            <td height="26" colspan="2" align="left" valign="middle" style="padding-left:8px;">4</td>
+                            </tr>
+                          <tr>
+                            <td height="26" colspan="2" align="left" valign="middle" bgcolor="#F3F3F3" style="padding-left:8px;">5</td>
+                            <td height="26" colspan="2" align="left" valign="middle" bgcolor="#F3F3F3" style="padding-left:8px;">6</td>
+                            </tr>
+                          <tr>
+                            <td height="26" colspan="2" align="left" valign="middle" style="padding-left:8px;">7</td>
+                            <td height="26" colspan="2" align="left" valign="middle" style="padding-left:8px;">8</td>
+                            </tr>
+                          </table></td>
+                        </tr>
+                      </table></td>
+                    </tr>
+                  <tr>
+                    <td>&nbsp;</td>
+                    </tr>
+                  </table></td>
+              </tr>
+            
+          </table></div><div class="clear1"></div></td>
+        
+        <td width="30%" align="center" valign="top"><table width="100%" border="0" cellspacing="3" cellpadding="0">
+          <tr>
+            <td align="center" valign="top"><div id="leadround">
+            
+            <table width="98%" border="0" align="center" cellpadding="0" cellspacing="0">
+              
+              <tr>
+                <td align="left" valign="top"><h3>NAICS Code</h3></td>
+                </tr>
+              <tr>
+                <td align="center" valign="top">
+                
+                <table width="100%" border="0" align="center" cellpadding="0" cellspacing="0">
+                  <tr>
+                    <td width="41%" height="28" align="left" valign="middle" bgcolor="#F3F3F3">NAICS Code 1:</td>
+                    <td width="59%" height="28" align="left" valign="middle" bgcolor="#F3F3F3"><input type="text" /></td>
+                    </tr>
+                  <tr>
+                    <td height="28" align="left" valign="middle">NAICS Code 2:</td>
+                    <td height="28" align="left" valign="middle"><input type="text" /></td>
+                    </tr>
+                  <tr>
+                    <td height="28" align="left" valign="middle" bgcolor="#F3F3F3">NAICS Code 3:</td>
+                    <td height="28" align="left" valign="middle" bgcolor="#F3F3F3"><input type="text" /></td>
+                    </tr>
+                  <tr>
+                    <td height="28" align="left" valign="middle">NAICS Code 4:</td>
+                    <td height="28" align="left" valign="middle"><input type="text" /></td>
+                    </tr>
+                  <tr>
+                    <td height="28" align="left" valign="middle" bgcolor="#F3F3F3">NAICS Code 5:</td>
+                    <td height="28" align="left" valign="middle" bgcolor="#F3F3F3"><input type="text" /></td>
+                    </tr>
+                  <tr>
+                    <td height="5" align="left" valign="middle"></td>
+                    <td height="5" align="left" valign="middle"></td>
+                    </tr>
+                  </table></td>
+                </tr>
+              </table></div></td>
+          </tr>
+          <tr>
+            <td align="center" valign="top"><div id="leadround">
+            
+            <table width="98%" border="0" align="center" cellpadding="0" cellspacing="0">
+              
+              <tr>
+                <td align="left" valign="top"><h3>Lead Qualifiers</h3></td>
+                </tr>
+              <tr>
+                <td align="center" valign="top"><table width="100%" border="0" align="center" cellpadding="0" cellspacing="0">
+                  <tr>
+                    <td width="41%" height="28" align="left" valign="middle" bgcolor="#F3F3F3"><b>Survey Question</b></td>
+                    <td width="59%" height="28" align="left" valign="middle" bgcolor="#F3F3F3"><b>Selected Answer</b></td>
+                    </tr>
+                  <tr>
+                    <td height="28" align="left" valign="middle">Purchasing Authority:</td>
+                    <td height="28" align="left" valign="middle"><input type="text" /></td>
+                    </tr>
+                  <tr>
+                    <td height="28" align="left" valign="middle" bgcolor="#F3F3F3">Best Way to Contact:</td>
+                    <td height="28" align="left" valign="middle" bgcolor="#F3F3F3"><input type="text" /></td>
+                    </tr>
+                  <tr>
+                    <td height="28" align="left" valign="middle">Product Interest:</td>
+                    <td height="28" align="left" valign="middle"><input type="text" /></td>
+                    </tr>
+                  </table></td>
+                </tr>
+              </table></div></td>
+          </tr>
+          </table></td>
+      </tr>
+      <tr>
+        <td colspan="2" align="center" valign="top" width="100%"><div id="leadround">
+          <table width="100%" border="0" align="center" cellpadding="0" cellspacing="0">
+              <tr>
+                <td  width="100%" align="center">
+                  <table width="98%" border="0" align="center" cellpadding="0" cellspacing="0" bgcolor="#75B9FE">
+                    <tr>
+                      <td width="21%" bgcolor="#75B9FE">&nbsp;</td>
+                      <td width="28%"><h3>Business Address</h3></td>
+                      <td width="26%"><h3>Home Address</h3></td>
+                      <td width="25%" bgcolor="#75B9FE"><h3>Shipping Address</h3></td>
+                      </tr>
+                    </table></td>
+                </tr>
+              <tr>
+                <td align="center" valign="top"><table width="98%" border="0" cellspacing="0" cellpadding="0">
+                  <tr>
+                    <td width="21%" height="25" align="left" valign="middle" bgcolor="#F3F3F3" style="padding-left:8px;"> Phone Number:</td>
+                    <td width="27%" height="25" align="left" valign="middle" bgcolor="#F3F3F3"><input type="text" /></td>
+                    <td width="27%" height="25" align="left" valign="middle" bgcolor="#F3F3F3" style="padding-left:8px;"><input type="text" /></td>
+                    <td width="25%" height="25" align="left" valign="middle" bgcolor="#F3F3F3" style="padding-left:8px;"><input type="text" /></td>
+                    </tr>
+                  <tr>
+                    <td height="25" align="left" valign="middle" style="padding-left:8px;"> Address 1:</td>
+                    <td height="25" align="left" valign="middle"><input type="text" /></td>
+                    <td width="27%" height="25" align="left" valign="middle" style="padding-left:8px;"><input type="text" /></td>
+                    <td width="25%" height="25" align="left" valign="middle" style="padding-left:8px;"><input type="text" /></td>
+                    </tr>
+                  <tr>
+                    <td height="25" align="left" valign="middle" bgcolor="#F3F3F3" style="padding-left:8px;"> Address 2:</td>
+                    <td height="25" align="left" valign="middle" bgcolor="#F3F3F3"><input type="text" /></td>
+                    <td height="25" align="left" valign="middle" bgcolor="#F3F3F3" style="padding-left:8px;"><input type="text" /></td>
+                    <td height="25" align="left" valign="middle" bgcolor="#F3F3F3" style="padding-left:8px;"><input type="text" /></td>
+                    </tr>
+                  <tr>
+                    <td height="25" align="left" valign="middle" style="padding-left:8px;"> City:</td>
+                    <td height="25" align="left" valign="middle"><input type="text" /></td>
+                    <td height="25" align="left" valign="middle" style="padding-left:8px;"><input type="text" /></td>
+                    <td height="25" align="left" valign="middle" style="padding-left:8px;"><input type="text" /></td>
+                    </tr>
+                  <tr>
+                    <td height="25" align="left" valign="middle" bgcolor="#F3F3F3" style="padding-left:8px;"> State:</td>
+                    <td height="25" align="left" valign="top" bgcolor="#F3F3F3"><input type="text" /></td>
+                    <td height="25" align="left" valign="middle" bgcolor="#F3F3F3" style="padding-left:8px;"><input type="text" /></td>
+                    <td height="25" align="left" valign="middle" bgcolor="#F3F3F3" style="padding-left:8px;"><input type="text" /></td>
+                    </tr>
+                  <tr>
+                    <td height="25" align="left" valign="middle" style="padding-left:8px;"> Country:</td>
+                    <td width="27%" height="25" align="left" valign="middle"><input type="text" /></td>
+                    <td height="25" align="left" valign="middle" style="padding-left:8px;"><input type="text" /></td>
+                    <td height="25" align="left" valign="middle" style="padding-left:8px;"><input type="text" /></td>
+                    </tr>
+                  <tr>
+                    <td height="25" align="left" valign="middle" bgcolor="#F3F3F3" style="padding-left:8px;"> Zip code:</td>
+                    <td height="25" align="left" valign="middle" bgcolor="#F3F3F3"><input type="text" /></td>
+                    <td height="25" align="left" valign="middle" bgcolor="#F3F3F3" style="padding-left:8px;"><input type="text" /></td>
+                    <td height="25" align="left" valign="middle" bgcolor="#F3F3F3" style="padding-left:8px;"><input type="text" /></td>
+                    </tr>
+                  <tr>
+                    <td height="25" align="left" valign="middle" style="padding-left:8px;"> PO box:</td>
+                    <td height="25" align="left" valign="middle"><input type="text" /></td>
+                    <td height="25" align="left" valign="middle" style="padding-left:8px;"><input type="text" /></td>
+                    <td height="25" align="left" valign="middle" style="padding-left:8px;"><input type="text" /></td>
+                    </tr>
+                  </table></td>
+                </tr>
+              </table></div></td>
+      </tr>
+     
+    </table></td>
+  </tr>
+  <tr>
+    <td colspan="2" align="center" valign="top"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+      
+    </table></td>
+  </tr>
+  <tr>
+    <td colspan="2" align="center" valign="top">&nbsp;</td>
+  </tr>
+  
+   
+  
+   
+  
+</table>
+
+   <!--lead details end-->                
+   
+          <div style="float:right; padding-right:25px;">      
+                
+            <apex:commandButton value="Send" action="{!sendEmail}" style="margin-left:40px" styleClass="awesome" /> &nbsp;&nbsp;
+            <apex:commandButton value="Discard"  action="{!cancel}" styleClass="awesome"/> 
+        
+        </div>
+        
+        
+        </apex:outputPanel>
+        </apex:outputPanel> 
+        
+      
+    </apex:form>
+
+        
+        
+       
+        </div>
+           
+            <div class="clear"></div>
+         
+        </div>
+     
+        </td>
+        <td id="tbl-border-right"></td>
+    </tr>
+    <tr>
+        <th class="sized bottomleft"></th>
+        <td id="tbl-border-bottom">&nbsp;</td>
+        <th class="sized bottomright"></th>
+    </tr>
+    </table>
+    <div class="clear">&nbsp;</div>
+
+</div>
+ 
+<!--  end content -->
+<div class="clear">&nbsp;</div>
+</div>
+<!--  end content-outer........................................................END -->
+
+<div class="clear">&nbsp;</div>
+    
+<!-- start footer -->         
+<div id="footer">
+    <!--  start footer-left -->
+    <div id="footer-left">&copy; Copyright Globalnest LLC. <span id="spanYear"></span> 
+    <a href="">www.globalnest.com</a>. All rights reserved.</div>
+    <!--  end footer-left -->
+    <div class="clear">&nbsp;</div>
+</div>
+<!-- end footer -->
+ 
+
+
+
+   
+
+</apex:page>

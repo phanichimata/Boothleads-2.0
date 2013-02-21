@@ -1,0 +1,28 @@
+<apex:page showHeader="false" controller="BL_Mailpagecon">
+ <apex:form >
+ <!-- 
+  <apex:repeat value="{!Listinn}" var="eve">
+   <div style="width:100%;background-color:#CCCCCC;height:25px;"> {!eve.eventName}  </div>
+   
+   <br />
+   <apex:inputHidden value="{!eve.iInn}"/>
+  
+  <table width="100%"><tr><td width="50%">
+     <apex:selectCheckboxes value="{!eve.optionsattdiversityInn}" layout="pageDirection">
+       <apex:selectOptions value="{!eve.optionsevediversityInn}"/>
+      </apex:selectCheckboxes> 
+      
+   </td><td><apex:selectCheckboxes value="{!eve.optionsattdiversityInn2}" layout="pageDirection">
+       <apex:selectOptions value="{!eve.optionsevediversityInn2}"/>
+      </apex:selectCheckboxes>  </td>   
+      </tr></table>
+      
+      
+      
+   </apex:repeat>
+    
+    
+ <apex:commandButton value="save" action="{!save}"/>
+ -->
+ </apex:form>
+</apex:page>

@@ -1,0 +1,9 @@
+<apex:page controller="Timecntrl" >
+ <apex:form >
+ 
+   <apex:commandButton value="check" action="{!TimeMethod}"/> 
+ 
+ 
+ 
+ </apex:form>
+</apex:page>

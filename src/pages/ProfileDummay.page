@@ -1,0 +1,727 @@
+<apex:page controller="ProfileDummayCon" showHeader="false">
+  
+ <apex:stylesheet value="{!URLFOR($Resource.QRCode_CSS,"css/screen.css")}"/>
+<style>
+* :focus { outline: 0; }
+body{font-family: Arial, Helvetica, sans-serif;font-size: 12px;}
+h2  {
+    color: #FFFFFF;
+    font-size: 16px;
+    font-weight: bold;
+    line-height: 20px;
+    margin-bottom: 10px;
+    text-align:left;
+    padding:10px;
+    
+        }
+    
+    ul{list-style-type:none;}
+    
+        
+ .textbox {
+    background-image:url(../images/form_bg.jpg);
+    background-repeat:repeat-x;
+    border:1px solid #d1c7ac;
+    width: 230px;
+    color:#333333;
+    padding:3px;
+    margin-right:4px;
+    margin-bottom:8px;
+    height:20px;
+    font-family:tahoma, arial, sans-serif;
+    width:270px;
+}
+p{width:100%; background-color:#75b9fe; color:#FFFFFF; height:20px;font-size:18px; padding-top:0px; margin:0px;cursor:pointer;}
+p span {padding-left:15px;}
+
+</style>
+  <!-- Begin Default Content REMOVE THIS -->
+ <script type="text/javascript">
+jQuery(document).ready(function($) {
+        jQuery("#holder ul").not(":first").hide();
+        jQuery("#holder p").click(function(){
+          if(jQuery(this).next("ul").not(":visible"))
+          {
+            jQuery("#holder ul").animate({height:"hide"},"fast");
+            jQuery(this).next("ul").animate({height:"show"},"fast");
+          }
+        });
+      });
+
+
+</script>
+
+   <apex:stylesheet value="{!URLFOR($Resource.jquerycss,"/css/demo.css")}"/>
+ <apex:stylesheet value="{!URLFOR($Resource.jquerycss,"/css/osx.css")}"/>
+
+ <!--<apex:stylesheet value="{!URLFOR($Resource.jquerycss,"/css/screen.css")}"/> -->
+ 
+ 
+ <apex:includescript value="{!URLFOR($Resource.jqueryjs,"/js/jquery.js")}"/>
+
+
+  <apex:includescript value="{!URLFOR($Resource.jqueryjs,"/js/jquery.simplemodal.js")}"/>
+   <apex:includescript value="{!URLFOR($Resource.jqueryjs,"/js/osx.js")}"/>
+   <apex:includescript value="{!URLFOR($Resource.jqueryjs,"/js/jquery-1.7.2.min.js")}"/>
+   
+   
+    <div id="page-top-outer">    
+
+<!-- Start: page-top -->
+<div id="page-top">
+
+    <!-- start logo -->
+    <div id="logo">
+    
+      
+    </div>
+    <!-- end logo -->
+         
+    <!--  start top-search -->
+    <div id="top-search">
+     
+        <table border="0" cellpadding="0" cellspacing="0">
+        <tr>
+            
+        
+        <td class="welcome">
+        
+        <font>Welcome :</font>
+                   <b><font size="2" color="sky blue">{!$User.Firstname}&nbsp;{!$User.Lastname}   </font></b>
+        
+        <!--<apex:inputText value="{!searchstr}" styleClass="top-search-inp" />-->  </td>
+        
+        <td>
+        
+       
+       <!--<apex:commandButton action="{!search}" value="search" image="{!URLFOR($Resource.GlobalnestPortal_Cssall,"css/images/shared/top_search_btn.gif")}"/>-->
+       
+        </td>
+        </tr>
+        </table>
+    </div>
+    <!--  end top-search -->
+   
+
+</div>
+<!-- End: page-top -->
+
+</div>
+
+
+ <div class="clear"></div>
+ 
+ 
+ 
+  
+<div class="nav-outer-repeat"> 
+<!--  start nav-outer -->
+<div class="nav-outer"> 
+
+<!-- Start Nav Right-->
+        <div id="nav-right">
+         <!----LOGOUT ACTION -->
+           <div class="nav">
+        <div class="table">
+        
+       <apex:form >
+       
+        
+       <div class="nav-divider">&nbsp;</div>
+        <apex:commandLink action="{!$Site.Prefix}/secur/logout.jsp" rendered="{!NOT(ISPICKVAL($User.UserType,'Guest'))}" style="text-style:bold; color:#FFFFFF; padding:10px 25px 0 0;" title="Logout">{!$Label.site.logout}</apex:commandLink>
+       </apex:form>  
+            </div></div>
+           
+           <!----LOGOUT ACTION END--->
+             <div class="clear">&nbsp;</div>
+          </div>
+        <!-- end nav-right -->
+
+
+        <!--  start nav -->
+        <div class="nav">
+        <div class="table">
+        
+       
+        <div class="nav-divider">&nbsp;</div>
+        <ul class="select"><li><apex:form ><apex:commandLink action="{!EventAction}"><b>Events</b></apex:commandLink></apex:form></li></ul>
+   
+        
+        <div class="nav-divider">&nbsp;</div>
+         <apex:outputPanel rendered="{!booleanforDisplayBoothadminTab}">
+        <ul class="select"><li><apex:form ><apex:commandlink action="{!Customeraction}"><b>Booth Admin</b></apex:commandlink></apex:form></li></ul>
+        
+             
+        <div class="nav-divider">&nbsp;</div></apex:outputPanel> 
+        <ul class="select"><li><apex:form > <apex:commandLink action="{!AttendeesAction}" ><b>Leads </b> </apex:commandLink></apex:form></li></ul>
+         <div class="nav-divider">&nbsp;</div>
+        
+        <ul class="select"><li><apex:form ><apex:commandlink action="{!Reportsaction}"><b>Reports</b></apex:commandlink></apex:form></li></ul>
+          <div class="clear"></div>
+          
+        </div>
+        <div class="clear"></div>
+        </div>
+        <!--  start nav -->
+        
+
+</div>
+<div class="clear"></div>
+<!--  start nav-outer -->
+</div>
+
+    <div id="page-heading"><br />
+        <h1 style="font-size:20px;">Profile</h1> 
+        
+        <div style="float:right; padding-right:10%;"><apex:form >
+       <apex:commandlink action="{!resetPassword}"><b><font color="#00a5d0" size="3px">Reset Password</font></b></apex:commandlink></apex:form></div>
+    </div>
+  
+ 
+ 
+   
+   
+   
+   
+   
+   <apex:form >
+ 
+<div id="holder" style="width:940px; margin:0px auto;">
+    
+  
+  
+  <div style="width:940px;">
+      <p>
+       <span> Personal Information    </span>
+      </p>
+      <ul>
+       
+        <li>
+         <table width="940" border="0" cellspacing="0" cellpadding="0" style="margin-top:10px;">
+<tr>
+<td align="center" valign="top"><table width="100%" border="0" align="center" cellpadding="0" cellspacing="5">
+<tr>
+
+<td width="181" height="25" align="left"><label style="color:Black; padding-left:10px; height:50px; text-align:center;">Prefix</label></td>
+<td width="271" height="25">
+<apex:inputField value="{!listOfSummary.AS_Prefix__c}"/>
+</td>
+</tr>
+
+
+<tr>
+<td height="25">
+<label style="color:Black; padding-left:10px; height:50px; width:180px">First Name</label>
+<font size="4" color="red">*</font></td>
+<td height="25">
+
+<div class="requiredInput">
+<apex:inputField value="{!listOfSummary.AS_FirstName__c}"/>
+</div></td>
+</tr>
+
+
+
+<tr>
+<td height="25"><label style="color:Black; padding-left:10px; height:50px;width:180px;">Last Name</label>
+<font size="4" color="red">*</font></td>
+<td height="25">
+<apex:inputField value="{!listOfSummary.AS_LastName__c}"/></td>
+</tr>
+<tr>
+<td height="25"><label style="color:Black; padding-left:10px; height:50px; width:180px">Suffix</label></td>
+<td height="25">
+<apex:inputField value="{!listOfSummary.AS_Suffix__c}"/>
+
+</td>
+</tr>
+<tr>
+<td height="25"><label style="color:Black; padding-left:10px; height:50px"> Email ID</label>
+<font size="4" color="red">*</font></td>
+<td height="25">
+<apex:inputField value="{!listOfSummary.AS_Email__c}"/></td>
+</tr>
+<tr>
+<td height="25"><label style="color:Black; padding-left:10px; height:50px"> Company Name</label>
+<font size="4" color="red">*</font></td>
+<td height="25">
+
+<apex:inputField value="{!listOfSummary.AS_Company__c}"/></td>
+
+</tr>
+</table></td>
+<td align="center" valign="top"><table width="100%" border="0" cellpadding="0" cellspacing="5">
+<tr>
+<td height="25"><label style="color:Black; padding-left:10px; height:50px"> Designation</label></td>
+<td height="25">
+<apex:inputField value="{!listOfSummary.AS_Title__c}"/></td>
+</tr>
+<tr>
+<td height="25"><label style="color:Black; padding-left:10px; height:50px">Mobile Number</label></td>
+<td height="25">
+<apex:inputField value="{!listOfSummary.AS_CellPhone__c}"/></td>
+</tr>
+<tr>
+<td height="25"><label style="color:Black; padding-left:10px; height:50px">Age</label></td>
+<td height="25">
+<apex:inputField value="{!listOfSummary.AS_Age__c}"/></td>
+</tr>
+<tr>
+<td height="25"><label style="color:Black; padding-left:10px; height:50px">Gender</label></td>
+<td height="25">
+<apex:inputField value="{!listOfSummary.AS_Gender__c}"/>
+</td>
+</tr>
+<tr>
+<td height="25"><label style="color:Black; padding-left:10px; height:50px"> DOB</label></td>
+<td height="25"><span class="dateInput dateOnlyInput">
+<apex:inputField value="{!listOfSummary.AS_BirthDate__c}"/>
+</span></td>
+</tr>
+</table></td>
+</tr>
+</table>
+
+
+        </li>
+        
+        
+      </ul>
+    </div>
+  
+  
+  
+  
+  
+  
+  <div style="width:100%; margin-top:20px;">
+      <p>
+        <span>Business Information</span>
+      </p>
+      <ul>
+       
+        <li>
+           <table width="940" border="0" cellspacing="0" cellpadding="0" style="margin-top:10px;">
+<tr>
+<td align="center" valign="top"><table width="100%" border="0" align="center" cellpadding="0" cellspacing="5">
+<tr>
+
+<td width="50%" height="25" align="left"><label style="color:Black; padding-left:10px; height:50px; text-align:center;"> Primary Business Category</label></td>
+<td height="25">
+<apex:inputField value="{!listOfSummary.AS_PrimaryBusinessCategory1__c}" style="width:160px;"/>
+</td>
+</tr>
+
+
+<tr>
+<td height="25">
+<label style="color:Black; padding-left:10px; height:50px; width:50%"> Secondary Business Category</label>
+</td>
+<td height="25">
+
+<div class="requiredInput">
+<apex:inputField value="{!listOfSummary.As_SecondaryBusinessCategory1__c}" style="width:160px;"/>
+</div></td>
+</tr>
+
+
+
+<tr>
+<td height="25"><label style="color:Black; padding-left:10px; height:50px;width:180px;"> Number Of Employees</label>
+</td>
+<td height="25">
+<apex:inputtext value="{!tax }"/></td>
+</tr>
+<tr>
+<td height="25"><label style="color:Black; padding-left:10px; height:50px; width:180px"> Business Established Date</label></td>
+<td height="25">
+<apex:inputField value="{!listOfSummary.AS_BusinessEstablishedDate__c}"/>
+</td>
+</tr>
+<tr>
+<td height="25"><label style="color:Black; padding-left:10px; height:50px"> Business Revenue</label>
+</td>
+<td height="25">
+<apex:inputtext value="{!listOfSummary.AS_BusinessRevenue__c}"/></td>
+</tr>
+<tr>
+<td height="25"><label style="color:Black; padding-left:10px; height:50px">BusinessTaxId</label>
+</td>
+<td height="25">
+<apex:inputtext value="{!tax}"/></td>
+
+</tr>
+</table></td>
+<td align="center" valign="top"><table width="100%" border="0" cellpadding="0" cellspacing="5">
+<tr>
+<td height="25"><label style="color:Black; padding-left:10px; height:50px"> Business Duns Number</label></td>
+<td height="25">
+<apex:inputField value="{!listOfSummary.AS_BusinessDunsNumber__c}"/></td>
+</tr>
+<tr>
+<td height="25"><label style="color:Black; padding-left:10px; height:50px">WebsiteUrl</label></td>
+<td height="25">
+<apex:inputField value="{!listOfSummary.AS_WebsiteUrl__c}"/></td>
+</tr>
+<tr>
+<td height="25"><label style="color:Black; padding-left:10px; height:50px">BlogUrl</label></td>
+<td height="25">
+<apex:inputField value="{!listOfSummary.AS_BlogUrl__c}"/></td>
+</tr>
+<tr>
+<td height="25"><label style="color:Black; padding-left:10px; height:50px">DiversityType</label></td>
+<td height="25">
+<apex:inputField value="{!listOfSummary.AS_DiversityType__c}" style="width:160px;"/>
+</td>
+</tr>
+<tr>
+<td height="25"><label style="color:Black; padding-left:10px;height:50px "> Business Description</label></td>
+<td height="25">
+<apex:inputField value="{!listOfSummary.AS_BusinessDescription__c}" style="width:160px;"/>
+</td>
+</tr>
+</table></td>
+</tr>
+</table>
+        </li>
+        
+        
+      </ul>
+    </div>
+  
+  
+  
+  
+  
+   <div style="width:100%; margin-top:20px;">
+      <p>
+        <span>NAICS Information</span></p>
+      <ul>
+        
+        <li>
+        <table width="940" border="0" cellspacing="0" cellpadding="0" style="margin-top:10px;">
+<tr>
+<td align="center" valign="top"><table width="100%" border="0" align="center" cellpadding="0" cellspacing="5">
+<tr>
+
+<td width="181" height="25" align="left"><label style="color:Black; padding-left:10px; height:50px; text-align:center;"> NAICS Code 1</label></td>
+<td width="271" height="25">
+<apex:inputField value="{!listOfSummary.AS_NAICSCode1__c}"/>
+</td>
+</tr>
+
+
+<tr>
+<td height="25">
+<label style="color:Black; padding-left:10px; height:50px; width:180px"> NAICS Code 2</label>
+</td>
+<td height="25">
+
+<div class="requiredInput">
+<apex:inputField value="{!listOfSummary.AS_NAICSCode2__c}"/>
+</div></td>
+</tr>
+
+
+
+<tr>
+<td height="25"><label style="color:Black; padding-left:10px; height:50px;width:180px;"> NAICS Code 3</label>
+</td>
+<td height="25">
+<apex:inputField value="{!listOfSummary.AS_NAICSCode3__c}"/></td>
+</tr>
+
+</table></td>
+<td align="center" valign="top"><table width="100%" border="0" cellpadding="0" cellspacing="5">
+<tr>
+<td height="25"><label style="color:Black; padding-left:10px; height:50px"> NAICS Code 4 </label></td>
+<td height="25">
+<apex:inputField value="{!listOfSummary.AS_NAICSCode4__c}"/></td>
+</tr>
+<tr>
+<td height="25"><label style="color:Black; padding-left:10px; height:50px">NAICS Code 5</label></td>
+<td height="25">
+<apex:inputField value="{!listOfSummary.AS_NAICSCode5__c}"/></td>
+</tr>
+
+</table></td>
+</tr>
+</table>
+        </li>
+      </ul>
+    </div>
+  
+  
+  
+  
+  
+  
+  
+  
+    <div style="width:100%; margin-top:20px;">
+      <p>
+       <span> Business Address</span>
+      </p>
+      <ul>
+        <li>
+          <table width="940" border="0" cellspacing="0" cellpadding="0" style="margin-top:10px;">
+<tr>
+<td align="center" valign="top"><table width="100%" border="0" align="center" cellpadding="0" cellspacing="5">
+<tr>
+
+<td width="181" height="25" align="left"><label style="color:Black; padding-left:10px; height:50px; text-align:center;">Work Address 1 </label></td>
+<td width="271" height="25">
+<apex:inputField value="{!listOfSummary.AS_WorkAddress1__c}"/>
+</td>
+</tr>
+
+
+<tr>
+<td height="25">
+<label style="color:Black; padding-left:10px; height:50px; width:180px"> Work Address 2</label>
+</td>
+<td height="25">
+
+<div class="requiredInput">
+<apex:inputField value="{!listOfSummary.AS_WorkAddress2__c}"/>
+</div></td>
+</tr>
+
+
+
+<tr>
+<td height="25"><label style="color:Black; padding-left:10px; height:50px;width:180px;">Work City</label>
+</td>
+<td height="25">
+<apex:inputField value="{!listOfSummary.AS_WorkCity__c}"/></td>
+</tr>
+
+<tr>
+<td height="25"><label style="color:Black; padding-left:10px; height:50px"> Work State </label></td>
+<td height="25">
+<apex:inputField value="{!listOfSummary.AS_WorkState__c}"/></td>
+</tr>
+</table></td>
+<td align="center" valign="top"><table width="100%" border="0" cellpadding="0" cellspacing="5">
+<tr>
+<td height="25"><label style="color:Black; padding-left:10px; height:50px"> Work Country </label></td>
+<td height="25">
+<apex:inputField value="{!listOfSummary.AS_WorkCountry__c}"/></td>
+</tr>
+<tr>
+<td height="25"><label style="color:Black; padding-left:10px; height:50px">Work Zip</label></td>
+<td height="25">
+<apex:inputField value="{!listOfSummary.AS_WorkZipCode__c}"/></td>
+</tr>
+
+
+<tr>
+<td height="25"><label style="color:Black; padding-left:10px; height:50px">Work PoBox</label></td>
+<td height="25">
+<apex:inputField value="{!listOfSummary.AS_WorkPoBox__c}"/></td>
+</tr>
+</table></td>
+</tr>
+</table>
+        </li>
+      </ul>
+    </div>
+    
+    
+    
+    
+   
+    
+    
+    
+    
+  <div style="width:100%; margin-top:20px;">
+      <p>
+               <span>Shipping Address       </span>
+      </p>
+      <ul>
+       
+        <li>
+          <table width="940" border="0" cellspacing="0" cellpadding="0" style="margin-top:10px;">
+<tr>
+<td align="center" valign="top"><table width="100%" border="0" align="center" cellpadding="0" cellspacing="5">
+<tr>
+
+<td width="181" height="25" align="left"><label style="color:Black; padding-left:10px; height:50px; text-align:center;">Shipping Address1 </label></td>
+<td width="271" height="25">
+<apex:inputField value="{!listOfSummary.AS_ShippingAddress1__c}"/>
+</td>
+</tr>
+
+
+<tr>
+<td height="25">
+<label style="color:Black; padding-left:10px; height:50px; width:180px"> Shipping Address 2</label>
+</td>
+<td height="25">
+
+<div class="requiredInput">
+<apex:inputField value="{!listOfSummary.AS_ShippingAddress2__c}"/>
+</div></td>
+</tr>
+
+<tr>
+<td height="25"><label style="color:Black; padding-left:10px; height:50px">Shipping Phone</label></td>
+<td height="25">
+<apex:inputField value="{!listOfSummary.AS_ShippingPhone__c}"/></td>
+</tr>
+
+
+
+<tr>
+<td height="25"><label style="color:Black; padding-left:10px; height:50px">Shipping City </label></td>
+<td height="25">
+<apex:inputField value="{!listOfSummary.AS_ShippingCity__c}"/></td>
+</tr>
+</table></td>
+<td align="center" valign="top"><table width="100%" border="0" cellpadding="0" cellspacing="5">
+<tr>
+<td height="25"><label style="color:Black; padding-left:10px; height:50px"> Shipping State</label></td>
+<td height="25">
+<apex:inputField value="{!listOfSummary.AS_WorkCountry__c}"/></td>
+</tr>
+<tr>
+<td height="25"><label style="color:Black; padding-left:10px; height:50px">Shipping Country</label></td>
+<td height="25">
+<apex:inputField value="{!listOfSummary.AS_ShippingCountry__c}"/></td>
+</tr>
+
+<tr>
+<td height="25"><label style="color:Black; padding-left:10px; height:50px">Shipping Zipcode</label></td>
+<td height="25">
+<apex:inputField value="{!listOfSummary.AS_ShippingZipcode__c}"/></td>
+</tr>
+
+<tr>
+<td height="25"><label style="color:Black; padding-left:10px; height:50px">Shipping PoBox</label></td>
+<td height="25">
+<apex:inputField value="{!listOfSummary.AS_ShippingPoBox__c}"/></td>
+</tr>
+
+</table></td>
+</tr>
+</table>
+        </li>
+      </ul>
+    </div>
+    
+    
+    
+    
+    
+    
+    <div style="width:100%; margin-top:20px; margin-bottom:10px;">
+      <p>
+              <span> Home Address       </span>
+      </p>
+      <ul>
+        <li>
+           <table width="940" border="0" cellspacing="0" cellpadding="0" style="margin-top:10px;">
+<tr>
+<td align="center" valign="top"><table width="100%" border="0" align="center" cellpadding="0" cellspacing="5">
+
+<tr>
+<td height="25"><label style="color:Black; padding-left:10px; height:50px">Home Phone</label></td>
+<td height="25">
+<apex:inputField value="{!listOfSummary.AS_HomePhone__c}"/></td>
+</tr>
+
+<tr>
+<td height="25"><label style="color:Black; padding-left:10px; height:50px">Home Fax</label></td>
+<td height="25">
+<apex:inputField value="{!listOfSummary.AS_FaxNumber__c}"/></td>
+</tr>
+
+
+<tr>
+
+<td width="181" height="25" align="left"><label style="color:Black; padding-left:10px; height:50px; text-align:center;">Home Address1 </label></td>
+<td width="271" height="25">
+<apex:inputField value="{!listOfSummary.AS_HomeAddress1__c}"/>
+</td>
+</tr>
+
+
+<tr>
+<td height="25">
+<label style="color:Black; padding-left:10px; height:50px; width:180px"> Home Address 2</label>
+</td>
+<td height="25">
+
+<div class="requiredInput">
+<apex:inputField value="{!listOfSummary.AS_HomeAddress2__c}"/>
+</div></td>
+</tr>
+
+
+
+
+
+<tr>
+<td height="25"><label style="color:Black; padding-left:10px; height:50px">Home City </label></td>
+<td height="25">
+<apex:inputField value="{!listOfSummary.AS_HomeCity__c}"/></td>
+</tr>
+</table></td>
+<td align="center" valign="top"><table width="100%" border="0" cellpadding="0" cellspacing="5">
+<tr>
+<td height="25"><label style="color:Black; padding-left:10px; height:50px"> Home State</label></td>
+<td height="25">
+<apex:inputField value="{!listOfSummary.AS_HomeState__c}"/></td>
+</tr>
+<tr>
+<td height="25"><label style="color:Black; padding-left:10px; height:50px">Home Country</label></td>
+<td height="25">
+<apex:inputField value="{!listOfSummary.AS_HomeCountry__c}"/></td>
+</tr>
+
+<tr>
+<td height="25"><label style="color:Black; padding-left:10px; height:50px">Home Zipcode</label></td>
+<td height="25">
+<apex:inputField value="{!listOfSummary.AS_HomeZipcode__c}"/></td>
+</tr>
+
+<tr>
+<td height="25"><label style="color:Black; padding-left:10px; height:50px">Home PoBox</label></td>
+<td height="25">
+<apex:inputField value="{!listOfSummary.AS_HomePoBox__c}"/></td>
+</tr>
+
+</table></td>
+</tr>
+</table>
+        </li>
+        
+      </ul>
+    </div>
+</div>
+ 
+ 
+ <div  align="center" >
+ 
+ <apex:commandButton value="Save" action="{!save}" styleClass="awesome"/>&nbsp;&nbsp;
+  
+ 
+ </div>
+ 
+ 
+ 
+ 
+ 
+ </apex:form>
+  <div id="footer">
+    <!--  start footer-left -->
+    <div id="footer-left">&copy; Copyright Globalnest LLC. <span id="spanYear"></span> 
+    <a href="">www.globalnest.com</a>. All rights reserved.</div>
+    <!--  end footer-left -->
+    <div class="clear">&nbsp;</div>
+</div>
+  <!-- End Default Content REMOVE THIS -->
+ 
+ 
+</apex:page>

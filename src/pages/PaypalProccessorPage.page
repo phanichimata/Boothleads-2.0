@@ -1,0 +1,11 @@
+<apex:page controller="PaypalProccessor" showHeader="false">
+  
+  <apex:form >
+  
+  {!transid } &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {!message}
+  
+  </apex:form>
+  
+  
+  
+</apex:page>

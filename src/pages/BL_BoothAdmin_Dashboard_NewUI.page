@@ -1,0 +1,1025 @@
+<apex:page showHeader="false" sidebar="false" controller="Dashboardcntrl">
+
+<!-- Begin Default Content REMOVE THIS -->
+<apex:form >
+<apex:stylesheet value="{!URLFOR($Resource.bldashboard2,"menu_assets/styles.css")}"/>
+
+<script type="text/javascript" charset="utf-8" src="http://cdn.sencha.io/ext-4.0.7-gpl/ext-all.js"></script>
+<link rel="stylesheet" type="text/css" href="http://cdn.sencha.io/ext-4.0.7-gpl/resources/css/ext-all.css"/>
+
+
+<style> 
+.h3green{color:#258d51; font-size:13px;}
+.h3lightblue{ color:#00a2b1; font-size:13px;}
+.h3maroon{ color:#ac1324; font-size:13px;}
+.h3lightgreen{ color:#94af0a; font-size:13px;}
+.chart-icon
+{
+background:url(http://cdn1.iconfinder.com/data/icons/iconza/iconza_16x16_0097d9/line_graph.png) no-repeat; 
+}
+.grid-icon
+{
+background:url(http://cdn1.iconfinder.com/data/icons/momenticons-gloss-basic/momenticons-gloss-basic/16/table.png) no-repeat; 
+}
+
+
+.geo-icon
+{
+background:url(http://cdn1.iconfinder.com/data/icons/realistiK-new/16x16/apps/package_network.png) no-repeat; 
+padding-top:17px;
+} 
+.ind-icon
+{
+background:url(http://cdn1.iconfinder.com/data/icons/REALVISTA/project_managment/png/16/agency.png) no-repeat; 
+padding-top:17px;
+} 
+.scan-icon
+{
+background:url(http://cdn1.iconfinder.com/data/icons/fugue/icon/barcode-2d.png) no-repeat;
+padding-top:17px;
+}
+
+.dev-icon
+{
+background:url(http://cdn1.iconfinder.com/data/icons/VISTA/video_production/png/16/mobile_device.png) no-repeat;
+padding-top:17px;
+}
+
+</style>
+
+<!-- topbar block start-->
+<div id="topbarblock">
+<div id="topbarleft">
+<div id="logo"></div>
+</div>
+<div id="topbarright">
+<table width="90%" border="0" align="right" cellpadding="0" cellspacing="0" style="margin-right:15px;">
+<tr>
+<td width="17%" height="30" align="center" valign="middle" bgcolor="#0079B2" class="whitebold">Welcome :</td>
+<td width="21%" height="30" align="left" valign="middle" bgcolor="#0079B2" class="txtnormal">{!$User.Firstname}&nbsp;{!$User.Lastname}</td>
+<td width="1%" align="center" valign="middle" bgcolor="#0079B2" class="txtnormal">|</td>
+<td width="8%" height="30" align="right" valign="middle" bgcolor="#0079B2" class="txtnormal">
+
+<img src="{!URLFOR($Resource.bldashboard2,"menu_assets/images/settings.png")}"  />
+
+</td>
+<td width="14%" height="30" bgcolor="#0079B2" style="padding-left:5px;"><a href="#" class="menuanchorclass white" rel="anylinkmenu1">
+Settings</a>
+</td>
+
+
+
+
+
+<td width="1%" height="30" align="center" valign="middle" bgcolor="#0079B2" class="txtnormal">|</td>
+<td width="18%" height="30" align="center" valign="middle" bgcolor="#0079B2" class="txtnormal"><a href="#" class="white">Help</a></td>
+<td width="1%" height="30" align="center" valign="middle" bgcolor="#0079B2" class="txtnormal">|</td>
+<td width="19%" height="30" align="center" valign="middle" bgcolor="#0079B2" class="txtnormal"><a href="#" class="white">Logout</a></td>
+</tr>
+</table>
+
+</div>
+</div>
+<!-- topbar block end-->
+
+<!--MENU START-->
+
+<div class='cssmenu'>
+<ul>
+<li  class='active'><a href='#'><span>Dashboard </span></a></li>
+<li><a href='#'><span>My Events</span></a>
+<!-- <ul>
+<li><a href='#'><span>Product 1</span></a></li>
+<li><a href='#'><span>Product 2</span></a></li>
+</ul>-->
+</li>
+<li><a href='#'><span>Booths</span></a></li>
+<li><a href='#'><span>Attendees</span></a></li>
+<li><a href='#'><span>Reports</span></a></li>
+<li><a href='#'><span>My Profile</span></a></li>
+</ul>
+</div>
+
+<div style="clear:both; margin: 0 0 3px 0;">&nbsp;</div>
+
+<!--MENU END-->
+<!--content start-->
+
+<div style="clear:both; margin: 0 0 3px 0;">&nbsp;</div>
+
+<div class="round">
+<table width="100%" border="0" align="center" cellpadding="0" cellspacing="0">
+  <tr>
+    <td height="30px"  align="left" valign="middle" bgcolor="#0079B2" style="padding-left:10px; color:#FFFFFF;
+    background:#ffa72b;
+    
+background: -webkit-gradient(linear, left top, left bottom, from(#f2ac4d), to(#dc7121));
+background: -moz-linear-gradient(top, #f2ac4d, #dc7121);
+background-image: -o-linear-gradient(top, #f2ac4d, #dc7121);
+background-image: -ms-linear-gradient(top, #f2ac4d, #dc7121);
+filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f2ac4d', endColorstr='#dc7121');
+    
+    "><h3>Overview</h3></td>
+    <td width="470" align="right" valign="middle" bgcolor="#0079B2" style="padding-left:30px; color:#FFFFFF;
+    background:#ffa72b;
+    
+background: -webkit-gradient(linear, left top, left bottom, from(#f2ac4d), to(#dc7121));
+background: -moz-linear-gradient(top, #f2ac4d, #dc7121);
+background-image: -o-linear-gradient(top, #f2ac4d, #dc7121);
+background-image: -ms-linear-gradient(top, #f2ac4d, #dc7121);
+filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f2ac4d', endColorstr='#dc7121'); padding-right:20px;">Help ?</td>
+  </tr>
+  <tr>
+    <td colspan="2" align="center" valign="top" style="padding-top:5px;"><table width="100%" border="0" cellspacing="0px" cellpadding="0">
+      <tr>
+        <td width="33%" align="center" valign="top" style="border-right:1px solid #414141;"><table width="98%" border="0" align="left" cellpadding="0" cellspacing="0">
+          <tr>
+            <td width="66%" height="30" align="left" valign="middle" class="h3green"><h3 >Total Licenses / Plan </h3></td>
+            <td width="34%" height="30" align="left" valign="middle" class="h3green"><h3>40 / Premium</h3></td>
+          </tr>
+          <tr>
+            <td height="30" align="left" valign="middle" class="h3lightblue"><h3>Licenses Used / Unused</h3></td>
+            <td height="30" align="left" valign="middle" class="h3lightblue"><h3>24 / 16</h3></td>
+          </tr>
+          <tr>
+            <td height="30" align="left" valign="middle" class="h3maroon"><h3>Total Booth Users</h3></td>
+            <td height="30" align="left" valign="middle" class="h3maroon"><h3>500</h3></td>
+          </tr>
+        </table></td>
+        <td width="33%" align="center" valign="top" style="border-right:1px solid #414141;"><table width="98%" border="0" align="center" cellpadding="0" cellspacing="0">
+          <tr>
+            <td width="80%" height="30" align="left" valign="middle" class="h3green"><h3>Inactive Booth Users</h3></td>
+            <td width="20%" height="30" align="left" valign="middle" class="h3green"><h3>100</h3></td>
+          </tr>
+          <tr>
+            <td height="30" align="left" valign="middle" class="h3lightblue"><h3>Mobile Booth Users</h3></td>
+            <td height="30" align="left" valign="middle" class="h3lightblue"><h3>300</h3></td>
+          </tr>
+          <tr>
+            <td height="30" align="left" valign="middle" class="h3maroon"><h3>Mobile and Portal Booth Users</h3></td>
+            <td height="30" align="left" valign="middle" class="h3maroon"><h3>200</h3></td>
+          </tr>
+        </table></td>
+        <td width="34%" align="center" valign="top"><table width="98%" border="0" align="right" cellpadding="0" cellspacing="0">
+          <tr>
+            <td width="81%" height="30" align="left" valign="middle" class="h3green"><h3>Scanned Leads</h3></td>
+            <td width="19%" height="30" align="left" valign="middle" class="h3green"><h3>3000</h3></td>
+          </tr>
+          <tr>
+            <td height="30" align="left" valign="middle" class="h3lightblue"><h3>Android Device Usage</h3></td>
+            <td height="30" align="left" valign="middle" class="h3lightblue"><h3>12 Users</h3></td>
+          </tr>
+          <tr>
+            <td height="30" align="left" valign="middle" class="h3maroon"><h3>Apple Device Usage</h3></td>
+            <td height="30" align="left" valign="middle" class="h3maroon"><h3>14 Users</h3></td>
+          </tr>
+          
+         
+        </table></td>
+      </tr>
+    </table>
+      <!--<table width="75%" border="0" align="center" cellpadding="0" cellspacing="0">
+      <tr>
+        <td width="50%" height="50" align="center" valign="top"><table width="100%" border="0" align="right" cellpadding="0" cellspacing="0">
+          <tr>
+            <td width="65%" height="40"><h3 class="h3green">Past Events</h3></td>
+            <td width="35%" height="40"><h3 class="h3green">9</h3></td>
+            </tr>
+          <tr>
+            <td height="40"><h3 class="h3lightblue">Total No.of Booths</h3></td>
+            <td height="40"><h3 class="h3lightblue">99</h3></td>
+            </tr>
+          <tr>
+            <td height="40"><h3 class="h3maroon">Total No. of Attendees</h3></td>
+            <td height="40"><h3 class="h3maroon">1052</h3></td>
+            </tr>
+          <tr>
+            <td height="40"><h3 class="h3lightgreen">Total Connections</h3></td>
+            <td height="40"><h3 class="h3lightgreen">10000</h3></td>
+          </tr>
+          </table></td>
+        <td width="50%" height="50" align="center" valign="top"><table width="100%" border="0" align="right" cellpadding="0" cellspacing="0">
+          <tr>
+            <td height="40"><h3 class="h3green">New Events</h3></td>
+            <td height="40"><h3 class="h3green">7</h3></td>
+          </tr>
+          <tr>
+            <td width="73%" height="40"><h3 class="h3lightblue">Iphone App downloads</h3></td>
+            <td width="27%" height="40"><h3 class="h3lightblue">6000</h3></td>
+            </tr>
+          <tr>
+            <td height="40"><h3 class="h3maroon">Android App downloads</h3></td>
+            <td height="40"><h3 class="h3maroon">4000</h3></td>
+            </tr>
+          <tr>
+            <td height="40" style="color:#ad4073;">&nbsp;</td>
+            <td height="40" style="color:#ad4073;">&nbsp;</td>
+            </tr>
+          </table></td>
+        </tr>
+    </table>--></td>
+  </tr>
+</table>
+</div>
+
+<br />
+
+<div class="round">
+<table width="100%" border="0" align="center" cellpadding="0" cellspacing="0" class="table"> 
+<tr>
+<td width="715" align="left" valign="top"><table width="100%" border="0" align="left" cellpadding="0" cellspacing="0">
+<tr>
+<td height="30px" style="padding-left:10px; color:#FFFFFF; padding-top: 5px;
+background:#ffa72b;
+
+background: -webkit-gradient(linear, left top, left bottom, from(#f2ac4d), to(#dc7121));
+background: -moz-linear-gradient(top, #f2ac4d, #dc7121);
+background-image: -o-linear-gradient(top, #f2ac4d, #dc7121);
+background-image: -ms-linear-gradient(top, #f2ac4d, #dc7121);
+filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f2ac4d', endColorstr='#dc7121');
+
+"><h3>Dashboard</h3>
+<div style="float:right; width: 50% ; text-align: right; padding-bottom: 3px; font-size:14px; padding-right: 10px;">
+<h5><apex:outputLabel value="Select Event : "></apex:outputLabel></h5>
+<apex:selectList value="{!EventString}" size="1">
+  <apex:selectOptions value="{!Events}">      
+  </apex:selectOptions>
+</apex:SelectList> 
+</div>
+
+</td>
+</tr>
+</table><br />
+<table width="717" border="0" align="center" cellpadding="0" cellspacing="0">
+<tr>
+<td align="center" valign="top" bgcolor="#FFFFFF" id="db" style="padding-left:15px;">
+
+<script type="text/javascript">  
+
+Ext.require('Ext.chart.*');  
+Ext.require('Ext.grid.*');  
+Ext.onReady(function ()  
+{
+
+// Geography report store
+      
+var myData1=new Array();
+
+<apex:repeat value="{!indusreport}" var="row">   
+
+var rowArray=new Array();
+rowArray[0]=  '{!row.id}';
+var RName ="{!row.AS_id__r.AS_FirstName__c}";
+rowArray[1]=  RName.replace(/\'/g,'\'');   
+var lName ="{!row.AS_id__r.AS_Company__c}"; 
+rowArray[2]=  lName.replace(/\'/g,'\''); 
+var sName ="{!row.AS_id__r.AS_WorkState__c}"; 
+rowArray[3]=  sName.replace(/\'/g,'\''); 
+rowArray[4]=  '{!row.AS_id__r.AS_CellPhone__c}';
+var eName ="{!row.AS_id__r.AS_Email__c}"; 
+rowArray[5]=  eName.replace(/\'/g,'\''); 
+myData1.push(rowArray);          
+
+</apex:repeat>   
+
+
+var storegrid = new Ext.data.SimpleStore(
+{
+fields:[{name:'id'},{name:'AS_id__r.AS_FirstName__c'},{name:'AS_id__r.AS_Company__c'},{name:'AS_id__r.AS_WorkState__c'},{name:'AS_id__r.AS_CellPhone__c'},{name:'AS_id__r.AS_Email__c'}]
+} 
+);
+storegrid.loadData(myData1); 
+     
+ 
+ 
+ 
+// Industry grid store
+
+   var myData2=new Array();
+        
+      <apex:repeat value="{!indusgridreport}" var="row">   
+      
+          var rowArray=new Array();
+          rowArray[0]=  '{!row.id}';
+          var yName ="{!row.AS_id__r.AS_FirstName__c}";
+          rowArray[1]=  yName.replace(/\'/g,'\'');   
+          var uName ="{!row.AS_id__r.AS_Company__c}"; 
+          rowArray[2]=  uName.replace(/\'/g,'\''); 
+          var iName ="{!row.AS_id__r.AS_PrimaryBusinessCategory1__c}"; 
+          rowArray[3]=  iName.replace(/\'/g,'\''); 
+          rowArray[4]=  '{!row.AS_id__r.AS_CellPhone__c}';
+          var oName ="{!row.AS_id__r.AS_Email__c}"; 
+          rowArray[5]=  oName.replace(/\'/g,'\''); 
+          myData2.push(rowArray);          
+         
+     </apex:repeat>   
+   
+     
+    var storeindusgrid = new Ext.data.SimpleStore( 
+    {
+       fields:[{name:'id'},{name:'AS_id__r.AS_FirstName__c'},{name:'AS_id__r.AS_Company__c'},{name:'AS_id__r.AS_PrimaryBusinessCategory1__c'},{name:'AS_id__r.AS_CellPhone__c'},{name:'AS_id__r.AS_Email__c'}]} 
+    );
+        storeindusgrid.loadData(myData2); 
+     
+     
+     
+
+ 
+// geography chart store 
+
+var store = Ext.create('Ext.data.JsonStore', {  
+fields: ['namegeo', 'datageo'], 
+data: [
+<apex:repeat value="{!grphy}" var="a"> 
+{
+'namegeo' : '{!a.geogy}',  
+'datageo' :{!a.georecords}
+}, 
+</apex:repeat>  
+]
+});
+  
+  
+// device usage store 
+  
+   
+var iosstore = Ext.create('Ext.data.JsonStore', {  
+fields: ['nameios', 'dataios'], 
+data: [
+<apex:repeat value="{!iosdevice}" var="u"> 
+{
+'nameios' : '{!u.iosname}',  
+'dataios' :{!u.iosrecords}
+}, 
+</apex:repeat>  
+]
+});
+  
+  
+  
+// Industry chart store
+ 
+ 
+ 
+var store1 = Ext.create('Ext.data.JsonStore', { 
+fields: ['nameindus', 'dataI'],
+data: [
+<apex:repeat value="{!indus}" var="a">
+{
+'nameindus' : '{!a.industry}',  
+'dataI' :{!a.indusrec}
+},
+</apex:repeat>
+]
+});
+  
+  var boothstore = Ext.create('Ext.data.JsonStore', {
+    fields: ['name', 'data'],
+    data: [
+        { 'name': 'Phani',   'data':26 },
+        { 'name': 'Mahesh',   'data': 17 },
+        { 'name': 'Mallik', 'data': 15 },
+        { 'name': 'Anil',  'data': 12 },
+        { 'name': 'RK',  'data':37 },
+        { 'name': 'Venkat',  'data':20 }
+    ]
+});
+  
+  
+// sample example store
+  
+
+var atstore = Ext.create('Ext.data.Store', {
+fields: ['scans', 'date'],
+data: [
+{ scans: 10, date: '9am'},
+{ scans: 38, date: '10am'},
+{ scans: 63, date: '11am'},
+{ scans: 35, date: '12Noon' },
+{ scans: 25, date: '1pm' },
+{ scans: 20, date: '2pm' },
+{ scans: 15, date: '3pm' },
+{ scans: 15, date: '4pm' },
+{ scans: 5, date: '5pm' }
+]
+});
+  
+  
+var atstore1 = Ext.create('Ext.data.Store', {
+fields: ['scans1', 'date1'],
+data: [
+{ scans1: 10, date1: '9am'},
+{ scans1: 38, date1: '10am'},
+{ scans1: 63, date1: '11am'},
+{ scans1: 35, date1: '12Noon' },
+{ scans1: 25, date1: '1pm' },
+{ scans1: 20, date1: '2pm' },
+{ scans1: 15, date1: '3pm' },
+{ scans1: 15, date1: '4pm' },
+{ scans1: 5, date1: '5pm' }
+]
+});
+  
+  
+// sample Device store
+  
+  
+  
+var devstore = Ext.create('Ext.data.Store', { 
+fields: ['name', 'data'],
+data: [
+{ 'name': 'Apple', 'data': 7 },
+{ 'name': 'Android', 'data':  10 } 
+]
+});
+  
+var days = Ext.create('Ext.data.Store', {
+fields: ['dayfield'],
+data : [
+    {"dayfield":"Day 1"},
+    {"dayfield":"Day 2"},
+    {"dayfield":"Day 3"}
+]
+});
+  
+Ext.create('Ext.data.Store', {  
+storeId:'simpsonsStore',
+fields:['name', 'email', 'phone'],
+data:{'items':[
+{ 'name': 'Lisa',  "email":"lisa@simpsons.com",  "phone":"555-111-1224"  },  
+{ 'name': 'Bart',  "email":"bart@simpsons.com",  "phone":"555-222-1234"  }, 
+{ 'name': 'Homer', "email":"home@simpsons.com",  "phone":"555-222-1244"  }, 
+{ 'name': 'Marge', "email":"marge@simpsons.com", "phone":"555-222-1254"  } 
+]},
+proxy: {
+type: 'memory',
+reader: {
+type: 'json',
+root: 'items'
+}
+}
+});
+ 
+var daystore = Ext.create('Ext.data.Store', {
+    fields: ['name'],
+    data : [
+        {"name":"Day 1"},
+        {"name":"Day 2"},
+        {"name":"Day 3"}
+    ]
+});
+ 
+// navigate function
+ 
+var navigate = function(panel,direction)
+{ 
+var layout = panel.getLayout(); 
+layout[direction](); 
+Ext.getCmp('chartid').setDisabled(!layout.getPrev());  
+Ext.getCmp('gridid').setDisabled(!layout.getNext());   
+};
+ 
+ 
+ 
+ 
+// Reports Panel Start
+ 
+ 
+ 
+ 
+Ext.create('Ext.Panel', { 
+width:900,
+height: 690,
+iconCls: 'report-icon',
+title: 'Reports Dashboard',        
+renderTo: 'db',
+border: 0,
+title: false,
+header: false,
+headerCfg: false,          
+layout: 
+{
+type: 'table', 
+columns: 3,
+tableAttrs: 
+{
+style: 
+{ 
+width: '100%', 
+height: '100%', 
+}
+}
+},
+defaults: 
+{
+bodyStyle: 'padding:4px' 
+},
+items: [
+{
+title: '',
+border:false,
+columnWidth:0.050,
+rowspan:2
+},
+  
+  
+  
+ // 1 panel start
+  
+{
+xtype: 'panel',    
+title: 'Geography Chart', 
+width: 438,
+height: 330,
+iconCls : 'geo-icon',
+closeAction: 'hide',
+renderTo: Ext.getBody(), 
+layout: 'card', 
+tbar: [
+{ 
+xtype: 'tbspacer', 
+width: 370
+},
+{
+xtype : 'button', 
+id:'chartid',
+iconCls : 'chart-icon', 
+layout:'autofit',
+handler: function(btn) 
+{
+navigate(btn.up("panel"), "prev");
+},
+disabled: true 
+
+},
+{
+xtype:'tbseparator' 
+},
+{
+xtype : 'button', 
+text : null, 
+id:'gridid', 
+iconCls : 'grid-icon', 
+layout: 'autofit', 
+handler: function(btn) 
+{ 
+navigate(btn.up("panel"), "next"); 
+}
+}
+],
+items: 
+[{
+xtype: 'chart', 
+id: 'chartCmp',
+animate: false,
+store: store,
+align:'center',
+shadow: true, 
+legend: 
+{
+position: 'right'
+},
+insetPadding: 30, 
+theme: 'Base:gradients', 
+series: [{
+type: 'pie',  
+field: 'datageo',   
+showInLegend: true,  
+tips: {
+trackMouse: true,    
+width: '100%',   
+height: 25,  
+renderer: function(storeItem, item) 
+{
+var total = 0;
+store.each(function(rec) 
+{  
+total += rec.get('datageo');       
+}); 
+
+this.setTitle(storeItem.get('namegeo') + ' : ' + storeItem.get('datageo') +  '-Attendees');       
+}
+},
+highlight: {  
+segment: { 
+margin: 20  
+} 
+}, 
+label: { 
+field: 'namegeo', 
+display: 'rotate', 
+contrast: true, 
+font: '13px Arial'  
+}
+}],
+},
+{
+xtype:'grid',  
+layout:'fit',
+renderTo: Ext.getBody(),  
+title: 'Geograpy Report', 
+id:'gridpanel', 
+store: storegrid,
+title: false,
+header: false,  
+dockedItems: [{
+xtype: 'pagingtoolbar',
+store: storegrid,
+dock: 'bottom',              
+pageSize: 10,
+displayInfo: true
+}],
+listeners:
+{
+afterrender: function (component)
+{
+component.down('#refresh').hide();
+}
+},
+columns: [
+{header:'id', dataIndex: 'id',hidden:true }, 
+{ header: 'Name',  dataIndex: 'AS_id__r.AS_FirstName__c' }, 
+{ header: 'Phone',  dataIndex: 'AS_id__r.AS_CellPhone__c' }, 
+{ header: 'E-Mail', dataIndex: 'AS_id__r.AS_Email__c' , flex:1 },    
+{ header: 'State', dataIndex: 'AS_id__r.AS_WorkState__c'}
+],
+}],
+},
+
+
+// 1 panel end
+ 
+ 
+ 
+ 
+ 
+// 2 panel start
+   
+   
+{
+xtype: 'panel',
+title: 'Industry Chart',
+id:'panel1',   
+width: 438,
+height: 330,
+iconCls: 'ind-icon',
+renderTo: Ext.getBody(),
+layout: 'card',
+activeItem: 'chartcmp1',
+tbar: [
+{ 
+xtype: 'tbspacer', 
+width: 370
+},
+{
+xtype : 'button',  
+text : null,
+iconCls : 'chart-icon', 
+id:'induschartid',
+layout: 'autofit',
+handler: function(btn) 
+{
+var panel = Ext.getCmp ('panel1');
+panel.getLayout().setActiveItem ('chartcmp1');
+},
+},
+{
+xtype:'tbseparator'
+},
+{
+xtype : 'button',
+text : null,
+id:'indusgridid',
+iconCls : 'grid-icon',
+layout: 'autofit',
+handler: function(btn) 
+{
+var panel = Ext.getCmp ('panel1');
+panel.getLayout().setActiveItem ('gridpanel1');
+}
+
+}],
+items: [{
+xtype: 'chart',
+id:'chartcmp1',
+animate: true,
+shadow: true,
+store: store1,
+axes: [{
+type: 'Numeric',
+position: 'left',
+fields: ['dataI'],
+title: false,
+grid: true,
+minimum: 0,
+maximum: 10,
+steps: 5
+}, 
+{
+type: 'Category',
+position: 'bottom',
+fields: ['nameindus'],
+title: false
+}],
+series: [
+{
+type: 'column',
+axis: 'left',
+gutter: 30,
+xField: 'nameindus',
+yField: ['dataI'],
+tips: {
+trackMouse: true,
+width: '100%',
+height: 25,
+renderer: function(storeItem, item) 
+{
+this.setTitle(storeItem.get('nameindus') + ': ' + storeItem.get('dataI') + '-Attendees ');   
+}      
+},   
+}]  
+},   
+
+{  
+xtype:'grid',    
+layout:'fit',   
+renderTo: Ext.getBody(),   
+title: 'Industry Report',   
+id:'gridpanel1',   
+store: storeindusgrid,
+title: false,
+header: false,  
+dockedItems: [{
+xtype: 'pagingtoolbar',
+store: storeindusgrid,
+dock: 'bottom',              
+pageSize: 10,
+displayInfo: true
+            }],
+listeners:
+{
+afterrender: function (component)
+{
+component.down('#refresh').hide();
+}
+},
+columns: [
+{ header:'id', dataIndex: 'id',hidden:true },   
+{ header: 'Name', dataIndex: 'AS_id__r.AS_FirstName__c' },   
+ 
+{ header: 'Phone', dataIndex: 'AS_id__r.AS_CellPhone__c' }, 
+{ header: 'E-Mail', dataIndex: 'AS_id__r.AS_Email__c'},
+{ header: 'Industry', dataIndex: 'AS_id__r.AS_PrimaryBusinessCategory1__c'}
+],
+}],
+},
+
+
+// 2 panel end
+ 
+ 
+ 
+ 
+ 
+// 3 panel start 
+   
+    
+{
+xtype: 'panel',  
+title: 'Hourly Scans (Event/Attendee Activity)',
+id: 'scanpanel',
+width: 438,
+height: 330,
+iconCls: 'scan-icon',
+draggable: true, 
+layout: 'fit',
+renderTo: Ext.getBody(),
+activeItem: 'linechart1',
+tbar: [
+{
+xtype: 'tbspacer', 
+width: 295
+},
+{
+xtype: 'label',
+text: 'Choose Day :',
+style: {
+color:'#153E7E'
+}
+},
+{
+xtype: 'combobox',
+store: daystore,
+queryMode: 'local',
+displayField:'name',
+valueField: 'name',
+editable: false,
+size: '7',
+tpl: Ext.create('Ext.XTemplate',
+'<tpl for=".">',
+    '<div class="x-boundlist-item">{name}</div>',
+'</tpl>'
+),
+// template for the content inside text field
+displayTpl: Ext.create('Ext.XTemplate',
+'<tpl for=".">',
+    '{name}',
+'</tpl>'
+),
+listeners:
+{
+'select' : function (combo, value) 
+{
+ var c=combo.getValue();
+ alert(c);
+ c.Contains('Day 2').getLayout().setActiveItem ('linechart2');
+}
+}
+}
+],
+items:[ 
+{
+xtype: 'chart',
+id: 'linechart1',
+store: atstore,
+theme: 'Green',
+axes: [
+{
+title: 'No. of Scans',
+type: 'Numeric',
+position: 'left',
+fields: ['scans'],
+minimum: 0,
+maximum: 100,
+
+},
+{
+title: 'Timeline',
+type: 'Category',
+position: 'bottom',
+fields: ['date']
+}
+],
+series: [
+{
+type: 'line',
+xField: 'date',
+yField: 'scans',
+fill: true,
+}
+]
+},
+
+{
+xtype: 'chart',
+id: 'linechart2',
+store: atstore1,
+theme: 'Blue',
+axes: [
+{
+title: 'No. of Scans',
+type: 'Numeric',
+position: 'left',
+fields: ['scans1'],
+minimum: 0,
+maximum: 100,
+
+},
+{
+title: 'Timeline',
+type: 'Category',
+position: 'bottom',
+fields: ['date1']
+}
+],
+series: [
+{
+type: 'line',
+xField: 'date1',
+yField: 'scans1',
+fill: true,
+}]
+
+}]
+},
+
+
+ // 3 panel end
+
+
+
+
+
+{
+xtype: 'panel',
+title: 'Leads Scanned by Booth Users',    
+width: 438,
+height: 330,
+iconCls: 'dev-icon',
+draggable: true,
+renderTo: Ext.getBody(),
+layout: 'fit',
+items: [
+{
+xtype: 'chart',
+id:'boothchart',
+animate: true,
+store: boothstore,
+shadow: true,
+axes: [
+{
+type: 'Numeric',
+position: 'left',
+fields: ['data'],
+label: {
+renderer: Ext.util.Format.numberRenderer('0,0')
+},
+title: 'Scanned Leads',
+grid: true,
+minimum: 0,
+maximum: 50,
+steps: 6
+},
+{
+type: 'Category',
+position: 'bottom',
+fields: ['name'],
+title: 'Booth Users'
+}
+],
+series: [
+{
+type: 'column',
+axis: 'left',
+highlight: true,
+tips: {
+trackMouse: true,
+width: 140,
+height: 28,
+renderer: function(storeItem, item) 
+{
+this.setTitle(storeItem.get('name') + ' : ' + storeItem.get('data') + ' scans');
+}
+},
+label: 
+{
+display: 'insideEnd',
+'text-anchor': 'middle',
+field: 'data',
+renderer: Ext.util.Format.numberRenderer('0'),
+orientation: 'vertical',
+color: '#333'
+},
+xField: 'name',
+yField: 'data'
+}
+]
+}]
+
+}] 
+});    
+});
+
+</script>
+
+</td>
+
+</tr>
+</table>
+
+
+</td>
+
+</tr>
+</table>
+</div>
+
+<div style="clear:both; margin: 0 0 3px 0;">&nbsp;</div>
+
+<!--content end-->
+
+<!--footer START-->
+
+<div id="footerblock">
+<div id="footer">        
+<div id="footerleft">
+Copyright@ 2012 - Globalnest LLC.
+</div>
+<div id="footerright">
+<ul>
+<li><a href="#">Privacy Policy</a></li>
+<li>|</li>
+<li><a href="#">Terms of Use</a></li>
+</ul>
+</div>
+</div>
+</div>
+
+<!--footer end-->
+
+
+
+
+</apex:form>
+<!-- End Default Content REMOVE THIS -->
+</apex:page>

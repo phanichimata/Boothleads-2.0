@@ -1,0 +1,191 @@
+<apex:page controller="Eventattendees"  showHeader="false" renderAs="pdf" standardStylesheets="false" action="{!checkUserId}">
+
+<!--             QRCode_viewbadge  ,              -->
+<table width="100%"   cellspacing="0" cellpadding="0" style="margin:0px 2px 0px -20px"> 
+ <tr>
+
+ <td width="50%">
+ 
+ <apex:repeat value="{!LeftValues}" var="Left">
+     
+     
+     <table style="page-break-inside:avoid;margin-top:0.3in;"  cellspacing="0" cellpadding="0" border="0" valign="top">  <tr><td>
+     
+ <apex:repeat value="{!Left}" var="ss1">
+
+             
+            
+
+<table cellspacing="0" cellpadding="0" width="3.8in" height="3in" border="0">
+
+<tr style="height:7px">
+<td colspan="3">&nbsp;</td>
+</tr>
+
+
+<tr style="height:1.7cm">
+<td colspan="3" align="center"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td colspan="3" align="left"  style="padding-left:10px;">
+
+
+<table border="0" cellspacing="0" cellpadding="0" align="center" style="width:100%;">
+    <tr>
+        <td width="10%" style="padding-top:5px;"><apex:outputpanel rendered="{!logo}">
+
+<apex:image url="/servlet/servlet.FileDownload?file={!attach.EV_EventLogo__c}" width="2cm" height="1.7cm" style="{!logo}"/>
+
+</apex:outputpanel></td>
+        <td width="90%" style="text-align:right; width:90%;padding-right:5px;">{!ss1.ticket} </td>
+             </tr>   
+</table>
+</td>
+</tr>
+</table></td>
+</tr>
+<!--
+<tr>
+<td width="100%" colspan="3" align="center"><div style="text-align:center; border:0px; padding:3px 3px; ">
+{!allselectedevent[0].Event_Title__c}
+  </div></td>
+</tr>
+-->
+<tr>
+<td align="center" colspan="3">
+<font  style="color:{!selectedcolor};font-size:{!selectedsize};font-family:{!selectedfaceFir}">
+            <b>{!ss1.fname}</b>
+             </font>
+</td>
+</tr>
+
+
+<tr>
+<td align="center" colspan="3">
+ <font  style="color:{!selectedcolorS};font-size:{!selectedsizeS};font-family:{!selectedfacesec}">
+                     {!ss1.sname}
+                 </font>
+</td>
+</tr>
+
+
+<tr>
+<td width="18%" align="left" valign="top"> <!---{!eventselected}-->
+<apex:image value="https://chart.googleapis.com/chart?chs=100x100&cht=qr&chl= {!ss1.barCode}"/>
+
+</td>
+<td width="76%" colspan="2" align="left" valign="middle">
+ <font  face="TimesNewRoman" color="red" style="color:{!selectedcolorT};font-size:{!selectedsizeT};font-family:{!selectedfaceThr}">{!ss1.lname}</font>
+</td>
+</tr>
+
+<tr>
+<td colspan="3">&nbsp;</td>
+</tr>
+
+
+
+</table>
+</apex:repeat> 
+</td></tr></table>
+
+</apex:repeat>
+ 
+ </td>
+ 
+
+ <!------------------------ SECOEND TABLE START---------------------------------->
+ <td width="50%" valign="top" style="padding-Left:10px"> 
+ 
+ 
+ <apex:repeat value="{!RightValues}" var="Right">
+   
+     <table class="page" style="page-break-inside:avoid;margin-top:0.3in;" cellspacing="0" cellpadding="0">  <tr><td>
+ <apex:repeat value="{!Right}" var="ss2">
+
+
+<table cellspacing="0" cellpadding="0" width="3.8in" height="3in" border="0" style="margin-right:5px">
+
+<tr style="height:7px">
+<td colspan="3">&nbsp;</td>
+</tr>
+
+
+<tr style="height:1.7cm">
+<td colspan="3" align="center"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td colspan="3" align="left"  style="padding-left:10px;">
+
+
+<table border="0" cellspacing="0" cellpadding="0" align="center" style="width:100%;">
+    <tr>
+        <td width="10%" style="padding-top:5px"><apex:outputpanel rendered="{!logo}">
+
+<apex:image url="/servlet/servlet.FileDownload?file={!attach.EV_EventLogo__c}" width="2cm" height="1.7cm" style="{!logo}"/>
+
+</apex:outputpanel></td>
+        <td width="90%" style="text-align:right; width:90%; padding-right:10px;"> {!ss2.ticket}</td>
+             </tr>   
+</table>
+</td>
+</tr>
+</table></td>
+</tr>
+<!--
+<tr>
+<td width="100%" colspan="3" align="center"><div style="text-align:center; border:0px; padding:3px 3px; ">
+{!allselectedevent[0].Event_Title__c}
+  </div></td>
+</tr>
+-->
+<tr>
+<td align="center" colspan="3">
+<font  style="color:{!selectedcolor};font-size:{!selectedsize};font-family:{!selectedfaceFir}">
+                                            <b>  {!ss2.fname}</b>
+                                               </font>  
+</td>
+</tr>
+
+
+<tr>
+<td align="center" colspan="3">
+ <font style="color:{!selectedcolorS};font-size:{!selectedsizeS};font-family:{!selectedfacesec}">
+                                                {!ss2.sname}
+                                             </font>
+</td>
+</tr>
+
+
+<tr>
+<td width="18%" align="left" valign="top"><!---{!eventselected}--->
+<apex:image value="https://chart.googleapis.com/chart?chs=100x100&cht=qr&chl= {!ss2.barCode}"/></td>
+<td width="76%" colspan="2" align="left" valign="middle">
+ <font  face="TimesNewRoman" style="color:{!selectedcolorT};font-size:{!selectedsizeT};font-family:{!selectedfaceThr};">{!ss2.Lname}</font>
+</td>
+</tr>
+
+<tr>
+<td colspan="3">&nbsp;</td>
+</tr>
+
+
+
+</table>
+
+
+
+</apex:repeat>
+ 
+ </td></tr></table>
+
+
+ </apex:repeat>
+ 
+ 
+
+ </td> 
+ 
+ </tr>
+ 
+</table>
+        
+</apex:page>

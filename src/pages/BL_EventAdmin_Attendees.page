@@ -1,0 +1,119 @@
+<apex:page controller="Eventattendees" showHeader="false">
+<apex:form >
+<!-- 
+<link rel="Stylesheet" type="text/css" href="{!$Resource.extjs4_5}/extjs4_5/resources/css/ext-all.css"/>
+<script type="text/javascript" src="{!$Resource.extjs4_1}/extjs4_1/ext-all.js"></script>
+<script type="text/javascript" src="{!$Resource.extjs4_3}/extjs4_3/examples/ux/data/PagingMemoryProxy.js"></script>
+-->
+
+<script type="text/javascript" charset="utf-8" src="http://cdn.sencha.io/ext-4.0.7-gpl/ext-all.js"></script>
+<link rel="stylesheet" type="text/css" href="http://cdn.sencha.io/ext-4.0.7-gpl/resources/css/ext-all.css"/> 
+
+
+<script type="text/javascript">
+
+ var GridTitle='Attendees';     
+ Ext.onReady(function()
+ {
+ var myData1=new Array();
+
+ <apex:repeat value="{!TotalAttendees}" var="Attendees">
+ <apex:repeat value="{!Attendees}" var="row">    
+  var rowArray=new Array();
+  
+  rowArray[0]='{!row.atnd.id}';
+  
+  var fName="{!row.atnd.AS_id__r.AS_FirstName__c}";     
+  rowArray[1]=fName.replace(/\'/g,'\'');
+  
+  var lName="{!row.atnd.AS_id__r.AS_LastName__c}";
+  rowArray[2]=lName.replace(/\'/g,'\'');
+ 
+  rowArray[3]='{!row.atnd.AS_id__r.AS_CellPhone__c}';
+  
+  var eEmail="{!row.atnd.AS_id__r.AS_Email__c}";
+  rowArray[4]=eEmail.replace(/\'/g,'\'');
+  
+  var cName ="{!row.atnd.AS_id__r.AS_Company__c}";
+  rowArray[5]=cName.replace(/\'/g,'\'');
+  
+  rowArray[6]='{!row.status},{!row.Estatus}';
+  
+  rowArray[7]='{!row.atnd.AS_id__r.AS_ImageUrl__c}';
+    
+  myData1.push(rowArray);  
+  </apex:repeat>
+ </apex:repeat>     
+   
+ if(myData1.length<=0)
+ {
+  GridTitle=GridTitle+' - <span style=\'padding-left:200px\'><font color=\'red\'>No Records Found</font></span>';
+  tSize=0;        
+ }
+
+ var store = Ext.create('Ext.data.Store', {
+  fields:[{name:'id'},{name:'AS_id__r.AS_FirstName__c'},{name:'AS_id__r.AS_LastName__c'},{name:'AS_id__r.AS_CellPhoner__c'},{name:'AS_id__r.AS_Email__c'},{name:'AS_id__r.AS_Company__c'},{name:'s'},{name:'img'}],
+ });
+ store.loadData(myData1);
+  
+ var grid = Ext.create('Ext.grid.Panel', {
+    store: store,
+    columns: [                  
+    {               
+     id:'Id', header:"<b>id</b>",width:150, sortable:true, dataIndex:'id',hidden:true
+    },
+    {
+     id:'Action', header:"<b>Action</b>",width:55, sortable:true, renderer: function(value, metaData, record, rowIndex, colIndex, store){ return '<a href="#" onclick="editRecord(\''+ record.data['id']+'\')" style="color:blue;text-decoration:none;"><img src="{!URLFOR($Resource.Qrcode_edit)}" border="3"  style="border-color:#003068;width:16px;height:16px" /></a> | <a href=\'#\' onclick="deleteRecord(\''+ record.data['id']+'\')" style="color:blue;text-decoration:none;"><img src="{!URLFOR($Resource.Qrcode_delete)}" border="3"  style="border-color:#003068;width:16px;height:16px" /></a>';}
+    },                    
+    {   
+     id:'atnd.AS_id__r.AS_FirstName__c', header:"<b>Name</b>",width:200, sortable:true, dataIndex:'AS_id__r.AS_LastName__c',
+     renderer: function(value, p, r)
+     {
+      return '<a href="#" onClick="detailpage(\''+ r.data['id']+'\')" style=\"color:blue;text-decoration:underline;\"> '+r.data['AS_id__r.AS_FirstName__c'] + ' ' + r.data['AS_id__r.AS_LastName__c']+'</a>';
+     }
+    },  
+    {
+     id:'AS_id__r.AS_CellPhone__c',header:"<b>Phone</b>",width:150, sortable:true, dataIndex:'AS_id__r.AS_CellPhoneNumber__c',hidden:false
+    },    
+    {
+     id:'AS_id__r.AS_Email__c', header:"<b>E Mail</b>",width:200,height:550, sortable:true,dataIndex:'AS_id__r.AS_Email__c',hidden:false
+    },
+    {
+     id:'AS_id__r.AS_Company__c', header:"<b>Company</b>",width:200,height:550, sortable:true, dataIndex:'AS_id__r.AS_Company__c',hidden:false
+    },
+    {
+     id:'s',header:"<b>Status</b>",width:100,height:550, sortable:true, dataIndex:'s',
+     renderer:function(value, metaData, record, rowIndex, colIndex, store)
+     {
+      // alert('------------------------'+value);
+      if(value == 'Printed,Send')
+      { 
+       return  '<a href="#" onclick="editstatus(\''+ record.data['id']+'\')"><image src="{!URLFOR($Resource.notprinted)}" title="printed" style="border-color:#003068;width:16px;height:16px;"/></a> | <a href="#" onclick="editestatus(\''+ record.data['id']+'\')"><image src="{!URLFOR($Resource.sent)}" title="Did not send profile update" style="border-color:#003068;width:22px;height:22px"/></a>';}      
+      else if(value == 'Printed,Sent')
+      {
+       return '<a href="#" onclick="editstatus(\''+ record.data['id']+'\')"><image src="{!URLFOR($Resource.notprinted)}" title="printed" style="border-color:#003068;width:16px;height:16px;"/> </a> | <a href="#" onclick="editestatus(\''+ record.data['id']+'\')"> <image src="{!URLFOR($Resource.notsend)}" title="profiles update has been sent"  style="border-color:#003068;width:16px;height:16px"/></a>';}
+      else if(value == 'Not Printed,Send')
+      {
+       return '<a href="#" onclick="editstatus(\''+ record.data['id']+'\')"><image src="{!URLFOR($Resource.printd)}" title="Not printed" style="border-color:#003068;width:16px;height:16px"/> </a> | <a href="#" onclick="editestatus(\''+ record.data['id']+'\')"> <image src="{!URLFOR($Resource.sent)}" title="Did not send profile update"  style="border-color:#003068;width:22px;height:22px"/> </a>';}        
+      else if(value == 'Not Printed,Sent')
+      {
+       return '<a href="#" onclick="editstatus(\''+ record.data['id']+'\')"><image src="{!URLFOR($Resource.printd)}" title="Not printed" style="border-color:#003068;width:16px;height:16px"/></a> |<a href="#" onclick="editestatus(\''+ record.data['id']+'\')"> <image src="{!URLFOR($Resource.notsend)}" title="profiles update has been sent"  style="border-color:#003068;width:16px;height:16px"/></a>';}       
+     }
+    },
+    {
+     id:'img', header:"<b>Image</b>",width:75, sortable:true,dataIndex:'img' ,renderer: function(value, metaData, record, rowIndex, colIndex, store){
+     if(value)
+     return '<image src="/servlet/servlet.FileDownload?file='+value+'" height="30px" width="30px"/>';}  
+    }  
+    ], 
+    height: 560, 
+    width: 1000,
+    title:GridTitle,
+    renderTo: Ext.getBody(),                                              
+  });
+ });   
+
+
+</script>
+</apex:form>
+</apex:page>

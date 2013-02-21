@@ -1,0 +1,11 @@
+<apex:page showHeader="false" sidebar="false"  standardStylesheets="false"  controller="Eventattendees"  renderAs="pdf">
+
+
+<apex:form >
+ 
+ 
+ <apex:stylesheet value="{!$Resource.advancedpdfresource}"/>
+<apex:stylesheet value="{!URLFOR($Resource.advancedpdfresource,'_styles.css')}"/>
+<!--apex:commandButton value="pdf" action="{!generatepdf}"/-->
+</apex:form>
+</apex:page>

@@ -1,0 +1,383 @@
+<apex:page controller="BL_boothDummyCon" showHeader="false" id="hi">
+  
+  <apex:stylesheet value="{!URLFOR($Resource.QRCode_CSS,"css/screen.css")}"/>
+
+
+<script type="text/JavaScript">
+ function phani(){
+ 
+ var x=document.getElementById("{!$Component.editfrm.conatctName}").value;
+ 
+ 
+ }
+
+
+function ShowHideForm1 () {
+var v = document.getElementById("opt_in1").checked;
+var f = document.getElementById('{!$Component.editfrm.panel1}');
+if (v) {
+f.style.display="inline";
+}
+else {
+f.style.display="none";
+}
+}
+
+
+
+function ShowHideForm () {
+
+var v = document.getElementById("opt_in").checked;
+var f = document.getElementById('{!$Component.editfrm.panel}');
+if (v) {
+f.style.display="inline";
+}
+else {
+f.style.display="none";
+}
+}
+
+
+
+function ShowHideForm2 () {
+var v = document.getElementById("opt_in2").checked;
+var f = document.getElementById('{!$Component.editfrm.panel2}');
+if (v) {
+f.style.display="inline";
+}
+else {
+f.style.display="none";
+}
+}
+
+</script>
+
+
+
+            
+
+   
+
+   <apex:form id="frm2">
+        <script>
+    
+        var hdneventName;
+   
+    </script>
+    
+     
+    
+
+        <link rel="Stylesheet" type="text/css"
+            href="{!$Resource.extjs}/ext-3.1.1/resources/css/ext-all.css" />
+        <link rel="Stylesheet" type="text/css"
+            href="{!$Resource.extjs}/ext-3.1.1/examples/ux/css/LockingGridView.css"/>
+        <script type="text/javascript"
+            src="{!$Resource.extjs}/ext-3.1.1/adapter/ext/ext-base.js"></script>
+        <script type="text/javascript"
+            src="{!$Resource.extjs}/ext-3.1.1/ext-all.js"></script>
+        <script type="text/javascript"
+            src="{!$Resource.extjs}/ext-3.1.1/examples/ux/PagingMemoryProxy.js"></script>
+        <script type="text/javascript"
+            src="{!$Resource.extjs}/ext-3.1.1/examples/ux/ProgressBarPager.js"></script>
+        <script type="text/javascript"
+            src="{!$Resource.extjs}/ext-3.1.1/examples/ux/LockingGridView.js"></script>
+             <script type="text/javascript" src="{!$Resource.extjs}/ext-3.1.1/examples/ux/RowEditor.js"></script>
+            <script type="text/javascript" src="{!$Resource.extjs}/ext-3.1.1/examples/ux/PanelResizer.js"></script>
+            
+               <script type="text/javascript" src="{!$Resource.extjs}/ext-3.1.1/examples/ux/progress-bar-pager.js"></script>
+       
+        <script type="text/javascript"> 
+         var GridTitle='Event Attendees'; 
+        Ext.onReady(function(){
+        var mydata;
+        var selectedChkbox;
+        var finalSter='';              
+        var fm = Ext.form;
+        var myData1=new Array();
+        
+        var myDataString1 = 'var myData = [ ';     
+        <apex:repeat value="{!ListOfBooths}" var="row">   
+        
+         var rowArray=new Array();
+          rowArray[0]=  '{!row.BT_id__c}';
+          rowArray[1]=  '{!row.BT_id__r.BT_Name__c}';   
+
+          rowArray[2]=  '{!row.BT_id__r.BT_Location__c }';
+           rowArray[3]=  '{!row.BT_id__r.EV_id__r.EV_Title__c}';
+           
+             rowArray[4]=  '{!row.BT_id__r.BT_RegistrationLink__c}';
+             
+               rowArray[5]=  '{!row.BT_id__r.BT_ContactName__c}';
+             
+                rowArray[6]=  '{!row.BT_id__r.BT_ContactEmail__c}';
+                 rowArray[7]=  '{!row.BT_id__r.BT_ContactPhone__c}';
+                 
+                 
+         
+          myData1.push(rowArray);          
+          
+        </apex:repeat>   
+        
+     if(myData1.length<=0){
+          GridTitle=GridTitle+' - <span style=\'padding-left:200px\'><font color=\'red\'>No Records Found</font></span>';
+          tSize=0;        
+        }
+      
+           
+       
+       
+        //var selectItem=false;
+    var store = new Ext.data.SimpleStore(
+    {
+        
+
+fields:[{name:'id'},{name:'Name'},{name:'Location'},{name:'Event'},{name:'RegistrationLink'},{name:'ContactName'},{name:'ContactEmail'},{name:'ContactPhone'}]}
+    );
+            store.loadData(myData1);
+        //CREATES GRID Columns pglistcost
+        
+        function openrender(value, p, record){
+            return String.format('<a <href="#" onClick="selectOneCheckBox(\'{0}\')" style="color:blue;text-decoration:none;">{0}</a>',value, record.data.state, record.data.ptt, 'Open');
+        }  
+        
+        
+        var grid = new Ext.grid.GridPanel({         
+            store: store,colModel: new Ext.ux.grid.LockingColumnModel 
+    ([
+        {
+            id:'Id', header:"<b>id</b>", sortable:true, dataIndex:'id',hidden:true
+        },
+        {
+            id:'Action', header:"<b> Action </b>",width:80, sortable:true, renderer: function(value, metaData, record, rowIndex, colIndex, store){ return '<a href="#" onclick="editRecord(\''+ record.data['id']+'\')" style="color:blue;text-decoration:none;"> Edit </a>';}
+        },
+       
+        {
+            id:'Name', header:"<b> Booth Name </b>",width:250, sortable:true, dataIndex:'Name', renderer: function(value, p, r)
+                    
+            //{return String.format('<a <href="#" style="color:blue;text-decoration:none;">'+ r.data['Attendee_FirstName__c'] + ' ' + r.data['Attendee_LastName__c']+'</a>')}
+            {return '<a href="#" onClick="selectOneCheckBox(\''+ r.data['Name']+','+r.data['id']+'\')" style=\"color:blue;text-decoration:underline;\"> '+ r.data['Name']+'</a>';}
+        },
+        {
+            id:'Location', header:"<b> Booth Location </b>",width:70, sortable:true,dataIndex:'Location'}
+        ,
+        {
+            id:'Event', header:"<b> Event </b>",width:200, sortable:true,dataIndex:'Event'}
+        
+        ,
+        {
+            id:'RegistrationLink', header:"<b> Registration Link </b>",width:250, sortable:true,dataIndex:'RegistrationLink'}
+        
+         ,
+        {
+            id:'ContactName', header:"<b> Contact Name </b>",width:200, sortable:true,dataIndex:'ContactName'}
+        
+        ,
+        {
+            id:'ContactEmail', header:"<b>Contact Email </b>",width:200, sortable:true,dataIndex:'ContactEmail'}
+        
+        ,
+        {
+     
+            id:'ContactPhone', header:"<b> Contact Phone </b>",width:100, sortable:true,dataIndex:'ContactPhone'}
+        
+        
+        
+                      ]),
+            stripeRows:true,
+            columnLines: false,
+            view: new Ext.ux.grid.LockingGridView({ 
+                    getRowClass : function (row, index) { 
+                      var cls = ''; 
+                      var data = row.data;
+                        
+                   } 
+            }),
+            height: 400, width: '100%',
+            title:GridTitle,                           
+            listeners:{
+                        cellclick :function(grid,rowIndex,columnIndex,e){
+                            var record = grid.getStore().getAt(rowIndex);  // Get the Record
+                            var fieldName = grid.getColumnModel().getDataIndex(columnIndex); // Get field name
+                            recordId2=record.get('id');
+                           
+                           // selectOneCheckBox(recordId2);             
+                        }
+                    },
+                     
+                    
+                    bbar: new Ext.PagingToolbar({
+                             pageSize: 10,
+                             store: store,
+                             displayInfo: true,
+                             sidebar: true,
+                             plugins: new Ext.ux.ProgressBarPager(),
+                             align:'right'
+                    }),
+                    
+                  sm: new Ext.grid.CheckboxSelectionModel(
+                    {
+                        singleSelect:true                       
+                    }
+                )                        
+           });
+            grid.render('items-grid1');
+            grid.getSelectionModel().on('selectionchange', function(sm){
+       
+            if(sm.getSelections()!=null || sm.getSelections()!='')
+            {
+                strNamesmult=''; 
+                strCategory='';        
+                selectedCheckboxLength=0;
+                
+                if(sm.getSelections().length>0) 
+                {
+                    selectedCheckboxLength=sm.getSelections().length ;
+                    
+                    for(var cnt=0;cnt<=selectedCheckboxLength-1;cnt++) 
+                    {
+                        if(strNamesmult!=null && strNamesmult=='') 
+                        {
+                            strNamesmult=sm.getSelections()[cnt].get('recordId2');
+                        } 
+                        else if((strNamesmult!=null) && (strNamesmult!=''))
+                        {
+                            strNamesmult=strNamesmult+','+sm.getSelections()[cnt].get('recordId2');
+                        }
+                    }
+                } 
+           
+            }
+         });
+         
+        });   
+                
+        
+     
+        function editRecord(eventname)
+        {
+        
+            hdneventName.value=eventname;
+            editAttendees(eventname);
+        }
+        
+         
+       </script>
+
+     
+      
+     
+       <script type="text/javascript">
+function grabExName()
+{
+//var ex = document.getElementById("exname").value;
+alert('v');
+}
+</script>
+       
+        
+        
+            <div id="items-grid1" />
+        
+
+   <apex:inputHidden value="{!eventName}" id="eventNameValue" />
+        
+       <apex:actionFunction action="{!editAttendees}" name="editAttendees" >
+        </apex:actionFunction>
+
+        <script>
+        hdneventName = document.getElementById("{!$Component.eventNameValue}");
+        </script> 
+
+    </apex:form>
+
+
+
+
+        <apex:form id="editfrm"> 
+<apex:outputPanel id="tstpopup1">
+            <apex:outputPanel styleClass="popupBackground" layout="block" rendered="{!displayPopUpForGrid}" />
+            <apex:outputPanel styleClass="custPopup" layout="block" rendered="{!displayPopUpForGrid}" style="height:auto;width:75%">
+        
+       
+<div style="text-align:center;">
+<div style="margin:0px auto; text-align:left; width:50%;">
+<input type="checkbox" id="opt_in1" onchange="ShowHideForm1();" />  <font color="#C70200" face="verdana"><b>Contact Information </b> </font>
+</div>
+
+<div>
+<apex:outputPanel id="panel1" style="display:none">
+
+ <table width="50%" border="0" cellspacing="0" cellpadding="0" align="center" style="margin:0px auto;">
+
+<tr>
+<td width="50%" height="30" align="left" valign="middle" style="padding-left:15px;">Conatct Name:</td>
+<td width="50%" height="30" align="left" valign="middle" style="padding-left:15px;">
+<apex:InputField value="{!booth.BT_ContactName__c}" id="conatctName"/></td>
+</tr>
+<tr>
+<td height="30" align="left" valign="middle" style="padding-left:15px;"> Contact Email:</td>
+<td height="30" align="left" valign="middle" style="padding-left:15px;"><apex:InputField value="{!booth.BT_ContactEmail__c}" /></td>
+</tr>
+<tr>
+<td height="30" align="left" valign="middle" style="padding-left:15px;">Contact Number:</td>
+<td height="30" align="left" valign="middle" style="padding-left:15px;"><apex:InputField value="{!booth.BT_ContactPhone__c}" /></td>
+</tr>
+</table>
+ 
+ 
+</apex:outputPanel>
+</div>
+     
+     
+     
+   
+   <div style="margin:0px auto; text-align:left; width:50%">
+<input type="checkbox" id="opt_in" onchange="ShowHideForm();" /> <font color="#C70200" face="verdana"><b> Marketing Material</b> </font>
+</div>
+
+<div>
+<apex:outputPanel id="panel" style="display:none">
+ <apex:inputFile value="{!broacher}" fileName="{!attendeeNameAfterEdit}"> 
+ </apex:inputFile>
+</apex:outputPanel>
+</div>
+   
+   
+   
+ <div style="margin:0px auto; text-align:left; width:50%;">
+<input type="checkbox" id="opt_in2" onchange="ShowHideForm2();" />  <font color="#C70200" face="verdana"><b> Link Location</b> </font>
+</div>  
+   
+     <div>
+<apex:outputPanel id="panel2" style="display:none">
+<table width="50%" border="0" cellspacing="0" cellpadding="0" style=" margin:0px auto;">
+
+<tr>
+<td width="50%" height="30" align="left" valign="middle" style="padding-left:15px;"> Registration Link :</td>
+<td width="50%" height="30" align="left" valign="middle">
+<apex:InputField value="{!booth.BT_RegistrationLink__c}" /></td>
+</tr>
+
+</table>
+</apex:outputPanel>
+</div>
+  </div> 
+     <div align="center">
+    
+     <apex:commandButton value="Save"    action="{!savePopupValues}"  styleClass="awesome"/>
+&nbsp;
+<apex:commandButton value="Close" action="{!closePopup1}" immediate="true" styleClass="awesome" />
+
+     
+     </div>
+     
+            </apex:outputPanel>
+        </apex:outputPanel>
+    </apex:form>
+
+
+            
+     
+ 
+</apex:page>

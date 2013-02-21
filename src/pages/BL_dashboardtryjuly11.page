@@ -1,0 +1,648 @@
+<apex:page controller="Dashboardtryjuly11cntrl" showHeader="false" standardStylesheets="false">
+<div style="float:left">
+<table width="480" border="0" height="40" cellpadding="0" cellspacing="0">
+<tr>
+<td  bgcolor="#2E64FE"  style="color:#FFFFFF">
+
+Event Report
+
+</td>
+<td bgcolor="#2E64FE"  style="color:#FFFFFF">
+<apex:form >
+<apex:commandLink action="{!ChartimgAction}"  title="Chart"> <apex:image value="{!$Resource.bl_chartimg}"/> </apex:commandLink> &nbsp;&nbsp;&nbsp;
+<apex:commandLink action="{!GridimgAction}" title="Grid"> <apex:image value="{!$Resource.bl_gridimg}"/> </apex:commandLink>
+</apex:form>
+</td>
+</tr>
+</table>
+</div>
+<div style="float:right;">
+<table width="480" border="0" height="40" cellpadding="0" cellspacing="0">
+<tr>
+<td  bgcolor="#2E64FE" style="color:#FFFFFF">
+
+Geography Report
+
+</td>
+<td bgcolor="#2E64FE"  style="color:#FFFFFF">
+
+<apex:form >
+<apex:commandLink action="{!PieChartimgAction}"  title="Chart"> <apex:image value="{!$Resource.bl_chartimg}"/> </apex:commandLink> &nbsp;&nbsp;&nbsp;
+<apex:commandLink action="{!PieGridimgAction}" title="Grid"> <apex:image value="{!$Resource.bl_gridimg}"/> </apex:commandLink>
+</apex:form>
+</td>
+</tr>
+</table>
+</div>
+
+
+
+
+
+
+<!-- Industry Start -->
+<div>
+<apex:outputPanel rendered="{!PageReportBool}">
+<apex:form >
+   <script type="text/javascript" charset="utf-8" src="http://cdn.sencha.io/ext-4.0.7-gpl/ext-all.js"></script>
+       <link rel="stylesheet" type="text/css" href="http://cdn.sencha.io/ext-4.0.7-gpl/resources/css/ext-all.css"/>
+       
+ <script type="text/javascript"> 
+ Ext.require('Ext.chart.*');
+ 
+
+Ext.onReady(function () {
+
+ var store1 = Ext.create('Ext.data.JsonStore', {
+   fields: ['nameindus', 'dataI'],
+   data: [
+   <apex:repeat value="{!indus}" var="a">
+   {
+   'nameindus' : '{!a.industry}',  
+   'dataI' :{!a.indusrec}
+   },
+   </apex:repeat>    
+    
+   ]
+});
+
+
+
+Ext.create('Ext.chart.Chart', {
+    renderTo: Ext.getBody(),
+    width: 480,
+    height: 300,
+    animate: true,
+    store: store1,
+    layout : 'hbox',
+    layoutConfig : {
+        align : 'right'
+    },
+
+  
+    axes: [
+        {
+            type: 'Numeric',
+            position: 'left',
+            fields: ['dataI'],
+            label: {
+                renderer: Ext.util.Format.numberRenderer('0,0')
+            },
+            title: 'Attendees',
+            grid: true,
+            minimum: 0,
+            maximum:100
+        },
+   
+        {
+            type: 'Category',
+            position: 'bottom',
+            fields: ['nameindus'],
+            title: 'Sample Events'
+        }
+    ],
+    series: [
+        {
+            type: 'column',
+            axis: 'left',
+            highlight: true,
+            tips: {
+              trackMouse: true,
+              width: 140,
+              height: 28,
+              renderer: function(storeItem, item) {
+                this.setTitle(storeItem.get('nameindus') + ': ' + storeItem.get('dataI') + ' $');
+              }
+            },
+            label: {
+              display: 'insideEnd',
+              'text-anchor': 'middle',
+                field: 'dataI',
+                renderer: Ext.util.Format.numberRenderer('0'),
+                orientation: 'vertical',
+                color: '#333'
+            },
+            xField: 'nameindus',
+            yField: 'dataI'
+        }
+    ]
+});
+
+
+
+});
+</script>
+</apex:form>
+</apex:outputpanel>
+</div>
+<!-- Industry End -->
+
+<!-- Geography Start -->
+<div style="float:right;padding-top:50px;">
+<apex:form >
+
+ <script type="text/javascript"> 
+ Ext.require('Ext.chart.*');
+ 
+
+Ext.onReady(function () {
+
+   var store = Ext.create('Ext.data.JsonStore', {
+     fields: ['namegeo', 'datageo'],
+     data: [
+     <apex:repeat value="{!grphy}" var="a">
+     {
+     'namegeo' : '{!a.geogy}',  
+     'datageo' :{!a.georecords}
+     },
+    </apex:repeat>
+   
+    ]
+});
+
+Ext.create('Ext.chart.Chart', {
+    renderTo: Ext.getBody(),
+    width: 500,
+    height: 350,
+    animate: true,
+    store: store,
+    theme: 'Base:gradients',
+    
+    
+    series: [{
+        type: 'pie',
+        field: 'datageo',
+        showInLegend: true,
+        tips: {
+            trackMouse: true,
+            width: 140,
+            height: 50,
+            renderer: function(storeItem, item) {
+                // calculate and display percentage on hover
+                var total = 0;
+                store.each(function(rec) {
+                    total += rec.get('datageo');
+                });
+                this.setTitle(storeItem.get('namegeo') + ': ' + storeItem.get('datageo') + '- Attendees'); 
+            }
+        },
+        highlight: {
+            segment: {
+                margin: 20
+            }
+        },
+        label: {
+            field: 'namegeo',
+            display: 'rotate',
+            contrast: true,
+            font: '18px Arial'
+        }
+    }]
+});
+
+
+ });  
+   
+</script>
+
+</apex:form>
+</div>
+<!-- Geography End -->
+
+<!--<div style="position:absolute;margin-top:450px;border:1px solid #FF0000; margin-left:10px; margin-right:10px;" width="100%" >-->
+<table width="100%" height="40" border="1" align="center"  style="position:absolute;margin-top:400px;">
+<tr>
+<td>
+
+fhyrdfghfcbvc
+
+</td>
+<div style="border:2px solid #FF0000;position:absolute;">
+<apex:form >
+
+ <script type="text/javascript"> 
+ Ext.require('Ext.chart.*');
+ 
+
+Ext.onReady(function () {
+
+   var store = Ext.create('Ext.data.JsonStore', {
+     fields: ['namegeo', 'datageo'],
+     data: [
+     <apex:repeat value="{!grphy}" var="a">
+     {
+     'namegeo' : '{!a.geogy}',  
+     'datageo' :{!a.georecords}
+     },
+    </apex:repeat>
+   
+    ]
+});
+
+Ext.create('Ext.chart.Chart', {
+    renderTo: Ext.getBody(),
+    width: 500,
+    height: 350,
+    animate: true,
+    store: store,
+    theme: 'Base:gradients',
+    
+    
+    series: [{
+        type: 'pie',
+        field: 'datageo',
+        showInLegend: true,
+        tips: {
+            trackMouse: true,
+            width: 140,
+            height: 50,
+            renderer: function(storeItem, item) {
+                // calculate and display percentage on hover
+                var total = 0;
+                store.each(function(rec) {
+                    total += rec.get('datageo');
+                });
+                this.setTitle(storeItem.get('namegeo') + ': ' + storeItem.get('datageo') + '- Attendees'); 
+            }
+        },
+        highlight: {
+            segment: {
+                margin: 20
+            }
+        },
+        label: {
+            field: 'namegeo',
+            display: 'rotate',
+            contrast: true,
+            font: '18px Arial'
+        }
+    }]
+});
+
+
+ });  
+   
+</script>
+
+</apex:form>
+</div>
+
+
+
+<td width="30px">
+
+&nbsp;
+
+</td>
+<td>
+
+fhyrdfghfcbvc
+
+</td>
+
+<apex:form >
+
+ <script type="text/javascript"> 
+ Ext.require('Ext.chart.*');
+ 
+
+Ext.onReady(function () {
+
+   var store = Ext.create('Ext.data.JsonStore', {
+     fields: ['namegeo', 'datageo'],
+     data: [
+     <apex:repeat value="{!grphy}" var="a">
+     {
+     'namegeo' : '{!a.geogy}',  
+     'datageo' :{!a.georecords}
+     },
+    </apex:repeat>
+   
+    ]
+});
+
+Ext.create('Ext.chart.Chart', {
+    renderTo: Ext.getBody(),
+    width: 500,
+    height: 350,
+    animate: true,
+    store: store,
+    theme: 'Base:gradients',
+    
+    
+    series: [{
+        type: 'pie',
+        field: 'datageo',
+        showInLegend: true,
+        tips: {
+            trackMouse: true,
+            width: 140,
+            height: 50,
+            renderer: function(storeItem, item) {
+                // calculate and display percentage on hover
+                var total = 0;
+                store.each(function(rec) {
+                    total += rec.get('datageo');
+                });
+                this.setTitle(storeItem.get('namegeo') + ': ' + storeItem.get('datageo') + '- Attendees'); 
+            }
+        },
+        highlight: {
+            segment: {
+                margin: 20
+            }
+        },
+        label: {
+            field: 'namegeo',
+            display: 'rotate',
+            contrast: true,
+            font: '18px Arial'
+        }
+    }]
+});
+
+
+ });  
+   
+</script>
+
+</apex:form>
+
+
+
+
+
+</tr>
+</table>
+<!--</div>-->
+
+<!-- Grid code Start -->
+
+<!--
+<div style="float:right;padding-right:25px;">
+<apex:outputPanel rendered="{!gridreportbool}">
+<apex:form >
+<apex:commandLink value="back to chart" action="{!BackChartAction}"/>
+
+
+
+ 
+ <script>
+            var hdneventName;
+ </script>
+ 
+    <link rel="Stylesheet" type="text/css" href="{!$Resource.extjs}/ext-3.1.1/resources/css/ext-all.css"/>
+    
+    <link rel="Stylesheet" type="text/css" href="{!$Resource.extjs}/ext-3.1.1/examples/ux/css/LockingGridView.css"/>
+    
+    <script type="text/javascript" src="{!$Resource.extjs}/ext-3.1.1/adapter/ext/ext-base.js"></script>
+    
+    <script type="text/javascript" src="{!$Resource.extjs}/ext-3.1.1/ext-all.js"></script>
+    
+    <script type="text/javascript" src="{!$Resource.extjs}/ext-3.1.1/examples/ux/PagingMemoryProxy.js"></script>
+    
+    <script type="text/javascript" src="{!$Resource.extjs}/ext-3.1.1/examples/ux/ProgressBarPager.js"></script>
+    
+    <script type="text/javascript" src="{!$Resource.extjs}/ext-3.1.1/examples/ux/LockingGridView.js"></script>
+    
+    
+  <script type="text/javascript"> 
+  
+         var GridTitle='Reports'; 
+         Ext.onReady(function(){
+         var mydata;
+         var selectedChkbox;
+         var finalSter='';              
+         var fm = Ext.form;
+         var myData1=new Array();
+         var myDataString1 = 'var myData = [ ';      
+      <apex:repeat value="{!reportTypes}" var="row">   
+      
+          var rowArray=new Array();
+          rowArray[0]=  '{!row.id}';
+          var RName ="{!row.RE_Name__c}";
+          rowArray[1]=  RName.replace(/\'/g,'\'');   
+          var lName ="{!row.RE_Description__c}";
+          rowArray[2]=  lName.replace(/\'/g,'\'');
+          rowArray[3]=  '{!row.CreatedDate}';
+          myData1.push(rowArray);          
+         
+     </apex:repeat>   
+        
+      if(myData1.length<=0)
+      {
+        GridTitle=GridTitle+' - <span style=\'padding-left:200px\'><font color=\'red\'>No Records Found</font></span>';
+        tSize=0;        
+      }
+        
+        //var selectItem=false;
+    var store = new Ext.data.SimpleStore(
+    {
+       fields:[{name:'id'},{name:'RE_Name__c'},{name:'RE_Description__c'},{name:'CreatedDate'}]}
+    );
+        store.loadData(myData1);
+        //CREATES GRID Columns pglistcost
+        
+        function openrender(value, p, record){
+            return String.format('<a <href="#" onClick="selectOneCheckBox(\'{0}\')" style="color:blue;text-decoration:none;">{0}</a>',value, record.data.state, record.data.ptt, 'Open');
+        }  
+        
+        
+        var grid = new Ext.grid.GridPanel({         
+            store: store,colModel: new Ext.ux.grid.LockingColumnModel 
+    ([
+        {
+            id:'Id', header:"<b>id</b>", sortable:true, dataIndex:'id',hidden:true
+        },
+        {
+            id:'Action', header:"<b> Action </b>",width:250, sortable:true, renderer: function(value, metaData, record, rowIndex, colIndex, store){ return '<a href="#" onclick="editRecord(\''+ record.data['id']+'\')" style="color:blue;text-decoration:none;"> Edit </a>';}
+        },
+       
+        {
+            id:'RE_Name__c', header:"<b> Report Name </b>",width:300, sortable:true, dataIndex:'RE_Name__c', renderer: function(value, p, r)
+                    
+            //{return String.format('<a <href="#" style="color:blue;text-decoration:none;">'+ r.data['Attendee_FirstName__c'] + ' ' + r.data['Attendee_LastName__c']+'</a>')}
+            {return '<a href="#" onClick="selectOneCheckBox(\''+r.data['RE_Name__c']+'\')" style=\"color:blue;text-decoration:underline;\"> '+ r.data['RE_Name__c']+'</a>';}
+        },
+        {
+            id:'RE_Description__c', header:"<b> Report Description </b>",width:300, sortable:true,dataIndex:'RE_Description__c'
+        },
+        {
+            id:'CreatedDate', header:"<b> Created Date </b>",width:200, sortable:true, dataIndex:'CreatedDate',renderer:Ext.util.Format.dateRenderer('m/d/Y')
+        }
+                ]),
+            stripeRows:true,
+            columnLines: false,
+            view: new Ext.ux.grid.LockingGridView({ 
+                      getRowClass : function (row, index) { 
+                      var cls = ''; 
+                      var data = row.data;
+                        
+                   } 
+            }),
+            height: 350, width: '400',
+            title:GridTitle,                           
+            listeners:{
+                            cellclick :function(grid,rowIndex,columnIndex,e){
+                            var record = grid.getStore().getAt(rowIndex);  // Get the Record
+                            var fieldName = grid.getColumnModel().getDataIndex(columnIndex); // Get field name
+                            recordId2=record.get('id');
+                           
+                           // selectOneCheckBox(recordId2);             
+                        }
+                    },
+                     
+                    
+                    bbar: new Ext.PagingToolbar({
+                             pageSize: 10,
+                             store: store,
+                             displayInfo: true,
+                             sidebar: true,
+                             plugins: new Ext.ux.ProgressBarPager(),
+                             align:'right'
+                    }),
+                    
+                  sm: new Ext.grid.CheckboxSelectionModel(
+                    {
+                        singleSelect:true                       
+                    }
+                )                        
+           });
+            grid.render('items-grid1');
+            grid.getSelectionModel().on('selectionchange', function(sm){
+       
+            if(sm.getSelections()!=null || sm.getSelections()!='')
+            {
+                strNamesmult=''; 
+                strCategory='';        
+                selectedCheckboxLength=0;
+                
+                if(sm.getSelections().length>0) 
+                {
+                    selectedCheckboxLength=sm.getSelections().length ;
+                    
+                    for(var cnt=0;cnt<=selectedCheckboxLength-1;cnt++) 
+                    {
+                        if(strNamesmult!=null && strNamesmult=='') 
+                        {
+                            strNamesmult=sm.getSelections()[cnt].get('recordId2');
+                        } 
+                        else if((strNamesmult!=null) && (strNamesmult!=''))
+                        {
+                            strNamesmult=strNamesmult+','+sm.getSelections()[cnt].get('recordId2');
+                        }
+                    }
+                } 
+           
+            }
+         });
+         
+        });   
+                
+        
+        function selectOneCheckBox(eventname)
+        {   
+            hdneventName.value=eventname;
+            chooseReport(eventname);  //recordId2
+        }
+      
+        function editRecord(eventname)
+        {
+            hdneventName.value=eventname;
+            EditReport(eventname);
+        }
+        /*function deleteRecord(eventname)
+        {
+            var confmsg = window.confirm ('Do you want to remove Attendee ?');
+            if(confmsg)
+            {
+                hdneventName.value=eventname;
+                deleteAttendeeRecord();
+            }
+            
+        }*/
+         
+       </script>
+
+       <div id="items-grid1" />
+        
+
+        <apex:inputHidden value="{!eventName}" id="eventNameValue"/>
+        <apex:actionFunction action="{!chooseReport}" name="chooseReport">
+        </apex:actionFunction>
+        <apex:actionFunction action="{!EditReport}" name="EditReport" reRender="editrep">
+        </apex:actionFunction>
+
+        <script>
+        hdneventName = document.getElementById("{!$Component.eventNameValue}");
+        </script>
+ 
+
+</apex:form>
+ </apex:outputPanel>
+      </div>      --> 
+<!-- Grid Code End -->
+     
+              <!-- Edit Report Start -->
+         <!--     
+         <apex:form >
+         <apex:outputPanel id="editrep">
+         <apex:outputPanel styleClass="popupBackground" layout="block" rendered="{!EditReportBool}"/>
+         <apex:outputPanel styleClass="custPopup" layout="block" rendered="{!EditReportBool}">
+         
+              <table border="0"  cellspacing="0" cellpadding="0" width="100%" class="tabs_table" align="center" >
+                <tr>
+                    <td colspan="2" align="center" class="pophead"><H2 > <font size="4">Edit Report</font> </H2> </td> 
+                </tr>
+                
+                   <tr>
+                       <td align="center">
+                           <table  border="0"  cellspacing="0" cellpadding="0" width="60%">
+                              <tr>
+                     
+                 <td width="50%" height="30px" style="Padding-left:25px">
+                       Report Name<font size="4" color="red">*</font></td>
+                      <td> <apex:outputText value="{!editRep.RE_Name__c}"  style="width:180px"/> </td>
+                  </tr>
+         
+                   <tr>
+                      <td width="50%" height="30px" style="Padding-left:25px">
+                       Report Description</td>
+                      <td> <apex:inputTextArea value="{!editRep.RE_Description__c}" style="width:180px; height:50px;"/> </td>
+                  </tr>
+                   
+                  <tr><td align="right">
+                       <apex:commandLink action="{!UpdateReport}" Value="Save" styleClass="awesome" style="color:#FFFFFF; text-decoration:none;"/> </td>
+                       
+                       <td align="left">
+                      &nbsp;&nbsp; <apex:commandLink action="{!cancel}" Value="Cancel" styleClass="awesome"  style="color:#FFFFFF; text-decoration:none;"/>
+                                   
+                   </td></tr>
+                           </table>
+                       </td>
+                   </tr>
+     
+         </table>
+         
+    </apex:outputPanel>
+  </apex:outputPanel>  
+    
+</apex:form>    
+       -->
+          <!-- Edit Report End -->   
+          
+
+
+
+
+
+
+
+<!-- Grid Code End -->
+
+
+
+
+
+
+</apex:page>

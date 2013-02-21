@@ -1,0 +1,15 @@
+<apex:page controller="schemaMethodCon">
+ <apex:form >
+ 
+ <apex:repeat value="{!hh}" var="t">
+ <!-- {!t.str1}<br /> -->
+{!t.str2} <br />
+ 
+ </apex:repeat>
+
+ </apex:form>
+
+
+
+ 
+</apex:page>

@@ -1,0 +1,20 @@
+<apex:page showHeader="false" sidebar="false" controller="testpageCon"  standardStylesheets="false">
+ 
+
+    <apex:form >
+        <apex:selectList size="1" value="{!countries}">
+         <apex:selectOptions value="{!Items}"></apex:selectOptions>
+         <apex:actionSupport event="onchange" action="{!test}"/>
+       
+        </apex:selectList> <br />
+        
+         <apex:selectList size="1" >
+         <apex:selectOptions value="{!Items}"></apex:selectOptions>
+         <apex:actionSupport event="onchange" action="{!test}"/>
+       
+        </apex:selectList>
+        
+    </apex:form>
+
+ 
+</apex:page>

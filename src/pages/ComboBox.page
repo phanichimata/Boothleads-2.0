@@ -1,0 +1,19 @@
+<apex:page showHeader="false">
+<apex:form >
+
+<script type="text/javascript" charset="utf-8" src="http://cdn.sencha.io/ext-4.0.7-gpl/ext-all.js"></script>
+<link rel="stylesheet" type="text/css" href="http://cdn.sencha.io/ext-4.0.7-gpl/resources/css/ext-all.css"/>
+
+ <script type="text/javascript">
+
+ Ext.create('Ext.form.ComboBox', 
+ {
+    fieldLabel: 'Select Event Day',
+    valueField: 'day1',
+    renderTo: Ext.getBody(),
+    displayField: 'day1'
+ });
+
+ </script>
+</apex:form>
+</apex:page>

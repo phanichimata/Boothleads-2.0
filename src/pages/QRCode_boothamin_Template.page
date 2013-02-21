@@ -1,0 +1,5 @@
+<apex:page contentType="application/csv#BoothadminTemplate.csv" cache="true" showheader="false" language="en-US" controller="BL_boothadmin_ImportCon">
+
+    <apex:outputText value="FirstName,LastName,Email,CompanyName,Company Website,Company Address 1,Company Address 2,Company City,Company Country,Company FaxNumber,Company Phone,Company State,Company Zipcode"/>
+  
+</apex:page>

@@ -1,0 +1,939 @@
+<apex:page showHeader="false" controller="BL_EventAdmin_DashboardCon" action="{!checkUserId}">
+<head>
+<title>Boothleads</title>
+</head>
+<apex:stylesheet value="{!URLFOR($Resource.FormultiEvent,"css/screen.css")}"/> 
+<c:AjaxLoader LoaderImage="{!$Resource.AjaxLoaderImage}"/>
+<script type="text/javascript" charset="utf-8" src="http://cdn.sencha.io/ext-4.0.7-gpl/ext-all.js"></script>
+<link rel="stylesheet" type="text/css" href="http://cdn.sencha.io/ext-4.0.7-gpl/resources/css/ext-all.css"/> 
+<apex:include pageName="dashboardicons"/>
+<style>
+.round 
+{
+-webkit-font-smoothing: subpixel-antialiased;
+font-size:16px;
+-webkit-border-radius: 5px 5px 5px 5px;
+-moz-border-radius: 5px 5px 5px 5px;
+border-radius: 5px 5px 5px 5px;
+margin:0px auto;
+border:1px solid #CCC;
+padding:8px;
+background-color:#FFF;
+width:960px;
+-moz-box-shadow: 0 0 5px #888;
+-webkit-box-shadow: 0 0 5px#888;
+box-shadow: 0 0 5px #888;
+border:1px solid #414141;
+-khtml-border-radius: 20px;
+}
+.h4green{color:#258d51; font-size:14px;}
+.h4lightblue{color:#00a2b1; font-size:14px;}
+.h4maroon{color:#ac1324; font-size:14px;}
+.h4lightgreen{ color:#94af0a; font-size:14px;}
+
+</style>
+<!-- Topbar block start-->
+<!-- Start: page-top-outer -->
+<div id="page-top-outer">    
+
+<!-- Start: page-top -->
+<div id="page-top">
+
+<!-- Start logo -->
+<div id="logo"></div>
+<!-- End logo -->
+
+<!-- Start top-search -->
+
+<div id="top-search">
+<table border="0" cellpadding="0" cellspacing="0">
+<tr>
+<td class="welcome">
+ <font>Welcome :</font>
+ <b><font size="2" color="Sky Blue" class="username">{!$User.Firstname}&nbsp;{!$User.Lastname}</font></b>  
+</td> 
+</tr>
+</table>
+</div>
+
+<!-- End top-search -->
+<div class="clear"></div>
+</div>
+<!-- End: page-top -->
+</div>
+<!-- End: page-top-outer -->
+<!-- Topbar block End-->
+    
+<div class="clear">&nbsp;</div>
+ 
+<!--  Start Nav-Outer-Repeat -->
+<div class="nav-outer-repeat"> 
+<!--  Start Nav-Outer -->
+<div class="nav-outer"> 
+
+<!-- Start Nav Right-->
+<div id="nav-right"> 
+               
+<!----LOGOUT ACTION START -->
+
+<div class="nav">
+<div class="table">
+    
+<apex:form >
+<div class="nav-divider">&nbsp;</div>        
+ <apex:outputLink value="/apex/BL_Eventadmin_Profile" style="text-style:bold; color:#FFFFFF; padding:10px 15px 0 0;">Profile</apex:outputLink> 
+<div class="nav-divider">&nbsp;</div>
+ <apex:commandLink action="{!$Site.Prefix}/secur/logout.jsp" rendered="{!NOT(ISPICKVAL($User.UserType,'Guest'))}" style="text-style:bold; color:#FFFFFF; padding:10px 15px 0 0;">{!$Label.site.logout}</apex:commandLink>
+<!-- <div class="nav-divider">&nbsp;</div>
+   <apex:outputLink target="_new" value="/apex/BL_EventAdmin_Help" style="text-style:bold; color:#FFFFFF; padding:10px 15px 0 0;" >Help</apex:outputLink>
+-->
+
+</apex:form>
+
+</div></div>   
+    
+<!----LOGOUT ACTION END--->       
+        
+<div class="clear">&nbsp;</div>       
+</div>
+<!-- End Nav Right -->
+
+
+<!-- Start Nav -->
+<div class="nav">
+<div class="table">
+   
+  
+  <ul class="current"><li>
+   <apex:outputLink value="/apex/BL_EventAdmin_Dashboard"><b>Dashboard</b></apex:outputLink>
+  </li></ul>
+  
+  <div class="nav-divider">&nbsp;</div>                    
+  <ul class="select"><li>
+   <apex:outputLink value="/apex/BL_EventAdmin_Events"><b>Events</b></apex:outputLink>
+  </li></ul>       
+        
+  <div class="nav-divider">&nbsp;</div>
+  <ul class="select"><li>
+   <apex:outputLink value="/apex/BL_Eventadmin_samplebooth"><b>Booths</b></apex:outputLink>
+  </li></ul>
+   
+  <div class="nav-divider">&nbsp;</div>
+  <ul class="select"><li>
+   <apex:outputLink value="/apex/Qrcode_Eventadmin_Attendees" ><b>Attendees</b></apex:outputLink>
+  </li></ul>
+   
+  <div class="nav-divider">&nbsp;</div>
+  <ul class="select"><li>
+   <apex:outputLink value="/apex/BL_EventAdmin_Reports"><b>Reports</b></apex:outputLink>        
+  </li></ul>
+         
+<div class="clear"></div>
+</div>
+<div class="clear"></div>
+</div>
+<!-- End Nav -->
+            
+</div>
+<div class="clear"></div>
+<!-- End Nav-Outer -->
+</div>
+
+<!-- MENU END -->
+
+<!-- Content Start -->
+<div style="clear:both; margin: 0 0 3px 0;">&nbsp;</div>
+
+<div class="round">
+<!-- Overview Table Start -->
+<table width="100%" border="0" align="center" cellpadding="0" cellspacing="0">
+<tr>
+<td height="30px"  align="left" valign="middle" bgcolor="#545454" style="padding-left:10px; color:#FFFFFF;
+background:#414141;background: -webkit-gradient(linear, left top, left bottom, from(#545454), to(#292929));
+background: -moz-linear-gradient(top, #545454, #292929);
+background-image: -o-linear-gradient(top, #545454, #292929);
+background-image: -ms-linear-gradient(top, #545454, #292929);
+filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#545454', endColorstr='#292929');">
+<h4>Overview</h4>
+</td>   
+</tr>
+
+<tr>
+<td colspan="2" align="center" valign="top" style="padding-top:5px;">
+<table width="100%" border="0" cellspacing="0px" cellpadding="0">
+<tr>
+
+<td width="33%" align="center" valign="top" style="border-right:1px solid #414141;">
+ <table width="98%" border="0" align="left" cellpadding="0" cellspacing="0">
+  <tr>
+    <td height="28" align="left" valign="middle" class="h4lightblue"><h4>Events</h4></td>
+    <td height="28" align="left" valign="middle" class="h4lightblue"><h4><span><apex:outputText value="{!currentevent}"/></span></h4></td>
+  </tr>
+  <tr>
+    <td width="80%" height="28" align="left" valign="middle" class="h4lightgreen"><h4>Total No. of Attendees</h4></td>
+    <td width="20%" height="28" align="left" valign="middle" class="h4lightgreen"><h4><span><apex:outputText value="{!TotalAttendees}"/></span></h4></td>
+  </tr>
+  <tr>
+    <td height="28" align="left" valign="middle" class="h4maroon"><h4>Total No. of Visited Attendees </h4></td>
+    <td height="28" align="left" valign="middle" class="h4maroon"><h4><span><apex:outputText value="{!TotalVisitedAttendees}"/></span></h4></td>
+  </tr>     
+ </table>
+</td>
+
+<td width="33%" align="center" valign="top" >
+ <table width="98%" border="0" align="center" cellpadding="0" cellspacing="0">
+  <tr>
+    <td width="81%" height="28" align="left" valign="middle" class="h4lightblue"><h4>Total No. of Active Booth Admins</h4></td>
+    <td width="19%" height="28" align="left" valign="middle" class="h4lightblue"><h4><span><apex:outputText value="{!boothcount}"/></span></h4></td>
+  </tr>
+  <tr>
+    <td height="28" align="left" valign="middle" class="h4lightgreen"><h4>Total No. of Mobile Users</h4></td>
+    <td height="28" align="left" valign="middle" class="h4lightgreen"><h4><span><apex:outputText value="{!TotalMobileUsers}"/></span></h4></td>
+  </tr>
+ </table>
+</td>
+
+</tr>
+</table>
+
+</td>
+</tr>
+</table>
+<!-- Overview Table End -->
+</div>
+<br/>
+
+
+<div class="round">
+<!-- Dashboard Outer Table Start -->
+<table width="100%" border="0" align="center" cellpadding="0" cellspacing="0"> 
+<tr>
+<td width="700" align="left" valign="top">
+<apex:form id="eventselection">
+<!-- Dashboard Header table Start -->
+<table width="100%" border="0" align="left" cellpadding="0" cellspacing="0">
+<tr>
+<td height="30px" style="padding-left:10px; color:#FFFFFF; padding-top: 5px;
+background:#414141; background:#414141;background: -webkit-gradient(linear, left top, left bottom, from(#545454), to(#292929));
+background: -moz-linear-gradient(top, #545454, #292929);
+background-image: -o-linear-gradient(top, #545454, #292929);
+background-image: -ms-linear-gradient(top, #545454, #292929);
+filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#545454', endColorstr='#292929');">
+<h4>Dashboard</h4>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{!noeventmessage}
+<div style="float:right; width: 60% ; text-align: right; padding-bottom: 3px; font-size:14px; padding-right: 10px ;">
+<h5><apex:outputLabel value="Select Event : " style="color:#FFFFFF;"></apex:outputLabel></h5>
+  <apex:selectList value="{!EventString}" size="1">
+  <apex:selectOptions value="{!Events}"/>
+  <apex:actionSupport action="{!EventDetailDashBoard}" event="onchange" reRender="oppanel1,oppanel2,oppanel3,oppanel4,pickform" status="AjaxLoader"/> 
+</apex:SelectList> 
+</div>
+</td>
+</tr>
+</table><br/>
+
+<!-- Dashboard Header table End -->
+
+<apex:outputPanel rendered="{!NOT(noevents)}">  
+ <div style="text-align:center; font-size:80px; font-family:sans-serif; font-weight:bolder; width:100%; padding:100px; color:#CCCCCC;"> No Events Found </div>
+</apex:outputPanel> 
+<apex:outputText rendered="{!noevents}">
+
+<!-- Dashboard Table Start -->
+<table width="100%" border="0" align="center" cellpadding="0" cellspacing="0" >
+
+
+<!-- Geography Panel Start -->
+<apex:outputPanel id="oppanel1">
+<script type="text/javascript">  
+Ext.onReady(function()
+{
+ var geographytitle='Report by Geography';
+ var myDirectfn = function(opts, fn, proxy) {
+    var start = opts.start,
+        end = opts.limit+opts.start,
+        data = [];
+    if (end > myData1.length) end = myData1.length;
+    for (var i = start; i < end; i++)
+        data.push(myData1[i]);
+    data.total = myData1.length;
+    fn(data, {
+        status: true,
+        result: data
+    });
+ };
+
+ myDirectfn.directCfg = {
+    method: {len:1}
+ };
+ 
+ // 'Report by Geography' Chart store 
+
+var store = Ext.create('Ext.data.JsonStore', {  
+    fields: ['namegeo', 'datageo'],   
+    data: [
+    <apex:repeat value="{!grphy}" var="gn"> 
+    <apex:repeat value="{!gn}" var="a">
+    {
+    'namegeo' : '{!a.geogy}',  
+    'datageo' :{!a.georecords}
+    }, 
+    </apex:repeat>  
+    </apex:repeat> 
+ ]
+});  
+
+
+// 'Report by Geography' Grid store
+      
+var myData1=new Array();
+
+<apex:repeat value="{!indusreport}" var="gn">   
+<apex:repeat value="{!gn}" var="row">    
+
+var rowArray=new Array();
+rowArray[0]=  '{!row.id}';
+var RName ="{!row.AS_id__r.AS_FirstName__c}";
+rowArray[1]=  RName.replace(/\'/g,'\'');   
+var NName ="{!row.AS_id__r.AS_LastName__c}";
+rowArray[2]=  NName.replace(/\'/g,'\'');
+var lName ="{!row.AS_id__r.AS_Company__c}"; 
+rowArray[3]=  lName.replace(/\'/g,'\''); 
+var sName ="{!row.AS_id__r.AS_Work_States__c}"; 
+rowArray[4]=  sName.replace(/\'/g,'\''); 
+rowArray[5]=  '{!row.AS_id__r.AS_CellPhone__c}';
+var eName ="{!row.AS_id__r.AS_Email__c}"; 
+rowArray[6]=  eName.replace(/\'/g,'\''); 
+myData1.push(rowArray);          
+
+</apex:repeat>
+</apex:repeat>
+
+if(myData1.length<=0)
+{
+ geographytitle=geographytitle+' <span style=\'padding-left:160px\'><font color=\'red\'>No Records Found</font></span>';        
+ tSize=0;        
+};
+
+var storegrid = new Ext.data.SimpleStore(
+{
+fields:[{name:'id'},{name:'FirstName'},{name:'LastName'},{name:'AS_id__r.AS_Company__c'},{name:'AS_id__r.AS_Work_States__c'},{name:'AS_id__r.AS_CellPhone__c'},{name:'AS_id__r.AS_Email__c'}],
+pageSize: 10,
+proxy: {
+type: 'direct',
+directFn: myDirectfn,
+reader: {
+type: 'array'
+}
+}
+});
+storegrid.loadData(myData1);
+
+Ext.create('Ext.Panel',{
+title: geographytitle,  
+id:'geopanel', 
+width: 460,
+height: 340,
+iconCls : 'geo-icon',
+closeAction: 'hide',
+renderTo: 'geopaneldiv', 
+layout: 'card', 
+tbar: [
+{ 
+xtype: 'tbspacer', 
+width: 393
+},
+{
+xtype : 'button', 
+id:'chartid',
+iconCls : 'chart-icon', 
+layout:'autofit',
+handler: function(btn) 
+{
+var panel = Ext.getCmp ('geopanel');
+panel.getLayout().setActiveItem ('chartCmp');
+}
+},
+{
+xtype:'tbseparator' 
+},
+{
+xtype : 'button', 
+text : null, 
+id:'gridid', 
+iconCls : 'grid-icon', 
+layout: 'autofit', 
+handler: function(btn) 
+{
+var panel = Ext.getCmp ('geopanel');
+panel.getLayout().setActiveItem ('gridpanel');
+}
+}],
+items: 
+[{
+xtype: 'chart', 
+id: 'chartCmp',
+animate: false,
+store: store,
+layout: 'fit',
+shadow: true, 
+legend: 
+{
+position: 'right',
+labelFont: '11px Calibri'
+},
+insetPadding: 30, 
+theme: 'Base:gradients',
+series: [{
+type: 'pie',  
+field: 'datageo',   
+showInLegend: true,  
+tips: {
+trackMouse: true,    
+width: 230,  
+height: 25,  
+renderer: function(storeItem, item) 
+{
+var total = 0;
+store.each(function(rec) 
+{  
+total += rec.get('datageo');       
+}); 
+this.setTitle(storeItem.get('namegeo') + ' : ' + storeItem.get('datageo') + ((storeItem.get('datageo')>1 || storeItem.get('datageo')==0)?" Attendees":" Attendee"));       
+}
+},
+highlight: {  
+segment: { 
+margin: 10  
+} 
+}, 
+label: { 
+field: 'namegeo', 
+contrast: true,
+display:'rotate',
+font: '13px Calibri'
+}
+}]
+},
+{
+xtype:'grid',    
+layout:'fit',   
+renderTo: Ext.getBody(),  
+id:'gridpanel',  
+store: storegrid,
+title: false,
+header: false, 
+bbar: new Ext.PagingToolbar({
+store: storegrid,
+pageSize: 10,
+displayInfo: true
+}),
+listeners:
+{
+afterrender: function (component)
+{
+component.down('#refresh').hide();
+}
+},
+viewConfig:{
+ loadMask:false
+},
+columns: [
+{header:'id', dataIndex: 'id',hidden:true }, 
+{header: 'Name', dataIndex: 'Name',
+ renderer: function(value,p,r)           
+ {
+  return r.data['FirstName']+ ' ' + r.data['LastName'];
+ }
+}, 
+{ header: 'Phone',  dataIndex: 'AS_id__r.AS_CellPhone__c' }, 
+{ header: 'E-Mail', dataIndex: 'AS_id__r.AS_Email__c',flex:1.5},    
+{ header: 'State', dataIndex: 'AS_id__r.AS_Work_States__c',flex:1}
+]
+}]
+});
+ storegrid.loadPage(1);
+Ext.each(
+  Ext.getCmp('chartCmp').legend.items, function(item) {
+   item.un("mousedown", item.events.mousedown.listeners[0].fn);
+ })
+ 
+});
+</script>
+</apex:outputPanel>
+<!-- Geography Panel End -->
+
+
+
+<!-- Industry Panel Start -->
+<apex:outputPanel id="oppanel2">
+<script type="text/javascript">  
+Ext.onReady(function()
+{
+ var industrytitle='Report by Industry';
+ var myDirectfn1 = function(opts, fn, proxy) {
+    var start = opts.start,
+        end = opts.limit+opts.start,
+        data = [];
+    if (end > myData2.length) end = myData2.length;
+    for (var i = start; i < end; i++)
+        data.push(myData2[i]);
+    data.total = myData2.length;
+    fn(data, {
+        status: true,
+        result: data
+    });
+};
+
+myDirectfn1.directCfg = {
+    method: {len:1}
+};
+
+// 'Report by Industry' Chart store
+ 
+var store1 = Ext.create('Ext.data.JsonStore', { 
+fields: ['nameindus', 'dataI'],
+data: [
+<apex:repeat value="{!indus}" var="gn">
+<apex:repeat value="{!gn}" var="a">
+{
+'nameindus' : '{!a.industry}',  
+'dataI' :{!a.indusrec}
+},
+</apex:repeat>
+</apex:repeat>
+]
+
+});
+   
+// 'Report by Industry' Grid store
+
+var myData2=new Array();
+  
+<apex:repeat value="{!indusgridreport}" var="gn">   
+<apex:repeat value="{!gn}" var="row">    
+
+  var rowArray=new Array(); 
+  rowArray[0]=  '{!row.id}';  
+  var yName ="{!row.AS_id__r.AS_FirstName__c}";
+  rowArray[1]=  yName.replace(/\'/g,'\'');  
+  var zName ="{!row.AS_id__r.AS_LastName__c}";
+  rowArray[2]=  zName.replace(/\'/g,'\'');
+  var iName ="{!row.AS_id__r.AS_PrimaryBusinessCategory1__c}"; 
+  rowArray[3]=  iName.replace(/\'/g,'\'');   
+  rowArray[4]=  '{!row.AS_id__r.AS_CellPhone__c}';  
+  var oName ="{!row.AS_id__r.AS_Email__c}"; 
+  rowArray[5]=  oName.replace(/\'/g,'\'');   
+  myData2.push(rowArray);          
+ 
+</apex:repeat>   
+</apex:repeat>
+
+if(myData2.length<=0)
+{
+ industrytitle=industrytitle+' <span style=\'padding-left:175px\'><font color=\'red\'>No Records Found</font></span>';        
+ tSize=0;       
+};
+ 
+var storeindusgrid = new Ext.data.SimpleStore( 
+{
+fields: [{name:'id'},{name:'FirstName'},{name:'LastName'},{name:'AS_id__r.AS_PrimaryBusinessCategory1__c'},{name:'AS_id__r.AS_CellPhone__c'},{name:'AS_id__r.AS_Email__c'}],
+pageSize: 10,
+proxy: {
+type: 'direct',
+directFn: myDirectfn1,
+reader: {
+type: 'array'
+}
+}
+});
+storeindusgrid.loadData(myData2);
+
+Ext.create('Ext.Panel',{
+xtype: 'panel',
+title: industrytitle,
+id:'panel1',   
+width: 460,
+height: 340,
+iconCls: 'ind-icon',
+renderTo: 'indpaneldiv',
+layout: 'card',
+activeItem: 'chartcmp1',
+tbar: [
+{ 
+xtype: 'tbspacer', 
+width: 393
+},
+{
+xtype : 'button',  
+text : null,
+iconCls : 'chart-icon', 
+id:'induschartid',
+layout: 'autofit',
+handler: function(btn) 
+{
+var panel = Ext.getCmp ('panel1');
+panel.getLayout().setActiveItem ('chartcmp1');
+}
+},
+{
+xtype:'tbseparator'
+},
+{
+xtype : 'button',
+text : null,
+id:'indusgridid',
+iconCls : 'grid-icon',
+layout: 'autofit',
+handler: function(btn) 
+{
+var panel = Ext.getCmp ('panel1');
+panel.getLayout().setActiveItem ('gridpanel1');
+}
+}],
+items: [{
+xtype: 'chart',
+id:'chartcmp1',
+animate: false,
+store: store1,
+axes: [
+{
+type: 'Numeric',
+position: 'left',
+fields: ['dataI'],
+grid: true,
+grid: {
+odd: {
+opacity: 0.5,
+fill: '#ddd',
+stroke: '#bbb',
+'stroke-width': 1
+}
+},
+dashSize: 1,
+majorTickSteps :5,
+steps:5,
+minimum: 0,
+decimals: 0,
+maximum:<apex:outputText value="{!maxValueIndustry}"/>
+}, 
+{
+type: 'Category',
+position: 'bottom',
+fields: ['nameindus'],
+dashSize: 0
+}],
+series: [
+{
+type: 'column',
+axis: 'left',
+groupGutter : 25,
+xField: 'nameindus',
+yField: ['dataI'],
+tips: {
+mouseOffset:[-190,-50],
+width: 300,
+height: 25,
+renderer: function(storeItem, item) 
+{
+this.setTitle(storeItem.get('nameindus') + ' : ' + storeItem.get('dataI') + ((storeItem.get('dataI')>1 || storeItem.get('dataI')==0)?" Attendees":" Attendee"));   
+}      
+},   
+label: { 
+field: 'nameindus',
+font: '12px Calibri'
+}
+}]  
+},   
+{  
+xtype:'grid',    
+layout:'fit',   
+renderTo: Ext.getBody(),  
+id:'gridpanel1',  
+store: storeindusgrid,
+title: false,
+header: false,  
+bbar: new Ext.PagingToolbar({
+store: storeindusgrid,
+pageSize: 10,
+displayInfo: true
+}),
+listeners:
+{
+afterrender: function (component)
+{
+component.down('#refresh').hide();
+}
+},
+viewConfig:{
+    loadMask:false
+},
+columns:[
+{ header:'id', dataIndex: 'id',hidden:true },   
+{ header: 'Name',  dataIndex: 'Name',
+renderer: function(value, p, r)           
+{
+ return r.data['FirstName']+ ' ' + r.data['LastName'];
+}
+},     
+{ header: 'Phone', dataIndex: 'AS_id__r.AS_CellPhone__c'}, 
+{ header: 'E-Mail', dataIndex: 'AS_id__r.AS_Email__c',flex:1},
+{ header: 'Industry', dataIndex: 'AS_id__r.AS_PrimaryBusinessCategory1__c'}
+]
+}]
+});
+storeindusgrid.loadPage(1);
+});
+</script>
+</apex:outputPanel>
+<!-- Industry Panel End -->
+
+
+
+<!-- Hourly Scans Panel Start -->
+<apex:outputPanel id="oppanel3">
+<script type="text/javascript">  
+Ext.onReady(function()
+{
+ var scantitle='Hourly Scans (Event/Attendee Activity)';
+// Hourly Scans store
+
+ var scanstore = Ext.create('Ext.data.JsonStore',
+   {
+   fields: ['Total Scans','scannedtime'], 
+   data: [
+   <apex:repeat value="{!hourlyscans}" var="gn">
+   <apex:repeat value="{!gn}" var="u">
+   {
+    'Total Scans' : {!u.scanrecords},
+    'scannedtime' : '{!u.sTime}'
+   },
+   </apex:repeat>
+   </apex:repeat>
+ ]
+});
+
+var recordscount;
+recordscount=scanstore.getCount();
+if(recordscount<=0)
+{
+ scantitle=scantitle+' <span style=\'padding-left:70px\'><font color=\'red\'>No Records Found</font></span>';             
+};
+
+Ext.create('Ext.Panel',{
+title: scantitle,
+id:'scanchart',
+width: 460,
+height: 340,
+iconCls: 'scan-icon',
+layout: 'fit',
+renderTo: 'scanpaneldiv',
+tbar:[
+{
+xtype:'tbspacer',
+width:260
+},
+{
+xtype: 'label',
+id:'contentid',
+contentEl:'eventdate',
+flex:1,
+style:{
+ color:'#153E7E'
+ }
+}
+],
+items:[ 
+{
+xtype: 'chart',
+store: scanstore,
+theme: 'Sky',
+animate: false,
+axes: [
+{
+title: 'No. of Scans',
+type: 'Numeric',
+position: 'left',
+fields: ['Total Scans'],
+grid: {
+odd: {
+opacity: 0.5,
+fill: '#ddd',
+stroke: '#bbb',
+'stroke-width': 1
+}    
+},
+dashSize: 1,
+majorTickSteps :5,
+steps:5,
+decimals: 0,
+maximum : '<apex:outputText value="{!maxValueHourly}"/>'
+},
+{
+title: 'Scanned Time',
+type: 'Category', 
+position: 'bottom', 
+fields: ['scannedtime'],
+dashSize: 0
+}],
+series: [
+{
+type: 'line',
+xField: ['scannedtime'],
+yField: ['Total Scans'],
+fill: true,
+markerConfig:{
+type: 'circle',
+size: 3,
+radius: 3,
+'stroke-width': 0
+},
+tips: 
+{
+ trackMouse: true,
+ width: 75,
+ height: 25,
+ renderer: function(storeItem, item) 
+ {
+  this.setTitle(storeItem.get('Total Scans') + ((storeItem.get('Total Scans')>1 || storeItem.get('Total Scans')==0)?" Scans":" Scan"));
+ }      
+} 
+}]
+}]
+});
+});
+</script>
+</apex:outputPanel>
+<!-- Hourly Scans Panel End -->
+
+
+
+<!-- Device Usage Panel Start -->
+<apex:outputPanel id="oppanel4">
+<script type="text/javascript">  
+Ext.onReady(function()
+{
+ var iostitle='Device Usage (Apple vs Android)';
+ // Device Usage store 
+  
+var iosstore = Ext.create('Ext.data.JsonStore',{
+   fields: ['nameios', 'dataios'],
+   data: [
+   <apex:repeat value="{!iosdevice}" var="gn"> 
+   <apex:repeat value="{!gn}" var="u">
+   {
+    'nameios' : '{!u.iosname}',  
+    'dataios' :{!u.iosrecords}
+   },
+   </apex:repeat>  
+   </apex:repeat>
+ ]
+});
+
+var recordscount1;
+recordscount1=iosstore.getCount();
+if(recordscount1<=0)
+{
+ iostitle=iostitle+' <span style=\'padding-left:100px\'><font color=\'red\'>No Records Found</font></span>';             
+};
+
+Ext.create('Ext.Panel', { 
+title: iostitle,
+id:'devicechart',   
+width: 460,
+height: 340,
+iconCls: 'dev-icon',
+renderTo: 'devpaneldiv',
+layout: 'fit',
+items: [
+{
+xtype: 'chart',
+id:'devchart',
+layout:'fit',
+animate: false,
+store: iosstore,
+shadow: true,
+theme: 'Base',
+series: [{
+type: 'pie',
+angleField: 'dataios',
+tips: 
+{
+trackMouse: true,
+width: 135,
+height: 25,
+renderer: function(storeItem, item) 
+{
+var total = 0;
+iosstore.each(function(rec) 
+{
+total += rec.get('dataios');
+});
+
+ this.setTitle(storeItem.get('nameios') + ' : ' + storeItem.get('dataios') + ((storeItem.get('dataios')>1 || storeItem.get('dataios')==0)?" Users":" User"));
+
+}
+},
+highlight: 
+{
+ segment: 
+ {
+  margin: 20
+ }
+},
+label: 
+{
+field: 'nameios',
+display: 'rotate',
+contrast: true,
+font: '18px Calibri'
+}
+}]
+}]
+});
+});
+</script>
+</apex:outputPanel>
+<!-- Device Usage Panel End -->
+
+
+</table>
+</apex:outputText>
+<!-- Dashboard Table End -->
+</apex:form>
+<apex:form id="pickform">
+<!-- Event Date Selection Start -->
+<div id="eventdate" class="x-hidden">
+<apex:outputPanel rendered="{!checkeventdates}" id="datepicker">
+<apex:outputLabel value="Select Event Date :"></apex:outputLabel>
+ <apex:selectList value="{!EventDates}" size="1">
+   <apex:selectOptions value="{!EventDate}"/>
+   <apex:actionSupport action="{!pickdate}" event="onchange" rerender="oppanel1,oppanel2,oppanel3,oppanel4,pickform"/>
+ </apex:selectList>
+</apex:outputPanel>
+</div>
+<!-- Event Date Selection End -->
+<div id="geopaneldiv" style="width:460px; height:auto; float:left; border:0px solid #CCCCCC; text-align:left; margin:5px;"></div>
+<div id="indpaneldiv" style="width:460px; height:auto; float:right; border:0px solid #CCCCCC; text-align:left; margin:5px;"></div>
+<div id="scanpaneldiv" style="width:460px; height:auto; float:left; border:0px solid #CCCCCC; text-align:left; margin:5px;"></div>
+<div id="devpaneldiv" style="width:460px; height:auto; float:right; border:0px solid #CCCCCC; text-align:left; margin:5px;"></div>
+
+</apex:form>
+</td>
+</tr>
+</table>
+<!-- Dashboard Outer Table End -->
+</div>
+
+<!-- Content End-->
+
+<!-- Start Footer -->         
+<div id="footer">
+ <!-- Start Footer-left -->
+  <div id="footer-left">&copy; Copyright Globalnest LLC. <span id="spanYear"></span> 
+  <a href="">www.globalnest.com</a> . All rights reserved.</div>
+ <!-- End Footer-left -->
+ <div class="clear">&nbsp;</div>
+</div>
+<!-- End Footer -->
+
+</apex:page>

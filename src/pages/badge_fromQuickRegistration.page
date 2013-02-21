@@ -1,0 +1,57 @@
+<apex:page standardStylesheets="false" showHeader="false" controller="quickregistrationcon" renderAs="pdf">
+<style>
+html{padding:0px; margin:0px;}
+</style>
+
+<html> <body>
+<head> 
+    <title>Booth Leads</title> 
+    <meta name="viewport" content="width=device-width, initial-scale=1"/> 
+    <apex:includeScript value="{!$Resource.jquerymobilejs}"/>
+    <apex:includeScript value="{!$Resource.minmobile}"/>
+    <apex:stylesheet value="{!$Resource.jquerymobilecss}"/>
+</head> 
+
+
+ <!-- QRCode_viewbadge, 
+ <apex:stylesheet value="{!$Resource.pdfstyle_css}"/>-->
+<apex:stylesheet value="{!URLFOR($Resource.advancedpdfresource, 'qstylesnew.css')}"/>
+<!--apex:commandButton value="pdf" action="{!generatepdf}"/-->
+
+
+
+
+<table cellpadding="0" cellspacing="0" border="0" width="100%" style="margin:10px 3px -13px 3px;">
+ 
+
+<tr>
+ 
+  <td align="center" colspan="2" style="color:#FFFFFF;">
+  <font  face="TimesNewRoman" color="green" style="font-size:36pt;">
+  {!eventatt.As_id__r.AS_FirstName__c}
+</font>  
+                            
+ </td></tr>
+ <tr><td style="height:10px"></td></tr>
+ <tr>
+ 
+ <td align="center"  colspan="2">
+ <font style="font-size:24pt;padding:0px;margin:0px;" face="TimesNewRoman" color="green">
+ {!eventatt.As_id__r.AS_LastName__c}
+ </font>
+ </td></tr>
+<tr>
+<td align="center"  width="20%" valign="middle">
+<apex:image value="https://chart.googleapis.com/chart?chs=100x100&cht=qr&chl={!eventatt.EA_AttendeeBarcode__c}"/></td>
+<td align="left"  style="padding-left:25px;" width="100%">
+<font face="TimesNewRoman" color="red" style="font-size:18pt;padding-bottom:15pt;">{!eventatt.As_id__r.AS_Company__c}</font>
+                             
+ </td></tr>
+ 
+ 
+ 
+</table>
+
+ </body></html>
+
+</apex:page>

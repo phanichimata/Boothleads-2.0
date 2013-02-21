@@ -1,0 +1,26 @@
+<apex:page showHeader="false" controller="SampleBoothPageCon">
+ <table width="100%" >
+  <tr>
+      <td width="30%" style="background-color:#54b5f1; height:35px; color:#FFFFFF; Font-size:18px;padding-left:15px;border-right:3px solid #FFFFFF;"> My Events</td>
+      <td width="30%" style="background-color:#54b5f1; height:35px; color:#FFFFFF; Font-size:18px;padding-left:15px;"> 
+          &nbsp;&nbsp;<apex:outputText value="Booth Detail's "></apex:outputText></td>
+          
+          <td width="40%" style="background-color:#54b5f1; height:35px; color:#FFFFFF; Font-size:18px;padding-left:15px;"> 
+          &nbsp;&nbsp;<apex:outputText value="Booth Admin Details "></apex:outputText></td>
+      
+  </tr>
+  
+  
+   <tr>
+    <td width="30%" valign="top"> 
+     <div style="overflow:scroll; border:1px solid #CCCCCC;height:394px;"> 
+       <apex:form id="eventsForm" >
+          
+          
+         
+        </apex:form>
+      </div> 
+      </td>
+      </tr>
+      </table> 
+</apex:page>

@@ -1,0 +1,88 @@
+<apex:page >
+
+
+<link rel="Stylesheet" type="text/css" href="{!$Resource.extjs}/ext-3.1.1/resources/css/ext-all.css"/>
+        <link rel="Stylesheet" type="text/css" href="{!$Resource.extjs}/ext-3.1.1/examples/ux/css/LockingGridView.css"/>
+        <script type="text/javascript" src="{!$Resource.extjs}/ext-3.1.1/adapter/ext/ext-base.js"></script>
+        <script type="text/javascript" src="{!$Resource.extjs}/ext-3.1.1/ext-all.js"></script>
+        <script type="text/javascript" src="{!$Resource.extjs}/ext-3.1.1/examples/ux/Ext.tree.RootTreeNodeUI"></script>
+        <script type="text/javascript" src="{!$Resource.extjs}/ext-3.1.1/examples/ux/PagingMemoryProxy.js"></script>
+        <script type="text/javascript" src="{!$Resource.extjs}/ext-3.1.1/examples/ux/ProgressBarPager.js"></script>
+        <script type="text/javascript" src="{!$Resource.extjs}/ext-3.1.1/examples/ux/AsyncTreeNode.js"></script>
+        <script type="text/javascript" src="{!$Resource.extjs}/ext-3.1.1/examples/ux/TreeSelectionModel.js"></script>
+        <script type="text/javascript" src="{!$Resource.extjs}/ext-3.1.1/examples/ux/TreeNodeUI.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+alert('-------------sai------------');
+Ext.require([
+    'Ext.tree.*',
+    'Ext.data.*',
+    'Ext.tip.*'
+   
+]);
+
+Ext.onReady(function() {
+alert('-------------sai1------------');
+    Ext.QuickTips.init();
+    
+    var store = Ext.create('Ext.data.TreeStore', {
+        proxy: {
+            type: 'ajax',
+            url: 'get-nodes.php'
+        },
+        root: {
+            text: 'Ext JS',
+            id: 'src',
+            expanded: true
+        },
+        folderSort: true,
+        sorters: [{
+            property: 'text',
+            direction: 'ASC'
+        }]
+    });
+
+    var tree = Ext.create('Ext.tree.Panel', {
+        store: store,
+        viewConfig: {
+            plugins: {
+                ptype: 'treeviewdragdrop'
+            }
+        },
+        renderTo: 'tree-div',
+        height: 300,
+        width: 250,
+        title: 'Files',
+        useArrows: true,
+        dockedItems: [{
+            xtype: 'toolbar',
+            items: [{
+                text: 'Expand All',
+                handler: function(){
+                    tree.expandAll();
+                }
+            }, {
+                text: 'Collapse All',
+                handler: function(){
+                    tree.collapseAll();
+                }
+            }]
+        }]
+    });
+});
+</script>
+</apex:page>

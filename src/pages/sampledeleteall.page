@@ -1,0 +1,69 @@
+<apex:page controller="delall">
+   <link rel="Stylesheet" type="text/css" href="{!$Resource.extjs}/ext-3.1.1/resources/css/ext-all.css"/>
+        <link rel="Stylesheet" type="text/css" href="{!$Resource.extjs}/ext-3.1.1/examples/ux/css/LockingGridView.css"/>
+        <script type="text/javascript" src="{!$Resource.extjs}/ext-3.1.1/adapter/ext/ext-base.js"></script>
+        <script type="text/javascript" src="{!$Resource.extjs}/ext-3.1.1/ext-all.js"></script>
+        <script type="text/javascript" src="{!$Resource.extjs}/ext-3.1.1/examples/ux/RowEditor.js"></script>
+        <script type="text/javascript" src="{!$Resource.extjs}/ext-3.1.1/examples/ux/PagingMemoryProxy.js"></script>
+        <script type="text/javascript" src="{!$Resource.extjs}/ext-3.1.1/examples/ux/ProgressBarPager.js"></script>
+        <script type="text/javascript" src="{!$Resource.extjs}/ext-3.1.1/examples/ux/LockingGridView.js"></script>
+        <script type="text/javascript" src="{!$Resource.extjs}/ext-3.1.1/examples/ux/PanelResizer.js"></script>
+        <script type="text/javascript" src="{!$Resource.extjs}/ext-3.1.1/examples/ux/progress-bar-pager.js"></script>
+        <!--  <script type="text/javascript" src="{!$Resource.DateValidator}"></script> -->
+    <div style="text-align:right;margin:5px;clear:left">
+<input id="select_none" onclick="selectNone();" type="checkbox" value="Select None" />
+<input id="select_all" onclick="selectAll();" type="checkbox" value="Select All" />
+<input id="update_button" onclick="update_charts();" type="button" value="Update Graphs" /></div>
+<script>
+function selectAll(){
+var checkboxes = Ext.query('input[id*=state_]');
+Ext.each(checkboxes, function(obj_item){
+obj_item.checked = true;
+
+});
+
+Ext.getDom('update_button').disabled = false;
+
+}
+
+function selectNone(){
+var checkboxes = Ext.query('input[id*=state_]');
+Ext.each(checkboxes, function(obj_item){
+obj_item.checked = false;
+});
+
+Ext.getDom('update_button').disabled = true;
+}
+
+// add disabling / enabling code.
+Ext.onReady(function(){
+
+// clear the check boxes , this is why it's a separate function
+selectNone();
+
+// add a click event handler to each checkbox.
+var checkboxes = Ext.query('input[id*=state_]');
+Ext.each(checkboxes, function(obj_item){
+
+Ext.get(obj_item).on('click', function(event, checkbox){
+
+up_button = Ext.getDom('update_button');
+if(checkbox.checked == true){
+if(up_button.disabled = true)
+up_button.disabled = false;
+}
+else
+{
+if(Ext.query('input:checked').length == 0) // great place to use the selectors
+up_button.disabled = true;
+}
+});
+});
+});
+
+
+
+
+
+</script>
+</apex:page>

@@ -1,0 +1,96 @@
+<apex:page controller="QRCode_TreeView" showHeader="false">
+  <apex:form >
+  <!-- apex:repeat value="{!usethis}" var="f1">
+      <br/>
+      <apex:outputText value="{!f1.upe}"/>
+          <apex:repeat value="{!f1.booth}" var="f2"> <br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          <apex:outputText value="{!f2.boothName}"></apex:outputText>
+         
+          <apex:repeat value="{!f2.boothad}" var="f3"> <br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              <apex:outputText value="{!f3.User_id__c}"></apex:outputText> &nbsp;&nbsp;&nbsp;
+              <apex:outputText value="{!f3.Profile_id__c}"></apex:outputText>
+          </apex:repeat>
+      
+      </apex:repeat>
+  
+  </apex:repeat -->
+  
+ 
+  
+  <script type="text/javascript" charset="utf-8" src="http://cdn.sencha.io/ext-4.0.7-gpl/ext-all.js"></script>
+  <link rel="stylesheet" type="text/css" href="http://cdn.sencha.io/ext-4.0.7-gpl/resources/css/ext-all.css"/>
+ 
+
+                                  
+<apex:includeScript value="{!$Resource.extjs}/ext-4.0.7/adapter/ext/ext-base.js"/>                                      
+<apex:includeScript value="{!$Resource.extjs}/ext-4.0.7/ext-all-debug.js"/> 
+ 
+      
+  
+   <script type="text/javascript"> 
+
+       Ext.require([
+        'Ext.data.*',
+        'Ext.grid.*',
+        'Ext.tree.*',
+        'Ext.data.TreeStore.*'
+        ]);
+   
+ 
+   
+      Ext.onReady(function(){  
+              
+       var store = Ext.create('Ext.data.TreeStore', { 
+            root: {
+                expanded: true,
+                children: [ <apex:repeat value="{!usethis}" var="parent">
+                        {
+                           text:"<apex:commandLink action="{!checklist}" value="{!parent.upe}" />",expanded: false, children: [
+                           <apex:repeat value="{!parent.booth}" var="child"> 
+                           {text:"{!child.boothName}",expanded: true, children: [
+                            <apex:repeat value="{!child.boothad}" var="Grandchild">
+                            {text:"{!Grandchild.User_id__c}",leaf: true}
+                            </apex:repeat>
+                           ]},
+                           </apex:repeat>
+                           ]
+                        }, 
+                           
+                           </apex:repeat>
+                         ]
+            }
+        });
+  
+  
+  
+  
+Ext.create('Ext.tree.Panel', {
+    title: 'Simple Tree',
+    width: 300,
+    height: 350,
+    store: store,
+    rootVisible: false,
+    useArrows: true,
+    autoScroll: true,
+    animate: true,
+    containerScroll: true,
+    enableDD: true,
+    frame:true,//Blue color frame
+    multiSelect: true,
+    singleExpand: true,
+    renderTo: Ext.getBody()
+});
+  
+  
+  
+  });
+  </script>
+  
+  
+   </apex:form>
+
+   
+  
+   
+  
+</apex:page>

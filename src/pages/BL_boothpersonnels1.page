@@ -1,0 +1,922 @@
+<apex:page showHeader="false" controller="BL_BoothPersonnelsCon" standardStylesheets="true" id="thepage" action="{!login}">
+ 
+<apex:stylesheet value="{!URLFOR($Resource.FormultiEvent,"css/screen.css")}"/> 
+<apex:stylesheet value="{!URLFOR($Resource.FormultiEvent,"css/datePicker.css")}"/>
+ <title>Boothleads</title>
+      
+<script>
+
+function validate(){
+
+var x =document.getElementById('{!$Component.thepage.frm51.emailid}').value;
+
+var mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+
+if(document.getElementById("{!$Component.thepage.frm51.frname}").value == '')
+ {
+  alert('Please Enter First Name');
+  return false;
+ }
+if(document.getElementById("{!$Component.thepage.frm51.LsName}").value == '')
+ {
+  alert('Please Enter Last Name');
+  return false;
+ }
+if(x!=""&& x.match(mailformat)){
+return true;
+}
+else{
+alert('Please Enter Email address');
+return false;
+}
+}
+function firsNameReq(){
+var x =document.getElementById('{!$Component.thepage.frm1.firName}').value;
+var l =document.getElementById('{!$Component.thepage.frm1.lasName}').value;
+if(x!="" && l!=""){
+alert('gggg true'+x+''+l);
+return true;
+}else{
+alert('Please Enter Name');
+return false;
+}
+}
+
+</script>
+
+
+<!-- Start: page-top-outer -->
+<div id="page-top-outer">    
+
+<!-- Start: page-top -->
+<div id="page-top">
+
+    <!-- start logo -->
+    
+    <div id="logo">
+   
+    </div>
+   
+    <!-- end logo -->
+    
+    <!--  start top-search -->
+    <div id="top-search">
+        <table border="0" cellpadding="0" cellspacing="0">
+        <tr>
+        <td class="welcome">
+        Welcome :
+                   <span class="username">{!$User.Firstname}&nbsp;{!$User.Lastname}  </span>
+        
+        <!--<apex:inputText value="{!searchstr}" styleClass="top-search-inp" />-->  </td>
+        
+        
+        
+        </tr>
+        </table>
+    </div>
+    <!--  end top-search -->
+    <div class="clear"></div>
+
+</div>
+<!-- End: page-top -->
+
+</div>
+<!-- End: page-top-outer -->
+    
+<div class="clear">&nbsp;</div>
+ 
+<!--  start nav-outer-repeat................................................................................................. START -->
+<div class="nav-outer-repeat"> 
+<!--  start nav-outer -->
+<div class="nav-outer"> 
+
+<!-- Start Nav Right-->
+        <div id="nav-right">
+        
+      
+           <div class="nav">
+        <div class="table">
+        
+       <apex:form >
+       
+       
+        <div class="nav-divider">&nbsp;</div>
+        
+     <!--  <apex:commandLink action="{!profileaction}"  style="text-style:bold; color:#FFFFFF; padding:10px 15px 0 0;">Profile</apex:commandLink> -->
+     <apex:outputLink value="Bl_Profile?url=Bl_boothpersonnels"  style="text-style:bold; color:#FFFFFF; padding:10px 15px 0 0;">Profile </apex:outputLink>
+      
+     
+        <div class="nav-divider">&nbsp;</div>
+        <apex:commandLink action="{!$Site.Prefix}/secur/logout.jsp" rendered="{!NOT(ISPICKVAL($User.UserType,'Guest'))}" style="text-style:bold; color:#FFFFFF; padding:10px 15px 0 0;">{!$Label.site.logout}</apex:commandLink>
+        </apex:form>
+
+            </div></div>
+           
+           <!----LOGOUT ACTION END--->
+           
+           
+            <div class="clear">&nbsp;</div>
+        
+            <!--  start account-content --> 
+            <div class="account-content">
+            <div class="account-drop-inner">
+                <a href="" id="acc-settings">Settings</a>
+                
+                <a href="" id="acc-stats">Statistics</a> 
+            </div>
+            </div>
+            <!--  end account-content -->
+        
+        </div>
+        <!-- end nav-right -->
+
+
+        <!--  start nav -->
+        <div class="nav">
+        <div class="table">
+        
+     <apex:outputPanel rendered="{!booleanforDisplayBoothadminTab}">
+ 
+        <ul class="select"><li>
+        <apex:form >
+       <!-- <apex:commandLink action="{!dashBoardAction}"><b>Dashboard</b></apex:commandLink> -->
+        <apex:outputLink value="BL_BoothAdmin_Dashboard"><b>Dashboard</b> </apex:outputLink>
+        </apex:form>
+       
+        </li>
+        </ul>  
+    
+         </apex:outputPanel> 
+     
+    
+       
+              
+        
+         <div class="nav-divider">&nbsp;</div>                   
+        <ul class="select"><li>
+        <apex:form >
+          <apex:outputLink value="bl_eventadmin_events"><b>Events</b> </apex:outputLink>
+        <!--<apex:commandLink action="{!EventAction}"><b>Events</b></apex:commandLink> -->
+        </apex:form>
+       
+        </li>
+        </ul>
+        
+        
+        
+        <div class="nav-divider">&nbsp;</div>
+        
+        <ul class="current"><li>
+        <apex:form >
+          <apex:outputLink value="BL_boothpersonnels"><b>Booth Users</b> </apex:outputLink> 
+       <!-- <apex:commandlink action="{!Customeraction}"><b>Booth Users</b></apex:commandlink> -->
+        </apex:form>
+       
+        </li>
+        </ul>
+        <div class="nav-divider">&nbsp;</div>
+        
+        <ul class="select"><li>
+        <apex:form >
+         <apex:outputLink value="Bl_attendees"><b>Leads </b> </apex:outputLink>
+      <!--  <apex:commandLink action="{!AttendeesAction}" ><b>Leads </b> </apex:commandLink> -->
+        </apex:form>
+       
+        </li>
+        </ul>
+        
+        
+        
+        <div class="nav-divider">&nbsp;</div>
+        
+        <ul class="select"><li><apex:form >
+         <apex:outputLink value="Bl_Reports"><b>Reports</b> </apex:outputLink>
+        <!--<apex:commandlink action="{!Reportsaction}"><b>Reports</b></apex:commandlink> -->
+        
+        </apex:form>
+       
+        </li>
+        </ul>
+        
+       
+         <div class="nav-divider">&nbsp;</div>
+         <apex:outputPanel >
+        <ul class="select"><li>
+        <apex:form >
+         <apex:outputLink value="BL_BoothQr"><b>Booth Qrcodes</b> </apex:outputLink>
+      <!--  <apex:commandlink action="{!boothaction}"><b>Booth Qrcodes</b></apex:commandlink> -->
+        </apex:form>
+       
+        </li>
+        </ul>  
+         <div class="nav-divider">&nbsp;</div>
+         </apex:outputPanel> 
+        
+        
+        <div class="clear"></div>
+        </div>
+        <div class="clear"></div>
+        </div>
+        <!--  start nav -->
+        
+
+</div>
+<div class="clear"></div>
+<!--  start nav-outer -->
+</div>
+<!--  start nav-outer-repeat................................................... END -->
+
+ <div class="clear"></div>
+
+                
+        
+                        
+                       
+     
+               
+<!-- start content-outer ........................................................................................................................START -->
+<div id="content-outer">
+<!-- start content -->
+<div id="content">
+
+    <!--  start page-heading -->
+    <div id="page-heading">
+    
+  
+   <table width="100%"><tr><td>
+    <apex:form >
+      <apex:outputLabel > <font size="2" color="Black">Events</font></apex:outputLabel>
+  
+   
+           <apex:selectList value="{!eventSelected}" multiselect="false" size="1">
+       <apex:selectOptions value="{!items}"/>
+   <apex:actionSupport action="{!getBoothPersonnels}" event="onchange" reRender="frm2"/> 
+      </apex:selectList>
+       </apex:form>
+       </td><td>    
+     <apex:form id="frm100">                     
+    <apex:outputPanel rendered="{!errorMessage}" id="idforoutputpannel"><font size="4" color="red">{!message}</font></apex:outputPanel> </apex:form> 
+      </td><td>
+     <div style="float:right;padding-right:30px"><apex:form > <apex:commandButton value="Create Booth User"
+                    action="{!addPersonnels}"   styleClass="awesome" title="Create Booth User" reRender="tstpopup2"/>
+                    
+             
+        <apex:outputPanel id="tstpopup2">
+            <apex:outputPanel styleClass="popupBackground" layout="block"
+                rendered="{!displayPopUpForAddBooth}" />
+            <apex:outputPanel styleClass="custPopup" layout="block" style="width:80%"
+                rendered="{!displayPopUpForAddBooth}">
+ 
+   <table width="100%" border="0" align="center" cellpadding="0" cellspacing="0">
+ 
+  <tr>
+    <td colspan="2">
+    
+        <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        
+            <tr>
+                <td height="40px"  align="center" valign="middle" class="pophead"> <h2 style="color:#FFFFFF; font-size:16px;">Add Booth User To {!eventnameforGried}</h2></td>
+                <td class="pophead"><div style="float:right;"><apex:commandButton image="{!URLFOR($Resource.Close1)}" action="{!closePopup2}" immediate="true"  rerender="tstpopup2" title="Close"/> </div></td>
+            </tr>
+        </table>
+    
+    
+    
+    
+      
+     
+      
+      
+    </td>
+  </tr>
+  <tr height="5px" >
+ 
+  </tr>
+  
+  <tr> <td colspan="2"></td></tr>
+  
+  <tr>
+    <td width="50%" height="25" align="center" valign="top">
+    <table width="100%" border="0" align="center" cellpadding="0" cellspacing="0">
+      <tr>
+            <td width="50%" height="25" align="right"> 
+                <apex:outputLabel style="color:#000000;">First Name<font style="color:Red;font:size:14px;">*</font></apex:outputLabel> 
+           </td>
+            <td width="50%" height="25" align="left" style="padding-left:5px;">
+             
+              <apex:inputField value="{!CreateUser.FirstName}" id="frname"/>
+            </td>
+      </tr>
+       <tr><td></td> <td style="color:red">{!firstnaerror}</td> </tr>
+      <tr>
+        <td height="25" align="right">
+            <apex:outputLabel style="color:#000000;">Last Name <font style="color:Red;font:size:14px;">*</font></apex:outputLabel></td>
+        <td height="25" align="left" style="padding-left:5px;">
+          
+          
+           <apex:inputField value="{!CreateUser.LastName}" id="LsName"/>
+            </td>
+      </tr>
+      
+      
+      
+      
+      
+       <tr>
+        <td width="50%" height="15" align="right">
+      </td>
+        <td width="50%" height="15" align="left" style="padding-left:5px;">
+            
+             
+            </td>
+      </tr>
+      
+      
+      
+      
+      <tr>
+        <td width="50%" height="25" colspan="2" align="right">
+       
+       <apex:selectRadio value="{!country}">
+            <apex:selectOptions value="{!SeletOptions}"/> 
+            </apex:selectRadio>
+            
+            </td>
+      </tr>
+      <tr><td></td> <td style="color:red">{!accessTypeerror}</td> </tr>
+      
+      <tr>
+        <td width="50%" height="15" align="right">
+      </td>
+        <td width="50%" height="15" align="left" style="padding-left:5px;">
+            
+             
+            </td>
+      </tr>
+      
+      
+      
+    </table>
+    </td>
+    <td width="50%" height="25" align="center" valign="top"><table width="100%" border="0" align="center" cellpadding="0" cellspacing="0">
+     
+      <tr>
+        <td height="25" align="right">
+            <apex:outputLabel style="color:#000000;">Email ID<font style="color:Red;font:size:14px;">*</font></apex:outputLabel></td>
+        <td height="25" align="left" style="padding-left:5px;">
+          <apex:inputText value="{!email}" id="emailid"/></td>
+                 
+      </tr>
+      <tr><td></td><td style="color:red"> {!Emailerror}</td></tr>
+      
+       <tr>
+        <td width="50%" height="25" align="right" valign="middle">
+        <apex:outputLabel style="color:#000000;">Designation</apex:outputLabel></td>
+        <td width="50%" height="25" align="left" style="padding-left:5px;">
+            
+             <apex:inputField value="{!CreateUser.Title}" id="title"/>
+            </td>
+      </tr>
+      
+      
+      
+      
+       
+      
+      
+    </table></td>
+  </tr>
+ <tr>
+    <td height="25" colspan="2" align="center" valign="middle">
+    <apex:commandButton value="Save" onclick="return validate();"
+                            action="{!savePopUpValues}"  styleClass="awesome"  title="Save" />
+                            
+                            
+   &nbsp; <apex:commandButton value="Close" action="{!closePopup2}" immediate="true"
+                            rerender="tstpopup2" styleClass="awesome"  title="Close"/>
+    </td>
+  </tr> 
+</table> 
+                
+            </apex:outputPanel>
+        </apex:outputPanel>
+    
+            </apex:form></div>
+     </td></tr></table> 
+        
+    </div>
+    <table border="0" width="100%" cellpadding="0" cellspacing="0" id="content-table">
+    <tr>
+        <th rowspan="3" class="sized">
+        
+        <img src="{!URLFOR($Resource.QRCode_CSS,"css/images/shared/side_shadowleft.jpg")}" width="20" height="300" alt="" /></th>
+        <th class="topleft"></th>
+        <td align="right" valign="middle" id="tbl-border-top">&nbsp;</td>
+        <th class="topright"></th>
+        <th rowspan="3" class="sized">
+        <img src="{!URLFOR($Resource.QRCode_CSS,"css/images/shared/side_shadowright.jpg")}" width="20" height="300" alt="" /></th>
+    </tr>
+    <tr>
+        <td id="tbl-border-left"></td>
+        <td>
+        
+ <div id="content-table-inner">
+                
+ <div id="table-content">
+            
+
+ <apex:form id="frm2">
+
+ <script>   
+   var hdneventName;  
+ </script>
+ 
+ <script type="text/javascript" charset="utf-8" src="http://cdn.sencha.io/ext-4.0.7-gpl/ext-all.js"></script>
+ <link rel="stylesheet" type="text/css" href="http://cdn.sencha.io/ext-4.0.7-gpl/resources/css/ext-all.css"/> 
+      
+ <script>
+var temp= new Array();
+</script>  
+        
+<script type="text/javascript"> 
+// -------------------------------------------- ExtJS Grid Start ---------------------------------------------------  
+var grid, store;
+var GridTitle='Leads';   
+Ext.onReady(function(){
+
+ var myData1=new Array();
+      
+ var fr ='{!eventnameforGried}';
+      
+ <apex:repeat value="{!boothPersonnelWithStatus}" var="row">            
+
+  var rowArray=new Array();
+  rowArray[0]=  '{!row.upevalue.id}';
+            
+  var fName ="{!row.upevalue.User_id__r.FirstName}";
+  rowArray[1]=  fName.replace(/\'/g,'\'');
+       
+  var lName ="{!row.upevalue.User_id__r.LastName}";
+  rowArray[2]=  lName.replace(/\'/g,'\'');
+      
+  var EName ="{!row.upevalue.User_id__r.Email}";
+  rowArray[3]=  EName.replace(/\'/g,'\'');
+         
+  var cName= "{!row.upevalue.User_id__r.CompanyName}";
+  rowArray[4]=  cName.replace(/\'/g,'\'');
+         
+  rowArray[5]=  '{!row.upevalue.User_id__r.Title}';
+          
+  rowArray[6] = '{!row.upevalue.Status__c}';
+          
+  myData1.push(rowArray); 
+           
+ </apex:repeat>        
+     
+  
+   var myDirectfn = function(opts, fn, proxy) {
+    var start = opts.start,
+        end = opts.limit+opts.start,
+        data = [];
+    if (end > myData1.length) end = myData1.length;
+    for (var i = start; i < end; i++)
+        data.push(myData1[i]);
+    data.total = myData1.length;
+    fn(data, {
+        status: true,
+        result: data
+    });
+};
+
+myDirectfn.directCfg = {
+    method: {len:1}
+};
+
+GridTitle =GridTitle+' - '+fr;
+if(myData1.length<=0)
+{
+ GridTitle=GridTitle+'<span style=\'padding-left:200px\'><font color=\'red\'>No Records Found</font></span>';
+ tSize=0;        
+}
+
+store = new Ext.data.SimpleStore({
+fields:[{name:'id'},{name:'FirstName'},{name:'LastName'},{name:'Email'},{name:'Company'},{name:'Designation'},{name:'status'}],
+pageSize: 50,
+proxy: {
+type: 'direct',
+directFn: myDirectfn,
+reader: {
+type: 'array'
+}
+},
+});
+store.loadData(myData1);
+
+var newstore=new Ext.data.ArrayStore({
+ fields: ['abbr', 'action'],
+ data : [                                         
+   ['Mobile only access', 'Mobile only access'],
+   ['Mobile and Portal access', 'Mobile and Portal access']  
+  ]
+});
+
+function openrender(value, p, r)
+{
+ return String.format('<a <href="#" onClick="selectOneCheckBox(\'{0}\')" style="color:blue;text-decoration:none;">{0}</a>',value, r.data.state, r.data.ptt, 'Open');
+}       
+
+grid = Ext.create('Ext.grid.Panel',{
+store: store, 
+selModel: Ext.create('Ext.selection.CheckboxModel'),
+plugins: [{ptype:'cellediting',
+clicksToEdit:1
+}],
+viewConfig: {
+id: 'gv',
+trackOver: true,
+stripeRows: true,
+loadMask: false
+},        
+columns: [
+{header:'id', dataIndex: 'id',hidden:true },   
+{   
+header:"<b>Name</b>",flex:2, dataIndex:'FirstName',
+ renderer: function(value,p,r){
+  return '<a href="#" onClick="selectOneCheckBox(\''+ r.data['id']+'\')" style=\"color:blue;text-decoration:underline;\"> '+r.data['FirstName']+ ' ' + r.data['LastName']+'</a>';
+ }
+}, 
+{header: "<b>E-Mail</b>",flex:2.5, dataIndex: 'Email'}, 
+{header: "<b>Company</b>",flex:1.5, dataIndex: 'Company'},
+{header:"<b>Designation</b>",flex:2,dataIndex:'Designation'},                   
+{ 
+header:"<b>Status</b>",flex:3,dataIndex:'status',
+ renderer: function(value, p, r){
+  return '<a href="#" onClick="deleteRecord(\''+ r.data['id']+'\')" style=\"color:blue;text-decoration:underline;\"> '+ r.data['status']+'</a>';}
+}, 
+{
+ header:"<b>Action</b>",dataIndex:'Action',flex:1,
+ renderer: function(value,p,r){
+  return '<a href="#" onclick="editRecord(\''+ r.data['id']+'\')" style="color:blue;text-decoration:none;" ><img src="{!URLFOR($Resource.Qrcode_edit)}" border="3"  style="border-color:#003068;width:16px;height:16px" title="Edit"/></a> ';
+ }
+}],
+height: 350, 
+width: '100%',
+title: GridTitle,
+stripeRows:true,
+bbar: new Ext.PagingToolbar({
+        store: store,
+        pageSize: 50,
+        displayInfo: true  
+}),
+renderTo: 'items-grid1'                            
+});
+
+  
+store.loadPage(1);
+
+});
+// -------------------------------------- Grid End -------------------------------------- 
+ 
+        
+       function selectOneCheckBox(eventname)
+        {
+            
+            hdneventName.value=eventname;
+            getEventDetails(eventname);  //recordId2
+        }
+      
+        function editRecord(eventname)
+        {
+            
+           
+            hdneventName.value=eventname;
+            editAttendees(eventname);
+        }
+        
+        function deleteRecord(eventname)
+        {
+           hdneventName.value=eventname;
+                deleteAdminRecord1();
+            
+        }
+        
+         
+       </script>
+      
+      
+      
+      
+       
+
+            <div id="items-grid1" />
+       
+
+    <apex:inputHidden value="{!eventName}" id="eventNameValue" />
+        <apex:actionFunction action="{!getEventDetails}"
+            name="getEventDetails" reRender="frm">
+        </apex:actionFunction>
+        
+        
+        
+   <apex:actionFunction action="{!deleteAdminRecord}"
+            name="deleteAdminRecord" reRender="tstpopup1,frm2,frm100">
+        </apex:actionFunction> 
+        
+        <apex:actionFunction action="{!deleteAdminRecord1}"
+            name="deleteAdminRecord1" reRender="frmselect,tstpopupselect">
+        </apex:actionFunction> 
+          
+        
+        
+        <apex:actionFunction action="{!editAttendees}"
+            name="editAttendees" reRender="frm1,frm100"> 
+        </apex:actionFunction> 
+      
+      
+        <script>
+        hdneventName = document.getElementById("{!$Component.eventNameValue}");
+        </script>
+
+
+    </apex:form>
+ 
+  
+   
+  
+    
+    
+ <apex:form id="frm">
+
+        <apex:outputPanel id="tstpopup">
+            <apex:outputPanel styleClass="popupBackground" layout="block"
+                rendered="{!displayPopUp}" />
+            <apex:outputPanel styleClass="custPopup" layout="block" style="width:80%"
+                rendered="{!displayPopUp}">
+                
+                
+               
+                
+               <apex:repeat value="{!detailsOfBoothPersonnel}" var="bp"> 
+                
+                
+               <table width="100%" border="0" align="center" cellpadding="0" cellspacing="0">
+         
+  <tr>
+    <td width="50%" height="35" colspan="2" align="center" valign="middle" bgcolor="#75b9fe"><b style="color:#FFFFFF; font-size:16px;">Booth User</b></td>
+    
+    
+    <td style="text-align:right;" class="pophead"><apex:commandButton image="{!URLFOR($Resource.Close1)}" action="{!closePopup}"  rerender="tstpopup" immediate="true" title="Close"/></td>
+  </tr> 
+  <tr>
+    <td width="50%" height="25" align="center" valign="top" >
+    <table width="100%" border="0" align="center" cellpadding="0" cellspacing="0">
+      <tr>
+        <td width="50%" height="25" align="right"><apex:outputLabel value="Name:" style="color:#000000" /></td>
+        <td width="50%" height="25" align="left" style="padding-left:5px;"> 
+       <apex:outputLabel value="{!bp.User_id__r.Name}"  style="color:#000000" />
+       
+       </td>
+      </tr>
+      <tr>
+        <td height="25" align="right"><apex:outputLabel value="Email Id: " style="color:#000000" /></td>
+        <td height="25" align="left" style="padding-left:5px;">
+        <apex:outputLabel value="{!bp.User_id__r.Email}"  style="color:#000000"/>
+        
+        </td>
+      </tr>
+    </table></td>
+    <td width="50%" height="25" align="center" valign="top"><table width="100%" border="0" align="center" cellpadding="0" cellspacing="0">
+      <tr>
+        <td width="50%" height="25" align="right"> <apex:outputLabel value="Company Name: "  style="color:#000000"/></td>
+        <td width="50%" height="25" align="left" style="padding-left:5px;"> 
+       <apex:outputLabel value="{!bp.User_id__r.CompanyName}" style="color:#000000" />
+        
+        </td>
+      </tr>
+      <tr>
+        <td height="25" align="right"> <apex:outputLabel value="Designation: "  style="color:#000000"/></td>
+        <td height="25" align="left" style="padding-left:5px;">
+        <apex:outputLabel value="{!bp.User_id__r.Title}"  style="color:#000000"/>
+        
+        </td>
+      </tr>
+    </table></td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td height="35" colspan="2" align="center" valign="middle"> <apex:commandButton value="Close" action="{!closePopup}"
+                    rerender="tstpopup" styleClass="awesome" /></td>
+                    <td>&nbsp;</td>
+  </tr> 
+   
+</table>
+               </apex:repeat>
+        </apex:outputPanel>
+        </apex:outputPanel>
+    </apex:form> 
+   
+    
+    
+    
+    
+    
+ 
+  <apex:form id="frm1">
+
+        <apex:outputPanel id="tstpopup1">
+            <apex:outputPanel styleClass="popupBackground" layout="block"
+                rendered="{!displayPopUpForAdd}" />
+            <apex:outputPanel styleClass="custPopup" layout="block" style="width:80%"
+                rendered="{!displayPopUpForAdd}">
+    
+   <table width="100%" border="0" align="center" cellpadding="0" cellspacing="0">
+  
+  <tr>
+    <td height="35px" colspan="2" align="center" valign="middle" bgcolor="#75b9fe">
+      <h2 style="color:#FFFFFF; font-size:16px;">Edit Booth User</h2>
+     </td><td align="right" width="35px" class="pophead">
+         <div style="float:right;">                             
+                <apex:commandButton image="{!URLFOR($Resource.Close1)}" action="{!closePopup1}" rerender="tstpopup1" immediate="true" title="Close"/> </div>  
+                            
+    </td>
+  </tr>
+  <tr height="5px" >
+    
+  </tr>
+  
+  <tr height="5px" >
+    <td colspan="2">
+    <apex:pageMessages ></apex:pageMessages>
+    </td>
+  </tr>
+  
+  <tr>
+    <td width="50%" height="25" align="center" valign="top"><table width="100%" border="0" align="center" cellpadding="0" cellspacing="0">
+      <tr>
+            <td width="50%" height="25" align="right"> 
+                <apex:outputLabel style="color:#000000;">First Name<font style="color:Red;font:size:14px;">*</font> :</apex:outputLabel> 
+           </td>
+            <td width="50%" height="25" align="left" style="padding-left:5px;">
+              <apex:inputText value="{!editOfBoothPersonnel.FirstName}"  id="firName"/>
+            </td>
+      </tr>
+      <tr>
+        <td height="25" align="right">
+            <apex:outputLabel style="color:#000000;">LastName <font style="color:Red;font:size:14px;">*</font>: </apex:outputLabel></td>
+        <td height="25" align="left" style="padding-left:5px;">
+          
+             <apex:inputText value="{!editOfBoothPersonnel.LastName}" required="true" id="lasName"/>
+            </td>
+      </tr>
+    </table>
+    </td>
+    <td width="50%" height="25" align="center" valign="top"><table width="100%" border="0" align="center" cellpadding="0" cellspacing="0">
+     
+      <tr>
+        <td height="25" align="right">
+            <apex:outputLabel style="color:#000000;">Email ID <font style="color:Red;font:size:14px;">*</font>:</apex:outputLabel></td>
+        <td height="25" align="left" style="padding-left:5px;">
+          
+             <apex:outputLabel value="{!editOfBoothPersonnel.Email}" />
+            </td>
+      </tr>
+       <tr>
+        <td width="50%" height="25" align="right">
+        <apex:outputLabel style="color:#000000;">Designation :</apex:outputLabel></td>
+        <td width="50%" height="25" align="left" style="padding-left:5px;">
+           
+             <apex:inputField value="{!editOfBoothPersonnel.Title}" />
+            </td>
+      </tr>
+      
+     
+
+      
+      
+    </table></td>
+  </tr>
+ <tr>
+    <td height="25" colspan="2" align="center" valign="middle">
+    <apex:commandButton value="Save"  
+                            action="{!EditPopUpValues}" rerender="tstpopup1,frm2,frm1" styleClass="awesome" title="Save" />
+                            
+                            
+   &nbsp; <apex:commandButton value="Close" action="{!closePopup1}" immediate="true"
+                            rerender="tstpopup1" styleClass="awesome"  title="Close"/>
+    </td>
+  </tr>
+</table>
+                        
+                
+                
+            </apex:outputPanel>
+        </apex:outputPanel>
+    </apex:form> 
+    
+    
+      
+ 
+    
+  
+   
+    
+     
+     
+     <apex:form id="frmselect">
+
+        <apex:outputPanel id="tstpopupselect">
+            <apex:outputPanel styleClass="popupBackground" layout="block"
+                rendered="{!displayPopUpForAddcheck}" />
+            <apex:outputPanel styleClass="custPopup" layout="block" style="width:80%"
+                rendered="{!displayPopUpForAddcheck}">
+    
+    <table width="100%" border="0" align="center" cellpadding="0" cellspacing="0">
+ 
+  
+  <tr>
+    <td height="35px" align="center" valign="middle"   class="pophead">
+       <h2 style="color:#FFFFFF; font-size:16px;">Change The Status</h2>
+    </td>
+    <td align="right" width="35px" class="pophead">
+        <apex:commandButton image="{!URLFOR($Resource.Close1)}" action="{!closePopupSelect}" title="Close"/>
+    </td>
+  </tr>
+  
+       <tr>
+        <td width="50%" height="25" colspan="2" align="center">
+             <font size="4" color="red">{!errormsg}</font>  
+       <apex:selectRadio value="{!countrySelect}" layout="pageDirection" immediate="true">
+            <apex:selectOptions value="{!SeletSelect}" />
+            </apex:selectRadio> 
+          
+          </td>
+      </tr>
+      
+      <tr>
+    <td height="25" colspan="2" align="center" valign="middle">
+      <apex:commandButton value="Save"
+                            action="{!saveLicenceValues}"  styleClass="awesome"  title="Save" reRender="frmselect,frm2"/>
+      
+      
+      &nbsp; <apex:commandButton value="Close" action="{!closePopupSelect}" 
+                            styleClass="awesome"  title="Close" reRender="frmselect"/>
+    </td>
+  </tr> 
+      
+   </table>
+        
+            </apex:outputPanel>
+        </apex:outputPanel>
+    </apex:form>
+    
+    
+    
+         </div>
+            <!--  end content-table  -->
+            
+            
+        
+            <!--  start actions-box ............................................... -->
+            <!-- end actions-box........... -->
+            
+            
+            <div class="clear">
+            
+        
+            
+            
+            </div>
+         
+        </div>
+        <!--  end content-table-inner ............................................END  -->
+        </td>
+        <td id="tbl-border-right"></td>
+    </tr>
+    <tr>
+        <th class="sized bottomleft"></th>
+        <td id="tbl-border-bottom">&nbsp;</td>
+        <th class="sized bottomright"></th>
+    </tr>
+    </table>
+    <div class="clear">&nbsp;</div>
+
+</div>      
+ 
+<!--  end content -->
+<div class="clear">&nbsp;</div>
+</div>
+<!--  end content-outer........................................................END -->
+
+<div class="clear">&nbsp;</div>
+    
+<!-- start footer -->         
+<div id="footer">
+    <!--  start footer-left -->
+    <div id="footer-left">&copy; Copyright Globalnest LLC. <span id="spanYear"></span> 
+    <a href="">www.globalnest.com</a>. All rights reserved.</div>
+    <!--  end footer-left -->
+    <div class="clear">&nbsp;</div>
+</div>
+<!-- end footer -->  
+
+</apex:page>

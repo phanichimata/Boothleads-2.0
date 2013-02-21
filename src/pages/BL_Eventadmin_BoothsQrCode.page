@@ -1,0 +1,14 @@
+<apex:page controller="BL_Eventadmin_EventsConForDoc" sidebar="false" showHeader="false">
+
+<apex:form >
+  <apex:sectionHeader title="Upload a Document into Salesforce"/>
+  <apex:pageblock >
+      <apex:pageblocksection columns="1">
+          <apex:inputfile value="{!myimage.body}" filename="{!myimage.Name}" />
+          <apex:commandbutton value="Save" action="{!Savedoc}"/>
+      </apex:pageblocksection>
+  </apex:pageblock>   
+</apex:form> 
+
+
+</apex:page>

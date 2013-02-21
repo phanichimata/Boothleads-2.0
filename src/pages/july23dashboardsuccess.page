@@ -1,0 +1,633 @@
+<apex:page controller="Dashboardcntrltryjuly23" showHeader="false" standardStylesheets="false">
+ <apex:form >
+
+  <script type="text/javascript" charset="utf-8" src="http://cdn.sencha.io/ext-4.0.7-gpl/ext-all.js"></script>
+  <link rel="stylesheet" type="text/css" href="http://cdn.sencha.io/ext-4.0.7-gpl/resources/css/ext-all.css"/>
+ 
+  
+ <head>
+  <style > 
+  
+   .report-icon
+   {
+    background:url(http://cdn1.iconfinder.com/data/icons/humano2/24x24/apps/gnumeric.png) no-repeat top left; 
+    padding-right: 25px;
+    padding-bottom: 25px;
+   }  
+  
+     .chart-icon
+   {
+    background:url(http://cdn1.iconfinder.com/data/icons/iconza/iconza_16x16_0097d9/line_graph.png) no-repeat; 
+   }
+   .grid-icon
+   {
+    background:url(http://cdn1.iconfinder.com/data/icons/momenticons-gloss-basic/momenticons-gloss-basic/16/table.png) no-repeat; 
+   }
+
+
+   .geo-icon
+   {
+    background:url(http://cdn1.iconfinder.com/data/icons/realistiK-new/16x16/apps/package_network.png) no-repeat; 
+    padding-top:17px;
+   } 
+    .ind-icon
+   {
+    background:url(http://cdn1.iconfinder.com/data/icons/REALVISTA/project_managment/png/16/agency.png) no-repeat; 
+    padding-top:17px;
+   }  
+  
+  </style>
+ </head> 
+ 
+ 
+<script type="text/javascript">  
+
+Ext.require('Ext.chart.*');  
+Ext.require('Ext.grid.*');  
+Ext.onReady(function ()  
+{
+
+   var store = Ext.create('Ext.data.JsonStore', {  
+       fields: ['namegeo', 'datageo'], 
+       data: [
+       <apex:repeat value="{!grphy}" var="a"> 
+       {
+        'namegeo' : '{!a.geogy}',  
+        'datageo' :{!a.georecords}
+       }, 
+       </apex:repeat>  
+     ]
+  });
+  
+    Ext.create('Ext.data.Store', {  
+    storeId:'simpsonsStore',
+    fields:['name', 'email', 'phone'],
+    data:{'items':[
+        { 'name': 'Lisa',  "email":"lisa@simpsons.com",  "phone":"555-111-1224"  }, 
+        { 'name': 'Bart',  "email":"bart@simpsons.com",  "phone":"555-222-1234"  }, 
+        { 'name': 'Homer', "email":"home@simpsons.com",  "phone":"555-222-1244"  }, 
+        { 'name': 'Marge', "email":"marge@simpsons.com", "phone":"555-222-1254"  } 
+    ]},
+    proxy: {
+        type: 'memory',
+        reader: {
+            type: 'json',
+            root: 'items'
+        }
+    }
+});
+ 
+    var store1 = Ext.create('Ext.data.JsonStore', { 
+    fields: ['nameindus', 'dataI'],
+    data: [
+    <apex:repeat value="{!indus}" var="a">
+    {
+    'nameindus' : '{!a.industry}',  
+    'dataI' :{!a.indusrec}
+    },
+    </apex:repeat>
+    ]
+ });
+ 
+ var navigate = function(panel,direction){
+  
+    var layout = panel.getLayout();
+    layout[direction]();
+    Ext.getCmp('chartid').setDisabled(!layout.getPrev());
+    Ext.getCmp('gridid').setDisabled(!layout.getNext()); 
+};
+ 
+ 
+ Ext.create('Ext.Panel', { 
+    width: 1000,
+    height: 770,
+     iconCls: 'report-icon',
+    title: 'Reports Dashboard',        
+    renderTo: document.body,         
+    layout: 
+    {
+     type: 'table',
+     columns: 3,
+     tableAttrs: {
+            style: {
+            
+                width: '100%', 
+                height: '100%',
+              
+            }
+        }
+    },
+    defaults: 
+    {
+      bodyStyle: 'padding:4px' 
+    },
+    items: [{
+       
+        title: '',
+        border:false,
+        columnWidth:0.050,
+        rowspan:2
+    
+    },
+  
+    {
+    xtype: 'panel',    
+    title: 'Geography Chart', 
+    width: 480,
+    height: 350,
+     iconCls : 'geo-icon',
+    closeAction: 'hide',
+    renderTo: Ext.getBody(), 
+   
+    layout: 'card', 
+    tbar: [
+ 
+    { 
+    xtype: 'tbspacer', 
+    width: 410
+    },
+    {
+     xtype : 'button', 
+     title:'Chart',
+     id:'chartid',
+     iconCls : 'chart-icon', 
+    
+     width : 25, 
+     height : 25, 
+   handler: function(btn) {
+                navigate(btn.up("panel"), "prev");
+            },
+            disabled: true
+    
+  
+  
+  
+    },
+    {
+     xtype:'tbseparator'
+    },
+    {
+     xtype : 'button',
+     text : null,
+     id:'gridid',
+     iconCls : 'grid-icon',
+     layout: 'autofit',
+     width : 25,
+     height : 25,
+    handler: function(btn) {
+                navigate(btn.up("panel"), "next");
+            }
+
+         }
+         
+         ],
+    items: 
+   [{
+        xtype: 'chart',
+        id: 'chartCmp',
+        animate: false,
+        store: store,
+        align:'center',
+        shadow: true,
+        legend: {
+            position: 'right'
+        },
+        insetPadding: 60,
+        theme: 'Base:gradients',
+        series: [{
+            type: 'pie',
+            field: 'datageo',
+            showInLegend: true,
+            tips: {
+              trackMouse: true,
+              width: 280,
+              height: 50,
+              renderer: function(storeItem, item) {
+                //calculate percentage.
+                var total = 0;
+                store.each(function(rec) {
+                    total += rec.get('datageo');
+                });
+                 this.setTitle(storeItem.get('namegeo') + ' : ' + storeItem.get('datageo') +  '-Attendees'); 
+              }
+            },
+            highlight: {
+              segment: {
+                margin: 20
+              }
+            },
+            label: {
+                field: 'namegeo',
+                display: 'rotate',
+                contrast: true,
+                font: '15px Arial' 
+            }
+      }],
+    },
+
+  {
+     xtype:'grid',  
+  
+     width: 480, 
+     height: 350, 
+     
+     closeAction: 'hide', 
+     renderTo: Ext.getBody(), 
+     title: 'Simpsons', 
+     id:'gridpanel', 
+     store: Ext.data.StoreManager.lookup('simpsonsStore'),    
+     columns: [
+        { header: 'Name',  dataIndex: 'name' },       
+        { header: 'Email', dataIndex: 'email', flex: 1 },             
+        { header: 'Phone', dataIndex: 'phone' }        
+    ],
+  }],
+
+    
+   } ,
+
+       
+ {
+   xtype: 'panel',   
+   title: 'Geography Chart', 
+     iconCls : 'geo-icon',
+   width: 480,
+   height: 350,
+   closeAction: 'hide', 
+   renderTo: Ext.getBody(),  
+   tools:[
+   {
+    type:'minimize'
+   },
+   {
+    type:'Close'}],
+   layout: 'fit',
+   tbar: [{
+      text: 'Reload Data',
+      handler: function() {
+      var store = Ext.create('Ext.data.JsonStore', { 
+          fields: ['namegeo', 'datageo'],
+          data: [
+          <apex:repeat value="{!grphy}" var="a">
+          {
+           'namegeo' : '{!a.geogy}',  
+           'datageo' :{!a.georecords}
+          },
+          </apex:repeat>
+         ]
+      });
+     }
+   },
+    {
+        enableToggle: true,
+        pressed: false,
+        text: 'Donut',
+        toggleHandler: function(btn, pressed) {
+            var chart = Ext.getCmp('chartCmp');
+            chart.series.first().donut = pressed ? 35 : false;
+            chart.refresh();
+        }
+    },
+    { 
+    xtype: 'tbspacer', 
+    width: 290
+    },
+    {
+     xtype : 'button',
+     text : null,
+     iconCls : 'chart-icon',
+     layout: 'autofit',
+     width : 25,
+     height : 25,
+     enableToggle: true,
+     pressed: false,
+     toggleHandler: function(btn, pressed) 
+     {
+      var chart = Ext.getCmp('chartCmp');
+      chart.series.first().donut = pressed ? 35 : false;
+      chart.refresh();
+     }
+    },
+    {
+     xtype:'tbseparator'
+    },
+    {
+     xtype : 'button',
+     text : null,
+     iconCls : 'grid-icon',
+     layout: 'autofit',
+     width : 25,
+     height : 25
+         }],
+    items: 
+    {
+        xtype: 'chart',
+      
+        animate: true,
+        store: store,
+        align:'center',
+        shadow: true,
+        legend: {
+            position: 'right'
+        },
+        insetPadding: 60,
+        theme: 'Base:gradients',
+        series: [{
+            type: 'pie',
+            field: 'datageo',
+            showInLegend: true,
+            tips: {
+              trackMouse: true,
+              width: 280,
+              height: 50,
+              renderer: function(storeItem, item) {
+                //calculate percentage.
+                var total = 0;
+                store.each(function(rec) {
+                    total += rec.get('datageo');
+                });
+                 this.setTitle(storeItem.get('namegeo') + ' : ' + storeItem.get('datageo') +  '-Attendees');
+              }
+            },
+            highlight: {
+              segment: {
+                margin: 20
+              }
+            },
+            label: {
+                field: 'namegeo',
+                display: 'rotate',
+                contrast: true,
+                font: '15px Arial'
+            }
+        }]
+      }
+    },
+ 
+ 
+ 
+ 
+ 
+    
+    {
+    xtype: 'panel',  
+    title: 'Geography Chart', 
+      iconCls : 'geo-icon',
+    width: 480,
+    height: 350,
+    closeAction: 'hide',
+    renderTo: Ext.getBody(),
+    tools:[
+    {
+     type:'minimize'
+    },
+    {
+     type:'Close'}],
+    layout: 'fit',
+    tbar: [{
+        text: 'Reload Data',
+        handler: function() {
+        var store = Ext.create('Ext.data.JsonStore', { 
+            fields: ['namegeo', 'datageo'],
+            data: [
+            <apex:repeat value="{!grphy}" var="a">
+            {
+            'namegeo' : '{!a.geogy}',  
+            'datageo' :{!a.georecords}
+            },
+           </apex:repeat>
+            ]
+      });
+     }
+    },
+    {
+      enableToggle: true,
+      pressed: false,
+      text: 'Donut',
+      toggleHandler: function(btn, pressed) {
+          var chart = Ext.getCmp('chartCmp');
+          chart.series.first().donut = pressed ? 35 : false;
+          chart.refresh();
+        }
+    },
+    { 
+    xtype: 'tbspacer', 
+    width: 290
+    },
+    {
+     xtype : 'button',
+     text : null,
+     iconCls : 'chart-icon',
+     layout: 'autofit',
+     width : 25,
+     height : 25,
+     enableToggle: true,
+     pressed: false,
+     toggleHandler: function(btn, pressed) 
+     {
+      var chart = Ext.getCmp('chartCmp');
+      chart.series.first().donut = pressed ? 35 : false;
+      chart.refresh();
+     }
+    },
+    {
+     xtype:'tbseparator'
+    },
+    {
+     xtype : 'button',
+     text : null,
+     iconCls : 'grid-icon',
+     layout: 'autofit',
+     width : 25,
+     height : 25
+         }],
+    items: 
+    {
+     xtype: 'chart',
+   
+     animate: true,
+     store: store,
+     align:'center',
+     shadow: true,
+     legend: {
+        position: 'right'
+     },
+     insetPadding: 60,
+     theme: 'Base:gradients',
+     series: [{
+        type: 'pie',
+        field: 'datageo',
+        showInLegend: true,
+        tips: {
+          trackMouse: true,
+          width: 280,
+          height: 50,
+          renderer: function(storeItem, item) {
+            //calculate percentage.
+            var total = 0;
+            store.each(function(rec) {
+                total += rec.get('datageo');
+            });
+             this.setTitle(storeItem.get('namegeo') + ' : ' + storeItem.get('datageo') +  '-Attendees');
+          }
+        },
+         highlight: {
+          segment: {
+           margin: 20
+          }
+        },
+         label: {
+            field: 'namegeo',
+            display: 'rotate',
+            contrast: true,
+            font: '15px Arial'
+         }
+     }]
+   }
+ },
+
+  
+  
+  
+  
+   
+ {
+    xtype: 'panel',
+    title: 'Industry Chart',    
+    width: 480,
+    height: 350,
+     iconCls: 'ind-icon',
+    tools:[{
+     type:'minimize'
+    },
+    {
+     type:'Close'
+    }],
+    renderTo: Ext.getBody(),
+    layout: 'fit',
+     tbar: [{
+     text: 'Reload Data',
+     handler: function() {
+     var store = Ext.create('Ext.data.JsonStore', { 
+            fields: ['nameindus', 'dataI'],
+            data: [
+            <apex:repeat value="{!indus}" var="a">
+            {
+            'nameindus' : '{!a.industry}',  
+            'dataI' :{!a.indusrec}
+            },
+           </apex:repeat>
+            ]
+          });
+         }
+        },
+    { 
+    xtype: 'tbspacer', 
+    width: 335
+    },
+    {
+     xtype : 'button',
+     text : null,
+     iconCls : 'chart-icon',
+     layout: 'autofit',
+     width : 25,
+     height : 25,
+    },
+    {
+     xtype:'tbseparator'
+    },
+    {
+     xtype : 'button',
+     text : null,
+     iconCls : 'grid-icon',
+     layout: 'autofit',
+     width : 25,
+     height : 25
+     }],
+     items: [{
+      xtype: 'chart',
+      id:'chartcmp1',
+      animate: true,
+      shadow: true,
+      store: store1,
+      axes: [{
+         type: 'Numeric',
+         position: 'left',
+         fields: ['dataI'],
+         title: false,
+         grid: true,
+         minimum: 0,
+         maximum: 100
+      }, {
+          type: 'Category',
+          position: 'bottom',
+          fields: ['nameindus'],
+          title: false
+    }],
+     series: [{
+        type: 'column',
+        axis: 'left',
+        gutter: 80,
+        xField: 'nameindus',
+        yField: ['dataI'],
+          tips: {
+          trackMouse: true,
+          width: 280,
+          height: 80,
+          renderer: function(storeItem, item) 
+          {
+           this.setTitle(storeItem.get('nameindus') + ': ' + storeItem.get('dataI') + '-Attendees ');
+          }
+        },
+       }]
+      }]
+   
+   }] 
+  }); 
+  
+  // grid code start
+  
+ // Ext.create('Ext.data.Store', {
+ //   storeId:'simpsonsStore',
+ //   fields:['name', 'email', 'phone'],
+  //  data:{'items':[
+     //   { 'name': 'Lisa',  "email":"lisa@simpsons.com",  "phone":"555-111-1224"  },
+    //   { 'name': 'Bart',  "email":"bart@simpsons.com",   "phone":"555-222-1234"  },
+     //   { 'name': 'Homer', "email":"home@simpsons.com",  "phone":"555-222-1244"  },
+     //   { 'name': 'Marge', "email":"marge@simpsons.com", "phone":"555-222-1254"  }
+  //  ]},
+ //   proxy: {
+ //       type: 'memory',
+  //      reader: {
+     //       type: 'json',
+    //        root: 'items'
+   //     }
+  //  }
+//});
+
+// var win =   Ext.create('Ext.grid.Panel', {
+   //title: 'Simpsons',
+  //  id:'gridpanel',
+  // store: Ext.data.StoreManager.lookup('simpsonsStore'),
+   // columns: [
+    //    { header: 'Name',  dataIndex: 'name' },
+    //    { header: 'Email', dataIndex: 'email', flex: 1 },
+      //  { header: 'Phone', dataIndex: 'phone' }
+  //  ],
+ //  height: 200,
+ //   width: 400,
+ //   renderTo: Ext.getBody()
+//});
+  
+  
+  
+   // grid code end
+ 
+   
+   
+});
+
+</script>
+
+</apex:form>
+</apex:page>

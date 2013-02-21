@@ -1,0 +1,30 @@
+<apex:page renderAs="pdf">
+<div style="transform:rotate(90deg);-ms-transform:rotate(90deg);-moz-transform:rotate(90deg);-webkit-transform:rotate(90deg);-o-transform:rotate(90deg);width:2.41in;height:4.21in">
+
+<table  cellspacing="0" cellpadding="0"  width="100%" align="Left"  border="1" >
+
+<tr>
+<td style="width:20%" align="left">
+<apex:image value="{$!Resource.BoothLeadLogo}"/>
+</td>
+<td style="width:50%" align="left">
+Full Conference
+</td>
+</tr>
+<tr><td style="width:100%;" align="center" colspan="2">
+Event name
+</td></tr>
+<tr><td align="center" style="font-size:18pt;"  colspan="2">
+Mythily Nagandla
+</td></tr>
+<tr><td align="center" style="font-size:12pt;"  colspan="2">
+Developer
+</td></tr>
+<tr><td align="Left">
+<apex:image value="https://chart.googleapis.com/chart?chs=50x50&cht=qr&chl=vcbghbf"/></td>
+<td style="font-size:18pt;width:80%;" >
+Global Nest
+</td></tr>
+</table>
+</div>
+</apex:page>

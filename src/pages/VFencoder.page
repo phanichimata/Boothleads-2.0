@@ -1,0 +1,22 @@
+<apex:page title="testing encoding" showHeader="false"  sidebar="false" id="ThePage" controller="VFencodercon" cache="false">
+
+   <apex:form id="TheForm" >
+   
+   
+   <apex:commandButton value="Encoding" action="{!Encoding}"  id="EncodingButn" />
+   
+    <apex:CommandButton value="Decoding" action="{!Decoding}" id="DecodingButn" />
+    
+    
+     <apex:outputPanel id="TheOut1">
+     <apex:image URL="/servlet/servlet.FileDownload?file={!bolId}" height="100" width="100"/>
+  
+     
+     </apex:outputPanel> 
+        
+   
+   </apex:form>
+
+
+ 
+</apex:page>

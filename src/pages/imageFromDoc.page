@@ -1,0 +1,7 @@
+<apex:page controller="imageFromDoc">
+
+ <apex:form >
+<apex:image url="/servlet/servlet.FileDownload?file=015O0000000Ddwj"/>
+  
+ </apex:form>
+</apex:page>

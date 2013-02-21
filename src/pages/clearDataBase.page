@@ -1,0 +1,9 @@
+<apex:page controller="clearDataBaseCon" sidebar="false" showHeader="false">
+  
+  <apex:form >
+   <font style="color:red;">Entered text add afteryourName in Email :</font><br /><br /><apex:inputText value="{!replace}"/>
+      <apex:commandButton value="Clear" action="{!clear}"/>
+    </apex:form>
+  
+  
+</apex:page>

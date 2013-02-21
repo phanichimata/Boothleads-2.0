@@ -1,0 +1,14 @@
+<apex:page Controller="InsertUpdateAttendees">
+<apex:form >
+    <apex:selectList value="{!SelectEvent}" size="1">
+        <apex:selectOptions value="{!Events}"/>
+    </apex:selectList>
+</apex:form> 
+<apex:form >    
+    FirstName : <apex:inputField value="{!AddAttendee.AS_FirstName__c}"/>  
+    LastName : <apex:inputField value="{!AddAttendee.AS_LastName__c}"/>  
+    Email : <apex:inputText value="{!AddAttendee.AS_Email__c}"/> 
+    <apex:outputText value="{!Error }" rendered="{!DisplayError}"/>
+       <apex:commandButton value="Save" action="{!Saveattendee}"/>
+</apex:form>   
+</apex:page>

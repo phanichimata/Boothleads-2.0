@@ -1,0 +1,96 @@
+<apex:page showHeader="false" standardStylesheets="false" controller="quickregistrationcon">
+<html> <body>
+<head> 
+    <title>Booth Leads</title> 
+    <meta name="viewport" content="width=device-width, initial-scale=1"/> 
+    <apex:includeScript value="{!$Resource.jquerymobilejs}"/>
+    <apex:includeScript value="{!$Resource.minmobile}"/>
+    <apex:stylesheet value="{!$Resource.jquerymobilecss}"/>
+</head> 
+<apex:form >
+<apex:outputPanel style="color:#6495ED;width:75%" rendered="{!originalform}">
+<apex:outputText > First Name</apex:outputText>
+<apex:inputText style="width:75%" value="{!attendee.AS_FirstName__c}"/>
+<apex:outputText > Last Name</apex:outputText>
+<apex:inputText style="width:75%" value="{!attendee.AS_LastName__c}"/>
+<apex:outputText > Email </apex:outputText>
+<apex:inputText style="width:75%" value="{!attendee.AS_Email__c}"/>
+<apex:outputText > Company </apex:outputText>
+<apex:inputText style="width:75%" value="{!attendee.AS_Company__c}"/>
+
+<apex:commandButton style="width:75%" value="Print Badge" action="{!printbadge}"/>
+</apex:outputPanel>
+
+ <apex:outputPanel >
+ 
+    <apex:outputPanel rendered="{!pdfbool}" />
+         <apex:outputPanel style="width:40%;" rendered="{!pdfbool}" >
+
+<table  cellpadding="0" cellspacing="0" border="0" width="100%">
+ <tr height="35px" bgcolor="#75b9fe">
+                    <td  class="pophead">Badge  
+                    <div style="float:right;"><apex:commandButton action="{!cancel}" value="Close" image="{!$Resource.Close1}" immediate="true"/> </div>
+               </td> </tr>
+ 
+</table>
+
+<div style="height:10px;"></div>
+ <table cellpadding="0" cellspacing="0" border="0" width="100%">
+ 
+
+<tr>
+ 
+  <td align="center" colspan="2" style="color:#FFFFFF;">
+  <font  face="TimesNewRoman" color="green" style="font-size:36pt;">
+  {!eventatt.As_id__r.AS_FirstName__c}
+</font>  
+                            
+ </td></tr>
+ <tr><td style="height:10px"></td></tr>
+ <tr>
+ 
+ <td align="center"  colspan="2">
+ <font style="font-size:24pt;padding:0px;margin:0px;" face="TimesNewRoman" color="green">
+ {!eventatt.As_id__r.AS_LastName__c}
+ </font>
+ </td></tr>
+<tr>
+<td align="center"  width="20%" valign="middle">
+<apex:image value="https://chart.googleapis.com/chart?chs=100x100&cht=qr&chl={!eventatt.EA_AttendeeBarcode__c}"/></td>
+<td align="left"  style="padding-left:25px;" width="100%">
+<font face="TimesNewRoman" color="red" style="font-size:18pt;padding-bottom:15pt;">{!eventatt.As_id__r.AS_Company__c}</font>
+                             
+ </td></tr>
+ <tr><td align="right" style="padding-right:35px;" colspan="2">
+ <apex:commandButton value="Print"  action="{!attbadge}"/>
+ 
+ <!--<apex:commandButton value="Back" action="{!cancel}"/>-->
+ 
+ </td></tr>
+</table>
+ <br />
+ 
+</apex:outputpanel>
+</apex:outputpanel>
+</apex:form>
+
+    <apex:form >
+      <apex:commandButton value="Print4444444444"  action="{!attbadge}" rendered="{!pdfbool}"/>
+      <apex:outputLink value="apex/badge_fromQuickRegistration" >Print Link</apex:outputLink>
+    </apex:form>
+
+
+</body>
+
+    <apex:form >
+      <apex:commandButton value="Print1111"  action="{!attbadge}" rendered="{!pdfbool}"/>
+    </apex:form>  
+
+</html>
+
+<apex:form >
+      <apex:commandButton value="Print22222"  action="{!attbadge}" rendered="{!pdfbool}"/>
+    </apex:form>  
+
+
+</apex:page>

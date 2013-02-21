@@ -1,0 +1,140 @@
+<apex:page controller="exjtsTreeviewCon" showHeader="false">
+    <apex:stylesheet value="{!$Resource.extjs}/ext-3.1.1/resources/css/ext-all.css" />                                      
+        <apex:includeScript value="{!$Resource.extjs}/ext-3.1.1/adapter/ext/ext-base.js"/>                                      
+        <apex:includeScript value="{!$Resource.extjs}/ext-3.1.1/ext-all-debug.js"/>                                              
+        <script type="text/javascript">
+                                                                                                 
+            Ext.onReady(function(){                                                                                              
+                // represent the campaign hierarchy two ways:                                                                    
+                // first, a multi-level menu                                                                                    
+                var campMenu = new Ext.menu.Menu({id: 'campMenu'}); 
+                                                                           
+                var clickAction = function(n) { 
+                                                                                                                                     
+                                                // set the ID via a special hidden element that communicates with the controller
+                                                document.getElementById('{!$Component.hiddenInputForm.hiddenInput}').value = n.id.substr(4);
+                                                // call the controller function to update to the given Campaign                            
+                                                updateCampaign();                                                                          
+                                              };   
+                                                                                                                                 
+                var parentMenu;  
+                                                                                                                       
+             <apex:repeat value="{!CampaignTree}" var="c" id="menuitems">
+                                                                         
+                    // add this Campaign as a menu item.  Use a munged version of the actual ID for the record for reference                
+                    parentMenu = Ext.ComponentMgr.get(("{!c.parentid}" == "") ? "campMenu" : ("MENU" + "{!c.parentid}"));                  
+                    if ("{!c.isleaf}" == "true") {                                                                                          
+                        parentMenu.add({id : ("CAMP" + "{!c.id}"), text : "{!c.name}", handler: clickAction});                              
+                    }                                                                                                                      
+                    else {                                                                                                                  
+                        // define submenu as well, for future children                                                                      
+                       
+                      parentMenu.addMenuItem({id : ("CAMP" + "{!c.id}"), text : "{!c.name}", menu : {id : ("MENU" + "{!c.parentId}")}, handler: clickAction});
+                      
+                    }  
+                                                                                                                                                        
+                </apex:repeat>                                                                                                                       
+                
+                // make a toolbar for the menu to live in
+                var tb = new Ext.Toolbar();
+                //tb.render('tbd');//<div id="tbd"/>
+                tb.add({
+                    text:'Campaign Select Menu',
+                    menu: campMenu
+                });
+                tb.doLayout();  // without this menu fails to appear!
+                
+                // second, a treepanel with the same data
+                var tree = new Ext.tree.TreePanel({
+                    renderTo: 'treediv',
+                    useArrows: true,
+                    autoScroll: true,
+                    animate: true,
+                    containerScroll: true,
+                    enableDD: true,
+                    border: false,
+                    width: 300,//
+                    height: 350,//size of the blue colored box
+                    frame:true,//Blue color frame
+                    multiSelect: true,
+                    singleExpand: true,
+                    
+                    root: new Ext.tree.TreeNode({
+                        text: 'my Name',
+                        expanded: true,
+                        disabled: false,//To disable the All Campaigns Folder
+                        id: 'camproot'
+                    }),
+                    
+                     items: [{
+                text: 'Expand All',
+                handler: function(){
+                    tree.expandAll();
+                }
+            }, {
+                text: 'Collapse All',
+                handler: function(){
+                    tree.collapseAll();
+                }
+            }],
+                    listeners: {
+                        // for the treepanel - but apparently not the menu - I can define a single event function for the whole thing
+                        click: function(n) {
+                                            document.getElementById('{!$Component.hiddenInputForm.hiddenInput}').value = n.attributes.id.substr(4);
+                                            updateCampaign();
+                        }
+                    }
+                });
+                // add the campaigns as tree nodes
+                var parentNode;
+                <apex:repeat value="{!CampaignTree}" var="c" id="treenodes">
+                
+                    // add this Campaign as a menu item
+                    parentNode = tree.getNodeById(("{!c.parentid}" == "") ? "camproot" : ("NODE" + "{!c.parentid}"));
+                    parentNode.appendChild(new Ext.tree.TreeNode({id : ("NODE" + "{!c.id}"), text : "{!c.name}", leaf : "{!c.isleaf}"}));
+
+                </apex:repeat>
+            });
+            Ext.MessageBox.show({
+                        title: 'Selected Nodes',
+                        msg: names.join('<br />'),
+                        icon: Ext.MessageBox.INFO
+                    });
+        </script>
+        <!-- connect Javascript to controller -->
+        <apex:form id="hiddenInputForm">
+            <!-- hidden variable connects controller string (holding the selected campaign ID) to Javascript -->
+            <apex:inputHidden value="{!SelectedId}" id="hiddenInput"/>
+            <!-- turn controller method into a Javascript function that can be called from click actions -->
+            <apex:actionFunction name="updateCampaign" action="{!selectCampaign}" rerender="campid,campname,campparent"/>
+        </apex:form>
+        
+       <!-- <apex:pageBlock title="Selected Event Details">
+           <apex:pageBlockSection columns="4">
+                <apex:outputField id="campid" value="{!SelectedCampaign.id}"/><br/>
+                <apex:outputField id="campname" value="{!SelectedCampaign.BT_id__r.Name}"/><br/>
+                <apex:outputField id="campparent" value="{!SelectedCampaign.BT_id__c}"/><br/>
+            </apex:pageBlockSection>
+        </apex:pageBlock>-->
+         <!--<apex:pageBlock title="Selecting Campaigns">
+           <div id="tbd"/>
+        </apex:pageBlock>-->
+        <apex:outputpanel ><b> TreePanel</b><br/>&nbsp;&nbsp;
+        <apex:form >
+           <!-- <apex:commandButton value="Add Booth" action="{!OpenCampaign}"/>-->
+            </apex:form>
+            <div id="treediv"/>
+            
+        </apex:outputpanel>
+        <apex:outputPanel rendered="{!OpenPanel}">
+        <apex:form > 
+         <table><tr><td>
+         Campaign Name</td>
+         <td><apex:inputField value="{!AddCamp.Name}"/></td></tr>
+        <tr><td> ExpectedRevenue</td>
+         <td><!--<apex:inputField value="{!AddCamp.ExpectedRevenue}"/>--></td></tr>
+          <tr><td><apex:commandButton value="save" action="{!SaveCampaign}"/></td></tr></table>
+         </apex:form>
+        </apex:outputpanel>
+
+</apex:page>

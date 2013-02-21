@@ -1,0 +1,12 @@
+<apex:page controller="boothCon" renderAs="pdf">
+   <table>
+             <tr><td align="center">
+             
+               <apex:image value="https://chart.googleapis.com/chart?chs=300x300&cht=qr&chl={!code}"/>    
+             </td></tr>
+             <tr><td align="center">
+             {!boothdetail.BT_Name__c}
+             </td></tr>
+             
+    </table>
+</apex:page>

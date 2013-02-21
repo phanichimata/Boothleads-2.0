@@ -1,0 +1,7 @@
+<apex:page showHeader="false" controller="detailpageCon" tabStyle="Account">
+<apex:form >
+{!acc}
+
+</apex:form>
+
+</apex:page>
