@@ -1,7 +1,7 @@
 public with sharing class attendeedetail {
 
 
-    
+        
     public string eventname1{get;set;}
     public boolean dolor{get;set;}
     public Event_Attendee_Mapping__c Ticketfordetail{get;set;}
