@@ -122,6 +122,7 @@ if(eventId !=''){
  String error;
  String ImageUrl;
  String RecordId;
+ string Designation;
  
  string SurveyQuestion1;
  string SurveyQuestion2;
@@ -152,7 +153,7 @@ if(eventId !=''){
   }
   
   
-  
+  Designation =innBVS.BVS_Title__c;
   FollowupTypes =innBVS.BVS_FollowUps__c;
   leadRating =innBVS.BVS_LeadRating__c;
   notes =innBVS.BVS_Notes__c;

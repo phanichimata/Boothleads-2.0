@@ -39,6 +39,10 @@ public LIST<User_Profile_Event__c> UEBvs1{get;set;}
 //------------------------------------------ Constructor Start -------------------------------------------
 public BL_BoothAdmin_DashboardCon() 
 {
+ String browserType = Apexpages.currentPage().getHeaders().get('USER-AGENT'); 
+if(browserType != null && browserType.contains('MSIE')){
+Apexpages.currentPage().getHeaders().put('X-UA-Compatible', 'IE=9');
+}
  allEventsIds= new LIST<ID>();
  eventsList = new LIST<ID>();
  eventsAll = new LIST<SelectOption>();
@@ -148,6 +152,18 @@ List<DeviceUsage__c> androidusers =[SELECT IMEI__c
                                     AND IMEI__c!=null];
 integer androiduser=androidusers.size();
 return androiduser;
+}
+
+public Integer getBlackberryMobileusers() 
+{
+List<DeviceUsage__c> blackberryusers =[SELECT IMEI__c
+                                       FROM DeviceUsage__c
+                                       WHERE Ev_id__c  IN: eventsList 
+                                       AND User__c=: Userinfo.getUserId()
+                                       AND OsVersion__c='Blackberry'
+                                       AND IMEI__c!=null];
+integer blackberryuser=blackberryusers.size();
+return blackberryuser;
 }
 
 public Integer getApplemobileusers() 
@@ -643,6 +659,7 @@ static testmethod void test_BL_BoothAdmin_DashboardCon()
     bdc.getMpboothusers();
     bdc.getScannedusers();
     bdc.getMobileusers();
+    bdc.getBlackberryMobileusers();
     bdc.getApplemobileusers();
     bdc.bvsgeography();
     bdc.bvsgeographyreport();

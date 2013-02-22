@@ -1,12 +1,17 @@
 public with sharing class Eventattendees{
 
-    
+    public boolean fortwoprinters{get;set;}
     public void saveandprintforedit() {
     limitofbadges=false;
     updateattendee();
-     pdfbool=true;   
+    fortwoprinters=true;   
     }
-
+    public void printfromsaveandprint(){
+     limitofbadges=false;
+     fortwoprinters=false;
+    pdfbool=true;
+    
+    }
 //-----------------------------------------------------------------VARIABLE DECLARATION----------------------------------    
     public boolean emailalert{get;set;}
     public boolean foreditatt{get;set;}
@@ -183,13 +188,18 @@ public PageReference checkUserId() {
    public List<Selectoption> Divoptions {get;set;}
    public List<Selectoption> Divoptionsforsecondline {get;set;}
    public Event__c eventDIVS{get;set;}
+   public LIST<selectoption> SelectedValuesfortwoprinters{get;set;}
     public Eventattendees()
     {   
     String browserType = Apexpages.currentPage().getHeaders().get('USER-AGENT'); //gets the browser name
 if(browserType != null && browserType.contains('MSIE')){
 Apexpages.currentPage().getHeaders().put('X-UA-Compatible', 'IE=9');
 }
-    
+    SelectedValuesfortwoprinters=new LIST<selectoption>();
+    SelectedValuesfortwoprinters.add(new selectoption('Zebra Label','Zebra Label'));
+    SelectedValuesfortwoprinters.add(new selectoption('Dymo Label(30856,Single Label)','Dymo Label(30856,Single Label)'));
+     
+
         alphabet=new string[]{'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','All'};
         emailalert=false;
         limitofbadges=false;
@@ -1315,6 +1325,7 @@ Apexpages.currentPage().getHeaders().put('X-UA-Compatible', 'IE=9');
 
     public PageReference Cancel()
      {
+     fortwoprinters=false;
      limitofbadges=false;
     duplicateAttendeeBool=false;
     fbool=false;
@@ -1986,8 +1997,14 @@ Apexpages.currentPage().getHeaders().put('X-UA-Compatible', 'IE=9');
     public pagereference attbadge()
     {
     pdfbool=false;
+    if(selectedvalues == 'Dymo Label(30856,Single Label)'){
     pagereference pg=page.qrcode_badgeofanattendee;
-    return pg;
+     return pg;
+    }else{
+    pagereference pg=page.qrcode_zebrabadgeofanattendee;
+     return pg;
+    }
+    return null;
 
     }
     //-------------------------for Delete All--------------------------------------------

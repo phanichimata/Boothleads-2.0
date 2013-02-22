@@ -130,6 +130,10 @@ firstnaerror ='';
 
 
 public BL_BoothPersonnelsCon(){
+String browserType = Apexpages.currentPage().getHeaders().get('USER-AGENT'); 
+if(browserType != null && browserType.contains('MSIE')){
+Apexpages.currentPage().getHeaders().put('X-UA-Compatible', 'IE=9');
+}
 country='';
 List<user> hghg =[select FirstName,LastName From User ];
 system.debug('hiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii '+hghg);

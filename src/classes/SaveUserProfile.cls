@@ -85,7 +85,7 @@
                  
              if(!(String.isEmpty(UserInfoDetails.State))){    
                  
-                 LoginUser.State  = UserInfoDetails.State;
+                 LoginUser.States__c= UserInfoDetails.State;
                  AttSummary.AS_Work_States__c= UserInfoDetails.State;
                  
                  }

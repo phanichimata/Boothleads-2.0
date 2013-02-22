@@ -3,11 +3,19 @@ public without sharing class BL_Eventadmin_SampleBoothCon1 {
   Public Boolean Button{get;set;}
   public boolean error{get;set;} 
   public List<User_Profile_Event__c> listOfBoothadminsforExport{get;set;}  
+  public Boolean ShowEventName{get;set;}
+  public String SelectedEventName{get;set;}
   
   public void CommonMethod(){
   ListOfbooths1();
   ListOfBoothAdmins();
-  }
+   try{
+  system.debug(' ---------------- '+selectevent);
+  Event__c ForEventName = [select EV_Title__c from Event__c where id=:selectevent];
+  SelectedEventName = 'of '+ForEventName.EV_Title__c;
+  system.debug(' ------ !!!!!!!!!!!!!! -----'+SelectedEventName );
+    }catch(exception ex  ){}
+ }
   
    public pageReference importBooths(){
     DisplayNoEventMessage = False;
@@ -101,7 +109,7 @@ public without sharing class BL_Eventadmin_SampleBoothCon1 {
     if(browserType != null && browserType.contains('MSIE')){
     Apexpages.currentPage().getHeaders().put('X-UA-Compatible', 'IE=9');
     }
-
+    ShowEventName = False;        
     
     }      
 //----------------- Variable Declaration -------------
@@ -184,6 +192,7 @@ Public List<Id> BoothIds{get;set;}
       displayBoothExport = False;
       Button = False;
       ImportButton = False;
+      SelectedEventName = '';
     }
     if(selectEvent != '--Choose Event--' &&  selectEvent != null) {
      displayBoothExport = True;
@@ -204,10 +213,17 @@ Public List<Id> BoothIds{get;set;}
      Button = False;
      ImportButton = False;
      ShowButton = false;
-    
+     SelectedEventName = '';
     }
-    
+   
    try{
+   
+   
+   system.debug('------------------ ********'+ShowEventName );
+   
+   
+   system.debug('------------------ @@@@@@@@@@@@'+SelectedEventName );
+   
    BoothsList  = new List<User_Profile_Event__c> ();
    BoothsList  = [select BT_id__c,BT_id__r.BT_Name__c from User_Profile_Event__c 
                   where EventAdmin_Id__r.id=: LoginUserId AND EV_id__c =:SelectEvent 
@@ -222,7 +238,7 @@ Public List<Id> BoothIds{get;set;}
    
    B = new List<Booth__c> ();        
    B = [select Id,BT_Name__c from Booth__c where Id IN:UniqueBoothIds];  
-    
+   
     system.debug('------------ @@@@@@@@@@@@@@@@@@@@@@ -------------'+B);
       
 
@@ -245,7 +261,7 @@ Public List<Id> BoothIds{get;set;}
     try{
     String SelectBoothId = ApexPages.currentpage().getparameters().get('BoothName');
     SelectBooth = SelectBoothId ;
-  
+    ShowEventName = True;
     InnerAdminClass = new List<BoothAdminInnerDisplay>();
     
    InnerAdminClass = new List<BoothAdminInnerDisplay>();
@@ -259,48 +275,17 @@ Public List<Id> BoothIds{get;set;}
                               BoothAdmin_id__r.LastLoginDate from User_Profile_Event__c 
                               where EventAdmin_Id__c=: LoginUserId AND EV_id__c =:SelectEvent 
                               AND Profile_id__r.PR_Name__c ='BoothAdmin'];
-    
-        system.debug(':::::::::: -------- Getting List of BoothAdmins --------::::::::'+User_Profile_Event);
-   
-       for(User_Profile_Event__c EventBoothAdm : User_Profile_Event){
-               system.debug(':::::--::::::::'+EventBoothAdm.BoothAdmin_id__r.FirstName);
-        system.debug('1111111111111111111111'+EventBoothAdm.BoothAdmin_id__r.LastName);
-        
-        system.debug('22222222222222222222222'+EventBoothAdm.BoothAdmin_id__r.CompanyName);
-        
-        system.debug('444444444444444444444'+EventBoothAdm.BT_id__r.BT_Name__c);
-        
-          EventBoothAdm.BoothAdmin_id__r.FirstName = escapeSpecialCharacters(EventBoothAdm.BoothAdmin_id__r.FirstName);
-          EventBoothAdm.BoothAdmin_id__r.LastName = escapeSpecialCharacters(EventBoothAdm.BoothAdmin_id__r.LastName);
-          EventBoothAdm.BoothAdmin_id__r.CompanyName = escapeSpecialCharacters(EventBoothAdm.BoothAdmin_id__r.CompanyName);
-          EventBoothAdm.BT_id__r.BT_Name__c = escapeSpecialCharacters(EventBoothAdm.BT_id__r.BT_Name__c);
-          EventBoothAdm.BT_id__r.BT_Location__c = escapeSpecialCharacters(EventBoothAdm.BT_id__r.BT_Location__c);
-          
-          system.debug('================= Hello:==============='+EventBoothAdm.BT_id__r.BT_isBoothActive__c);
-          
-        if(EventBoothAdm.UEP_isActive__c == True){
-        BStatus = 'Active';
-        }else
-        {
-        BStatus = 'InActive';
-        }
-        InnerAdminClass.add(new BoothAdminInnerDisplay(EventBoothAdm,BStatus));               
-  }
- 
- 
- }
- system.debug('--------------- ################### ------------------'+selectbooth);
- if(selectbooth != null && selectEvent != null){
+    }else if(selectbooth != null && selectEvent != null){
     ShowButton = true;
     Button = False;
     ImportButton = False; 
-  User_Profile_Event = [Select UEP_isActive__c,Name,Id,BT_id__r.BT_Name__c,BoothAdmin_id__r.FirstName,
+    User_Profile_Event = [Select UEP_isActive__c,Name,Id,BT_id__r.BT_Name__c,BoothAdmin_id__r.FirstName,
                               BoothAdmin_id__r.LastName,BT_id__r.BT_isBoothActive__c,BT_id__r.BT_Location__c,
                               BoothAdmin_id__r.Username,BoothAdmin_id__r.CompanyName,BoothAdmin_id__r.Email,BoothAdmin_id__r.Companyphone__c,
                               BoothAdmin_id__r.LastLoginDate from User_Profile_Event__c 
                               where EventAdmin_Id__c=: LoginUserId AND EV_id__c =:SelectEvent AND BT_ID__c =: SelectBooth 
                               AND Profile_id__r.PR_Name__c ='BoothAdmin'];
-    
+   } 
         system.debug(':::::::::: -------- Getting List of BoothAdmins --------::::::::'+User_Profile_Event);
    
        for(User_Profile_Event__c EventBoothAdm : User_Profile_Event){
@@ -323,12 +308,12 @@ Public List<Id> BoothIds{get;set;}
          InnerAdminClass.add(new BoothAdminInnerDisplay(EventBoothAdm,BStatus));
   }
   
-    
+     system.debug('&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&'+selectbooth );
   }     
    
-     system.debug('&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&'+selectbooth );
     
-    }catch(Exception ex){
+    
+    catch(Exception ex){
     
     }  
     
@@ -382,10 +367,10 @@ Public List<Id> BoothIds{get;set;}
     Public User_Profile_Event__c ParticularJuncID{get;set;}
         Public User_Profile_Event__c Admin2{get;set;}
         public void SaveStatus(){
-        
+        system.debug(' ------ SelectStatus -----'+SelectStatus );
         if(SelectStatus == 'Active'){
         ForUpdatingBoothstatus.UEP_isActive__c = true;
-        ForUpdatingBoothstatus.Status__c ='Active'; 
+        ForUpdatingBoothstatus.Status__c = 'Active'; 
         Booth__c Mbooth = [select id,BT_isBoothActive__c FROM Booth__c WHERE id =: ForUpdatingBoothstatus.BT_id__c ];
         
         system.debug('--------Whether Booth is Selected or not ---------'+Mbooth);
@@ -424,6 +409,8 @@ Public List<Id> BoothIds{get;set;}
         }        
     }
          update ForUpdatingBoothstatus ;
+         
+         system.debug(' ---------------- !!!!!!!!!!!!!!! -----------'+ForUpdatingBoothstatus );
                     
          ListOfBoothAdmins();           
          Statuspopup= false;
@@ -474,17 +461,37 @@ Public List<Id> BoothIds{get;set;}
                
                 Profile__c CustomProfile = [select Id,PR_Name__c,PR_Version__c from Profile__c where PR_Name__c='BoothAdmin'];
                 
+                User ForU = [select FirstName,LastName,id from User where Username =:Email ];
+                
+                ForU.FirstName = BoothAdminUser.FirstName;
+                ForU.LastName  = BoothAdminUser.LastName;
+                ForU.companyName = BoothAdminUser.companyName;
+                ForU.Company_website__c = BoothAdminUser.Company_website__c;
+                ForU.CompanyAddr1__c = BoothAdminUser.CompanyAddr1__c;
+                ForU.CompanyAddr2__c = BoothAdminUser.CompanyAddr2__c;
+                ForU.CompanyCity__c = BoothAdminUser.CompanyCity__c;
+               // if(SelectedCountry != '--None--')
+                ForU.Country__c = BoothAdminUser.Country__c;
+                //if(Selectedstates != '--None--')
+                ForU.States__c =  BoothAdminUser.States__c;
+                ForU.CompanyFaxNumber__c  = BoothAdminUser.CompanyFaxNumber__c;
+                ForU.Companyphone__c = BoothAdminUser.Companyphone__c;
+                Update ForU; 
+                
                 User_Profile_Event__c GettingPRID = [Select Id,BLP_id__c from User_Profile_Event__c Where Ev_Id__c=: SelectEvent AND User_Id__c =: LoginUserID AND EventAdmin_Id__c =: LoginUserID ];   
+               
+                
+               
                 User_Profile_Event__c UserBoothAdminProfile = new User_Profile_Event__c();                
                 UserBoothAdminProfile.BLP_id__c = GettingPRID.BLP_id__c;
-                UserBoothAdminProfile.BoothAdmin_id__c =ComparingUserEmails[0].id;
+                UserBoothAdminProfile.BoothAdmin_id__c =ForU.id;
                 UserBoothAdminProfile.BT_id__c  = Booth.id;
                 UserBoothAdminProfile.EV_id__c = SelectEvent;
                 UserBoothAdminProfile.EventAdmin_Id__c = LoginUserId;
                 UserBoothAdminProfile.UEP_isActive__c = True;
                 UserBoothAdminProfile.Status__c='Active';
                 UserBoothAdminProfile.Profile_id__c = CustomProfile.Id;
-                UserBoothAdminProfile.User_id__c = ComparingUserEmails[0].id;
+                UserBoothAdminProfile.User_id__c = ForU.id;
                 UserBoothAdminProfile.isFirstBoothAdmin__c=true;
                 system.debug(';;;;;;;;;;;;;;;;;;;;;;;;;;'+UserBoothAdminProfile.isFirstBoothAdmin__c);
                 insert UserBoothAdminProfile;
@@ -518,7 +525,7 @@ Public List<Id> BoothIds{get;set;}
                 // system.debug('---------to Find what will be the output####### -------'+Personnelidtosend );
                 Event__c ee=[select EV_Title__c from Event__c where id =: SelectEvent];
                 String emailMessage =  'Dear '+Firstnametomail+' '+Lastnametomail+','+'<br/><br/>'+
-               'Congratulations!!'+'<br />'+'Your Boothleads id is now added to the event  '+ ee.EV_Title__c +'<br/>'+'  Please continue to use your existing username '+' '+ EmailIdtimail +' '+' and password '+'<br />'+
+               'Congratulations!!'+'<br />'+'Your Boothleads id is now added to the event  '+ ee.EV_Title__c +'  Please continue to use your existing username '+' '+ EmailIdtimail +' '+' and password '+'<br />'+
                 'combination to access this new event.'+'<br />'+'<br /><br />'+'Please visit http://www.boothleads.com to login to your Portal.'+'<br /><br />'+
                 'If you have any questions, please contact your Event Administrator.'
                 +'<br/><br/>'+'Please note that your Booth Leads portal access is valid only for 30 days from the end of your event.'
@@ -530,7 +537,7 @@ Public List<Id> BoothIds{get;set;}
                      EmailIdtimail
                  };
                      mail.setToAddresses(toAddresses);
-                     mail.setSubject('Booth Admin ID for Mobile App has been created successfully!');
+                     mail.setSubject('Welcome to '+'"'+EmailEventName +'"'+' Event - Your registration was successful');
                      mail.setPlainTextBody(emailMessage);
                      mail.setHtmlBody(emailMessage);
                      Messaging.sendEmail(new Messaging.SingleEmailMessage[] { mail });               
@@ -560,8 +567,8 @@ Public List<Id> BoothIds{get;set;}
                
                Con.LastName = BoothAdminUser.LastName;
                Con.FirstName = BoothAdminUser.FirstName;
-              Con.AccountId = '001F000000qdOJp';  // Developement Account Id
-              //  Con.AccountId = '001O0000007AN41';     
+             Con.AccountId = '001F000000qdOJp';  // Developement Account Id
+              //   Con.AccountId = '001O0000007AN41';     
                Con.Email_Notes__c = EmailContent;
                Con.Email_Subject__c = EmailSubject;
                insert Con ;
@@ -697,16 +704,36 @@ Public List<Id> BoothIds{get;set;}
                }
                else{       
                Profile__c CustomProfile = [select Id,PR_Name__c,PR_Version__c from Profile__c where PR_Name__c='BoothAdmin'];
+                
+               User ForU = [select FirstName,LastName,id from User where Username =:Email ];
+                
+                 ForU.FirstName = BoothAdminUser.FirstName;
+                ForU.LastName  = BoothAdminUser.LastName;
+                ForU.companyName = BoothAdminUser.companyName;
+                ForU.Company_website__c = BoothAdminUser.Company_website__c;
+                ForU.CompanyAddr1__c = BoothAdminUser.CompanyAddr1__c;
+                ForU.CompanyAddr2__c = BoothAdminUser.CompanyAddr2__c;
+                ForU.CompanyCity__c = BoothAdminUser.CompanyCity__c;
+               // if(SelectedCountry != '--None--')
+                ForU.Country__c = BoothAdminUser.Country__c;
+                //if(Selectedstates != '--None--')
+                ForU.States__c =  BoothAdminUser.States__c;
+                ForU.CompanyFaxNumber__c  = BoothAdminUser.CompanyFaxNumber__c;
+                ForU.Companyphone__c = BoothAdminUser.Companyphone__c;
+                Update ForU;  
+                
+                
+                
                 User_Profile_Event__c UserBoothAdminProfile = new User_Profile_Event__c();
-                UserBoothAdminProfile.BoothAdmin_id__c = ComparingUserEmails[0].id;
+                UserBoothAdminProfile.BoothAdmin_id__c = ForU.id;
                 UserBoothAdminProfile.BT_id__c  = SelectBooth;
                 UserBoothAdminProfile.EV_id__c = SelectEvent;
                 UserBoothAdminProfile.EventAdmin_Id__c = LoginUserId;
                 UserBoothAdminProfile.UEP_isActive__c = True;
                 UserBoothAdminProfile.Profile_id__c = CustomProfile.Id;
-                UserBoothAdminProfile.User_id__c = ComparingUserEmails[0].id;
+                UserBoothAdminProfile.User_id__c = ForU.id;
                 
-              insert  UserBoothAdminProfile ;
+                insert  UserBoothAdminProfile ;
                 
                 if(UserBoothAdminProfile != NULL){
                 
@@ -765,7 +792,7 @@ Public List<Id> BoothIds{get;set;}
                      EmailIdtimail
                  };
                      mail.setToAddresses(toAddresses);
-                     mail.setSubject('Booth Admin ID for Mobile App has been created successfully!');
+                     mail.setSubject('Welcome to '+'"'+EmailEventName +'"'+' Event - Your registration was successful');
                      mail.setPlainTextBody(emailMessage);
                      mail.setHtmlBody(emailMessage);
                      Messaging.sendEmail(new Messaging.SingleEmailMessage[] { mail }); 
@@ -792,23 +819,15 @@ Public List<Id> BoothIds{get;set;}
                
                Con.LastName = BoothAdminUser.LastName;
                Con.FirstName = BoothAdminUser.FirstName;
-           Con.AccountId = '001F000000qdOJp'; 
-            //     Con.AccountId = '001O0000007AN41';  // Developement Account Id1111111             
+          Con.AccountId = '001F000000qdOJp'; 
+                //  Con.AccountId = '001O0000007AN41';  // Developement Account Id1111111             
                Con.Email_Notes__c = EmailContent;
                Con.Email_Subject__c = EmailSubject;
                insert Con ;
                
                system.debug('=====::::::::: Inserting Contact :::::::======='+Con );
                
-                              /**      string df = string.valueOf(Email);
-                                    integer i = df.indexOf('@');
-                                    if(i>3){
-                                    string ght = df.substring(0,3);
-                                    }else{
-                                    string ght = df.substring(0,1);
-                                    
-                                    }
-                                    System.debug('UserName'+Email);*/
+                             
                
                 BoothAdminUser.ContactID = Con.id;
                 BoothAdminUser.Username = Email;
@@ -931,11 +950,23 @@ Public List<Id> BoothIds{get;set;}
     system.debug('++++++++++++++++++++++++++++++'+BoothAdminUser.Firstname);
     string unique =  Email.tolowercase();
             system.debug('++++++++++++++++++++++++++++++'+unique );     
-    List<AttendeeSummary__c> AttendeeDetails = [select  id  from AttendeeSummary__c Where AS_Email__c =: unique ];
+                List<AttendeeSummary__c> AttendeeDetails = [select  id  from AttendeeSummary__c Where AS_Email__c =: unique ];
+                
+                
+                
                 
                 system.debug(' ===== Alredy Existed Attendee Email Id ===='+AttendeeDetails);
                 
                 if(AttendeeDetails.size() > 0){
+                AttendeeSummary__c UpdatingAttendee = [select id,AS_FirstName__c,AS_LastName__c from AttendeeSummary__c where id=:AttendeeDetails[0].id];
+                
+                UpdatingAttendee.AS_FirstName__c = BoothAdminUser.FirstName; 
+                UpdatingAttendee.AS_LastName__c = BoothAdminUser.LastName;
+                UpdatingAttendee.AS_Company__c  = BoothAdminUser.CompanyName;
+                UpdatingAttendee.AS_CellPhone__c  = BoothAdminUser.Companyphone__c;
+                UpdatingAttendee.AS_uniqueField__c=(BoothAdminUser.FirstName+BoothAdminUser.LastName+Email).tolowercase();
+
+                Update UpdatingAttendee;
                 
                 List<Event_Attendee_Mapping__c> EventAttendeeJun = [select id,EV_id__c from Event_Attendee_Mapping__c where AS_id__r.AS_Email__c =: Email AND EV_id__c =: SelectEvent];
                 system.debug('========================= Attendee is inserted in Junction Object Or not ==========='+EventAttendeeJun );
@@ -1337,7 +1368,7 @@ Public List<Id> BoothIds{get;set;}
    
     
      public PageReference boothadminstatus() {
-     
+     system.debug(' ------------ ************ -------------');
      statusValue = BoothAdminId.split(','); 
      system.debug('status of BA '+statusValue );
     if(statusValue[1] == 'Active'){
