@@ -603,7 +603,7 @@ Public List<Id> BoothIds{get;set;}
                
                
                 
-                insert BoothAdminUser;
+            //    insert BoothAdminUser;
                 
                 system.debug('----- ****************'+BoothAdminUser.id);
                 
