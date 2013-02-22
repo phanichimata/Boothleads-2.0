@@ -31,7 +31,7 @@ public class BL_ChangePasswordCon {
        Pagereference pg = new Pagereference('/apex/BL_EventAdmin_Dashboard');
        pg.setredirect(True); 
        return pg;
-      }else if(us.Profile.Name == 'Event Admin666'){
+      }else if(us.Profile.Name == 'Booth Admin'){
        system.debug('5555555555555555555   '); 
        Pagereference pg = new Pagereference('/apex/BL_boothadmin_dashboard');
        pg.setredirect(True); 

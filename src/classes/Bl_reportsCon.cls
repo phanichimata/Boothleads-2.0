@@ -183,7 +183,10 @@ public Boolean displayPopUp{get;set;}
  public string[] displayAlfabets{get;set;}
  
  public Bl_reportsCon(){
- 
+ String browserType = Apexpages.currentPage().getHeaders().get('USER-AGENT'); 
+if(browserType != null && browserType.contains('MSIE')){
+Apexpages.currentPage().getHeaders().put('X-UA-Compatible', 'IE=9');
+}
 List<User_Profile_Event__c> BoolforDisplayBoothadminTab = new List<User_Profile_Event__c>();
  List<User_Profile_Event__c> upeForEvents = new List<User_Profile_Event__c>();
 BoolforDisplayBoothadminTab = [select Profile_id__c,Profile_id__r.PR_Name__c from User_Profile_Event__c where User_id__r.Email=:UserInfo.getUserNAme() and status__c!='Inactive' and status__c!='Mobile only access'];

@@ -1736,6 +1736,7 @@ Apexpages.currentPage().getHeaders().put('X-UA-Compatible', 'IE=9');
     }
     //------------------------------------------------------POPUP FOR SELECTING DESIRED LABEL-----------------------------------
     public void popup() {
+    attid=new List<id>();
     limitofbadges=false;
     emailalert=false;
     custombadge1=false;
@@ -1752,11 +1753,20 @@ Apexpages.currentPage().getHeaders().put('X-UA-Compatible', 'IE=9');
     }
   
     }else
+    
     if(eventname1 != '' && eventname1 != null)
     {
-    List<string> listeventname=eventname1.split(',');
-    system.debug(':::::::::::::::::size:::::::::::'+listeventname.size());
-    if(listeventname.size() <=500 ){
+     List<string> listeventname=eventname1.split(',');
+     for(string  aa: listeventname)
+     {
+     attid.add((id)aa);
+     }
+     
+     attendeeslist=[select id from Event_Attendee_Mapping__c where  id in:attid];
+   
+
+    system.debug(':::::::::::::::::size:::::::::::'+attendeeslist.size());
+    if(attendeeslist.size() <=500 ){
     system.debug('lllllllllllllllllllllllllllll'+listeventname.size());
     EventReqStringBool =false;
     for(Event_Attendee_Mapping__c emEvent1 :eventlist)

@@ -137,6 +137,10 @@ public class BL_Eventadmin_EventsCon {
     
     
     public BL_Eventadmin_EventsCon(){
+    String browserType = Apexpages.currentPage().getHeaders().get('USER-AGENT'); 
+if(browserType != null && browserType.contains('MSIE')){
+Apexpages.currentPage().getHeaders().put('X-UA-Compatible', 'IE=9');
+}
         helptext1='You have the option to either go with the registration system provided by Globalnest or Eventbrite or any other system of your choice.If you use Eventbrite, you can automatically import event and attendee information from Eventbrite.';
         helptext2='This logo is printed on the badges of the event';
         helptext3='This field provides the status of the event.The behavior or the application is not enforced based on these values';

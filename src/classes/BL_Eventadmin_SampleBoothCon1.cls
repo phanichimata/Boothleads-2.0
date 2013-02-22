@@ -537,7 +537,7 @@ Public List<Id> BoothIds{get;set;}
                      EmailIdtimail
                  };
                      mail.setToAddresses(toAddresses);
-                     mail.setSubject('Welcome to '+'"'+EmailEventName +'"'+' Event - Your registration was successful');
+                     mail.setSubject('Booth Admin ID for Mobile App has been created successfully!');
                      mail.setPlainTextBody(emailMessage);
                      mail.setHtmlBody(emailMessage);
                      Messaging.sendEmail(new Messaging.SingleEmailMessage[] { mail });               
@@ -567,8 +567,8 @@ Public List<Id> BoothIds{get;set;}
                
                Con.LastName = BoothAdminUser.LastName;
                Con.FirstName = BoothAdminUser.FirstName;
-             Con.AccountId = '001F000000qdOJp';  // Developement Account Id
-              //   Con.AccountId = '001O0000007AN41';     
+             // Con.AccountId = '001F000000qdOJp';  // Developement Account Id
+                Con.AccountId = '001O0000007AN41';     
                Con.Email_Notes__c = EmailContent;
                Con.Email_Subject__c = EmailSubject;
                insert Con ;
@@ -819,8 +819,8 @@ Public List<Id> BoothIds{get;set;}
                
                Con.LastName = BoothAdminUser.LastName;
                Con.FirstName = BoothAdminUser.FirstName;
-          Con.AccountId = '001F000000qdOJp'; 
-                //  Con.AccountId = '001O0000007AN41';  // Developement Account Id1111111             
+          // Con.AccountId = '001F000000qdOJp'; 
+                 Con.AccountId = '001O0000007AN41';  // Developement Account Id1111111             
                Con.Email_Notes__c = EmailContent;
                Con.Email_Subject__c = EmailSubject;
                insert Con ;

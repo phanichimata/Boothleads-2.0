@@ -230,6 +230,10 @@ public List<selectOption> options{get;set;}
 
 
 public bl_boothQrCon(){
+String browserType = Apexpages.currentPage().getHeaders().get('USER-AGENT'); 
+if(browserType != null && browserType.contains('MSIE')){
+Apexpages.currentPage().getHeaders().put('X-UA-Compatible', 'IE=9');
+}
 Events = new List<User_Profile_Event__c > ();
 options = new List<selectOption>();
 Events=[select EV_id__r.EV_Title__c,EV_id__c,Status__c,BoothAdmin_id__c,id,User_id__r.Name,User_id__r.FaceBookId__c,User_id__c,User_id__r.FirstName,UEP_isActive__c ,User_id__r.LastName,User_id__r.Email,User_id__r.CompanyName,User_id__r.Title from User_Profile_Event__c where   BoothAdmin_id__c=:UserInfo.getUserId() and Profile_id__r.PR_Name__c='BoothAdmin'  and EV_id__r.EV_Title__c!=null and (Status__c!='Mobile only access' And Status__c!='InActive') ]; 
