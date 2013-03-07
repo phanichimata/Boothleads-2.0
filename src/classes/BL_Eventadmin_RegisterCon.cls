@@ -44,6 +44,10 @@ public class BL_Eventadmin_RegisterCon {
     **/
     
     public BL_Eventadmin_RegisterCon(){
+    String browserType = Apexpages.currentPage().getHeaders().get('USER-AGENT'); 
+if(browserType != null && browserType.contains('MSIE')){
+Apexpages.currentPage().getHeaders().put('X-UA-Compatible', 'IE=9');
+} 
         
 
          ticketTypes = new LIST<TicketTypes__c>();
@@ -64,6 +68,7 @@ public class BL_Eventadmin_RegisterCon {
     public String paramassign{get; set;}
     
     public void contactinfo(){
+
         contBool =TRUE; 
         demographBool =  FALSE;
         ticketBool = FALSE; 
@@ -74,7 +79,7 @@ public class BL_Eventadmin_RegisterCon {
     }
    
     public void conTodemo(){
-    
+  
        if(QuickRegBool)
        {
         contBool = FALSE; 
@@ -100,7 +105,7 @@ public class BL_Eventadmin_RegisterCon {
     }
     
     public void demoToTicket(){
-    
+   
         contBool = FALSE; 
         demographBool = FALSE;
         ticketBool = TRUE; 
@@ -111,7 +116,7 @@ public class BL_Eventadmin_RegisterCon {
     }
     
     public void ticketTopayment(){
-    
+   
         contBool = FALSE; 
         demographBool = FALSE;
         ticketBool = FALSE; 
@@ -124,7 +129,7 @@ public class BL_Eventadmin_RegisterCon {
     
     public void paymentTopublish(){
         
-        
+
         
         contBool = FALSE; 
         demographBool = FALSE;
@@ -138,7 +143,7 @@ public class BL_Eventadmin_RegisterCon {
     
     public void moreTickets(){
         
-        
+ 
       
         TicketTypes__c t = new TicketTypes__c();
                 t.EV_id__c = eventSelected;
@@ -186,11 +191,11 @@ public class BL_Eventadmin_RegisterCon {
         siteStringErrorBool = TRUE;
         integer it= [SELECT count() FROM Event__c WHERE EV_SiteLocation__c =: events.EV_SiteLocation__c AND id !=: events.id ];
        if(it>0){
-           siteStringError = 'Site URL is already exist in our DataBase';
+           siteStringError = 'Site URL is already existing in our Database';
            siteStringErrorstyle = '#FF0000';
            siteStringErrorBool = FALSE;
        }else{
-           siteStringError = 'Site URL is avilable';
+           siteStringError = 'Site URL is available';
            siteStringErrorstyle = '#00FF00';
            siteStringErrorBool = TRUE;
        }
@@ -201,6 +206,7 @@ public class BL_Eventadmin_RegisterCon {
     
     
     public void SaveAllFields(){
+   
         
         if(!QuickRegBool) 
        {
@@ -443,7 +449,7 @@ public class BL_Eventadmin_RegisterCon {
     
     
     public void geteventsRegistration(){
-        
+       
           if(eventSelected != NULL)
           {
           
@@ -515,7 +521,7 @@ public class BL_Eventadmin_RegisterCon {
     }
     
     public void customToQuick(){
-    
+   
        
         
         system.debug('FFFFFFFFFFFFFFFFFFFFF   '+ ApexPages.currentPage().getparameters().get('cust'));
@@ -553,6 +559,7 @@ public class BL_Eventadmin_RegisterCon {
     }
     
     public void delTicketType(){
+    
    
        try{ 
          system.debug('1111111111111111111111    '+innerTickets.size()+'  4444    ' + ApexPages.currentPage().getparameters().get('deleteTicketType') ) ;
@@ -613,6 +620,7 @@ public class BL_Eventadmin_RegisterCon {
     
     
     public pagereference payPalNotifier(){
+    
             if(paypalbool==true){ 
             paypalEmailNotify = true;
            }else{

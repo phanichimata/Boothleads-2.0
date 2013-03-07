@@ -44,7 +44,10 @@ public PageReference login() {
 
 
     public PageReference closePopupSelect() {
-   
+    String browserType = Apexpages.currentPage().getHeaders().get('USER-AGENT'); //gets the browser name
+    if(browserType != null && browserType.contains('MSIE')){
+    Apexpages.currentPage().getHeaders().put('X-UA-Compatible', 'IE=9');
+    }
     getBoothPersonnels(); 
     displayPopUpForAddcheck =false;
         return null;
@@ -53,6 +56,7 @@ public PageReference login() {
 
 public boolean booleanforDisplayBoothadminTab{get;set;}
     public PageReference saveLicenceValues() {
+  try{      
     message  ='';
     errormsg ='';
    if(PreviousStingValue !=countrySelect || countrySelect !=null ||  countrySelect !=''){
@@ -101,7 +105,7 @@ public boolean booleanforDisplayBoothadminTab{get;set;}
     }
     
     getBoothPersonnels();
-    
+  }catch(exception e){}   
         return null;
     }
 
@@ -119,6 +123,10 @@ public boolean booleanforDisplayBoothadminTab{get;set;}
 
 
 public PageReference closePopup2() {
+String browserType = Apexpages.currentPage().getHeaders().get('USER-AGENT'); //gets the browser name
+    if(browserType != null && browserType.contains('MSIE')){
+    Apexpages.currentPage().getHeaders().put('X-UA-Compatible', 'IE=9');
+    }
 country ='';
 firstnaerror ='';
    Emailerror='';
@@ -130,6 +138,7 @@ firstnaerror ='';
 
 
 public BL_BoothPersonnelsCon(){
+try{    
 String browserType = Apexpages.currentPage().getHeaders().get('USER-AGENT'); 
 if(browserType != null && browserType.contains('MSIE')){
 Apexpages.currentPage().getHeaders().put('X-UA-Compatible', 'IE=9');
@@ -194,6 +203,7 @@ errorMessage =false;
   
 
 getBoothPersonnels();
+}catch(exception e){}
 }
 
   public string firstnaerror {get;set;}
@@ -201,18 +211,20 @@ getBoothPersonnels();
   public string accessTypeerror {get;set;}
   public boolean emailbool{get;set;}
  
-   public Void savePopUpValues(){
-    
-    
-     String EmailBody = 'Congratulations!!'+'\n'+'Your login for your Booth Admin Portal for Event '+'"'+eventnameforGried +'"'+' was successfully created.'
-                               +'\n\n'+'Please visit http://www.boothleads.com to login to your Booth Admin Portal.'+'\n\n'+'If you have any questions, please contact your Event Administrator.'
-                               +'\n\n'+'Please note that your Booth Leads portal access is valid only for 30 days from the end of your event.'+'\n'+'Please remember to export all your leads.'
-                               +'\n'+'If you need access beyond this, please contact support.'
-                               +'\n\n\n'+'Thank you!'+'\n'+'BoothLeads Customer Support'+'\n'+'support@boothleads.com';  
-               
+  public Void savePopUpValues(){
+  try{      
+          
       
-      String EmailSubject = 'Welcome to '+'"'+eventnameforGried +'"'+' Event - Your registration was successful';
-
+    String EmailBody = 'We are working with BoothLeads to help you with your event '+ eventnameforGried+'. All badges will now have a QR code specific to your name and company. You will be able to scan the QR code on-site, make notes about that individual and follow up with them.'+'\n\n'+'You have been added to the BoothLeads database for '+ eventnameforGried +'\n\n\n'+'Now what?'
++'\n\n\n'+'• Go to http://www.boothleads.com to login into your Booth Admin Portal as well as your mobile app.USERNAME AND PASSWORD ARE PROVIDED AT THE BOTTOM OF THIS EMAIL.'
++'\n\n\n'+'• Here are some youtube videos to give you an idea of what will happen:'+'\n\n'+' o What is a QR code: http://www.youtube.com/watch?v=b8EpazIwFys'+'\n\n'+' o How to generate a QR code so that attendees can view your brochures or '+'\n'+' flyers: http://www.youtube.com/watch?v=jcg2qbS_TaM&feature=youtu.be'
++'\n\n\n'+'• Next step….Download the appropriate app to your phone either from Google'+'\n'+'Play Store or AppStore or BlackBerry World.'
++'\n\n\n\n'+' Then you are ready to scan the badges on-site!'+'\n\n'+' Please note that your Booth Leads portal access is valid only for 30 days from the end of your event'
++'\n\n'+ ' We will be available on-site at the show (across from the registration desk) to assist you throughout the event.'+'\n\n'+' If you need assistance before that time, contact us at support@boothleads.com.'+'\n\n\n'+' Thank you!'+'\n'+' BoothLeads Customer Support'+'\n'+' Phone: 1-(800)-492-1289' ;
+     
+      
+         
+ String EmailSubject = 'Booth Leads and '+eventnameforGried;
   try{  
     
     
@@ -223,17 +235,17 @@ getBoothPersonnels();
   
    
    if(country =='' || country == null){
-   accessTypeerror ='Please select Access type';
+  // accessTypeerror ='Please select Access type';
+  ApexPages.addmessage(new ApexPages.message(ApexPages.severity.ERROR,'Please select Access type'));
+ 
  }else if(CreateUser.FirstName == null || CreateUser.FirstName == ''){ 
   system.debug('4242424242424  '+CreateUser.firstName);
- firstnaerror ='Please Enter FirstName';
+ //firstnaerror ='Please Enter FirstName';
+ ApexPages.addmessage(new ApexPages.message(ApexPages.severity.ERROR,'Please Enter FirstName'));
  
  
  }else if(CreateUser.lastName == null || CreateUser.lastName == ''){
  system.debug('56565656565656  '+CreateUser.lastName);
- 
- //ApexPages.addmessage(new ApexPages.message(ApexPages.severity.ERROR,'Please Enter FirstName'));
- 
  
  }else{
   system.debug('777777777777777777777777777  '+country );
@@ -363,7 +375,7 @@ List<user> Allusers =[select Name,id,Email,profileId from user where email=:emai
    Emailerror ='Please Enter Email';
    system.debug('gggggggggggggg '+Emailerror );
    emailbool = true;
-    // ApexPages.addmessage(new ApexPages.message(ApexPages.severity.ERROR,'Please Enter Email'));
+  ApexPages.addmessage(new ApexPages.message(ApexPages.severity.ERROR,'Please Enter Email'));
    
    }else{
     
@@ -521,7 +533,7 @@ List<user> Allusers =[select Name,id,Email,profileId from user where email=:emai
  }catch (exception e){
  
  } 
-  // return null;
+  }catch(exception e){} // return null;
 }
 
    
@@ -530,7 +542,7 @@ List<user> Allusers =[select Name,id,Email,profileId from user where email=:emai
 
     public PageReference addPersonnels() {
               
-                 
+  try{               
       if(eventSelected ==null && eventSelected ==''){
       if(defaultEvent != '' && defaultEvent !=null){
        eventSelected =defaultEvent;
@@ -574,11 +586,12 @@ List<user> Allusers =[select Name,id,Email,profileId from user where email=:emai
         
    }     
       }  
-        
+  }catch(exception e){}      
         return null;
     }
 
     public PageReference deleteAdminRecord() {
+  try{      
     message ='';
     system.debug('rrrrrrrrrrrrrrrrrrrrrrrrrrr'+eventName);  
     List<User_Profile_Event__c> tt=new List<User_Profile_Event__c>();
@@ -598,17 +611,23 @@ List<user> Allusers =[select Name,id,Email,profileId from user where email=:emai
         pg.setRedirect(true);
         return pg; **/
          getBoothPersonnels();
+  }catch(exception e){}
        return null; 
     }
 
  
     public PageReference closePopup1() {
+    String browserType = Apexpages.currentPage().getHeaders().get('USER-AGENT'); //gets the browser name
+    if(browserType != null && browserType.contains('MSIE')){
+    Apexpages.currentPage().getHeaders().put('X-UA-Compatible', 'IE=9');
+    }
     displayPopUpForAdd =false;
         return null;
     }
 
 
     public PageReference EditPopUpValues() {
+   try{     
      system.debug('gtgtgtgtgttttttttttttttttttt '+editOfBoothPersonnel.FirstName );
      
     if((editOfBoothPersonnel.FirstName != null && editOfBoothPersonnel.FirstName !='') && (editOfBoothPersonnel.LastName != null && editOfBoothPersonnel.LastName!='') ){
@@ -644,6 +663,7 @@ List<user> Allusers =[select Name,id,Email,profileId from user where email=:emai
   
   
   }
+   }catch(exception e){}
        return null; 
     }
 
@@ -651,6 +671,7 @@ List<user> Allusers =[select Name,id,Email,profileId from user where email=:emai
 
  
     public PageReference editAttendees() {
+  try{      
        message ='';
     if(eventName!=null && eventName!=''){
     
@@ -665,11 +686,16 @@ List<user> Allusers =[select Name,id,Email,profileId from user where email=:emai
    }
     }
     displayPopUpForAdd=true;
+  }catch(exception e){}  
       return null;
     }
 
 
     public PageReference closePopup() {
+    String browserType = Apexpages.currentPage().getHeaders().get('USER-AGENT'); //gets the browser name
+    if(browserType != null && browserType.contains('MSIE')){
+    Apexpages.currentPage().getHeaders().put('X-UA-Compatible', 'IE=9');
+    }
        displayPopUp =false;
         return null;
     }
@@ -693,6 +719,7 @@ List<user> Allusers =[select Name,id,Email,profileId from user where email=:emai
    
     public string eventnameforGried{get;set;} 
     public PageReference getBoothPersonnels() {
+        try{
       message ='';
       
     
@@ -739,7 +766,7 @@ List<user> Allusers =[select Name,id,Email,profileId from user where email=:emai
      boothPersonnelWithStatus.add(new innerForDisplayStatus(upe,statusValue));
    } 
     }
-       
+        }catch(exception e){}     
         return null;
     }
 
@@ -800,7 +827,7 @@ public String escapeSpecialCharacters(String input){
 
 
 public List<SelectOption> getItems() {
-
+try{
  List<User_Profile_Event__c> upeForEvents = new List<User_Profile_Event__c>();
  EvntsForPicklist = new List<Event__c>();
  upeForEvents = [Select u.User_id__c, u.UEP_isActive__c, u.SystemModstamp, u.Profile_id__c, u.OwnerId, u.Name, u.LastModifiedDate, u.LastModifiedById, u.LastActivityDate, u.IsDeleted, u.Id, u.EventAdmin_Id__c, u.EV_id__c, u.CreatedDate, u.CreatedById, u.BoothAdmin_id__c, u.BT_id__c, u.BLP_id__c From User_Profile_Event__c u where u.User_id__r.Email=:UserInfo.getUserName() and (Status__c!='Mobile only access' And Status__c!='InActive')];
@@ -821,6 +848,7 @@ public List<SelectOption> getItems() {
   options.add(new SelectOption(Event.id,Event.EV_Title__c));
   }
   return options;
+}catch(exception e){return null;}
  }
 
 public List<SelectOption> SeletSelect{get;set;}
@@ -829,6 +857,7 @@ public String PreviousStingValue{get;set;}
 
  public PageReference deleteAdminRecord1() 
  {
+ try{   
   errormsg ='';
   displayPopUpForAddcheck  =true;
   upeFordisplayStatus =[select Status__c,BT_id__c,BT_id__r.BT_BoothUserCount__c,UEP_isActive__c from User_Profile_Event__c where id =:eventName];
@@ -843,6 +872,10 @@ public String PreviousStingValue{get;set;}
    if(countrySelect.trim() != 'InActive'){
     SeletSelect.add(new SelectOption('InActive','InActive')); 
    } 
+ }catch(exception e){
+    
+ 
+ }  
   return null; 
  }
  

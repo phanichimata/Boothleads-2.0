@@ -167,14 +167,14 @@ public pagereference eventschedule(){
 
 public pagereference cancel(){
 
+ out_variable = false;
 
 
+//pagereference pf = new pagereference('http://www.boothleads.force.com');
 
-pagereference pf = new pagereference('http://www.boothleads.force.com');
+//pf.setRedirect(true);
 
-pf.setRedirect(true);
-
-return pf;
+return null;
 
 
 }

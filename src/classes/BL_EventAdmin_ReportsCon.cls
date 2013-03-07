@@ -37,11 +37,13 @@ public BL_EventAdmin_ReportsCon()
  if(browserType != null && browserType.contains('MSIE')){
   Apexpages.currentPage().getHeaders().put('X-UA-Compatible', 'IE=9');
  }
+ try{
  getvalues();
  PageReportBool=TRUE;
  selecteventList=TRUE;
  displayAlfabets =new string[]{'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','All'};
- 
+ }
+ catch(exception e){}  
 
 }
 //------------------------------------------- Constructor End --------------------------------------------
@@ -51,6 +53,7 @@ public BL_EventAdmin_ReportsCon()
 //----------------------------------------- Events Fetch Start  ------------------------------------------
 public void getevents() 
 {
+ try{
  string tt= userInfo.getUserName();
  evntReports = new LIST<Reports__c>();
  if(eventSelected != null || eventSelected !='')
@@ -67,10 +70,13 @@ public void getevents()
    recCount++;
   } 
  } 
+ }
+ catch(exception e){}  
 } 
 
 public void getvalues() 
 {
+ try{
  LIST<User_Profile_Event__c> events = new LIST<User_Profile_Event__c>();
  string ss = userInfo.getUserName();
  Items = new LIST<selectoption>();       
@@ -91,12 +97,19 @@ public void getvalues()
   }   
   getevents();
  }
+ }
+ catch(exception e){}  
 }
 //------------------------------------------ Events Fetch End  --------------------------------------------
 
 //---------------------------------------- Choose Report Start --------------------------------------------
  public PageReference ChooseReport() 
  {
+  String browserType = Apexpages.currentPage().getHeaders().get('USER-AGENT'); 
+  if(browserType != null && browserType.contains('MSIE')){
+   Apexpages.currentPage().getHeaders().put('X-UA-Compatible', 'IE=9');
+  }
+  try{
   PageReportBool=false;
   selecteventList=true;
   Choosedreportsbool =false;
@@ -113,7 +126,7 @@ public void getvalues()
                    AS_id__r.AS_Email__c,AS_id__r.AS_Company__c,AS_id__r.AS_CellPhone__c 
             FROM Event_Attendee_Mapping__c 
             WHERE EV_id__c =: eventSelected 
-            ORDER BY AS_id__r.AS_PrimaryBusinessCategory1__c DESC NULLS LAST LIMIT 4400];
+            ORDER BY AS_id__r.AS_PrimaryBusinessCategory1__c LIMIT 4400];
   an=new LIST<Event_Attendee_Mapping__c>();       
   for(Event_Attendee_Mapping__c s:query)     
   {
@@ -148,7 +161,7 @@ public void getvalues()
                  AS_id__r.AS_CellPhone__c,AS_id__r.AS_Work_States__c 
           FROM Event_Attendee_Mapping__c 
           WHERE EV_id__c=:eventSelected 
-          ORDER BY AS_id__r.AS_Work_States__c DESC NULLS LAST LIMIT 4400];
+          ORDER BY AS_id__r.AS_Work_States__c LIMIT 4400];
   map<string,string> states=new map<string,string>();
         states.put('None','None');
         states.put('Alabama','AL');
@@ -237,6 +250,57 @@ public void getvalues()
         states.put('National Capital Territory of Delhi','DL'); 
         states.put('Lakshadweep','LD');
         states.put('Puducherry','PY'); 
+        states.put('AL','AL');
+        states.put('AK','AK');
+        states.put('AZ','AZ');
+        states.put('AR','AR');
+        states.put('CA','CA');
+        states.put('CO','CO');
+        states.put('CT','CT');
+        states.put('DE','DE');
+        states.put('DC','DC');
+        states.put('FL','FL');
+        states.put('GA','GA');
+        states.put('HI','HI');
+        states.put('ID','ID');
+        states.put('IL','IL');
+        states.put('IN','IN');
+        states.put('IA','IA');
+        states.put('KS','KS');
+        states.put('KY','KY');
+        states.put('LA','LA');
+        states.put('ME','ME');
+        states.put('MD','MD');
+        states.put('MA','MA');
+        states.put('MI','MI');
+        states.put('MN','MN');
+        states.put('MS','MS');
+        states.put('MO','MO');
+        states.put('MT','MT');
+        states.put('NE','NE');
+        states.put('NV','NV');
+        states.put('NH','NH');
+        states.put('NJ','NJ');
+        states.put('NM','NM');
+        states.put('NY','NY');
+        states.put('NC','NC');
+        states.put('ND','ND');
+        states.put('OH','OH');
+        states.put('OK','OK');
+        states.put('OR','OR');
+        states.put('PA','PA');
+        states.put('RI','RI');
+        states.put('SC','SC');
+        states.put('SD','SD');
+        states.put('TN','TN');
+        states.put('TX','TX');
+        states.put('UT','UT');
+        states.put('VT','VT');
+        states.put('VA','VA');
+        states.put('WA','WA');
+        states.put('WV','WV');
+        states.put('WI','WI');
+        states.put('WY','WY');                     
 
       map<string,string> countries = new map<string,string>();
       countries.put('India','India');
@@ -265,6 +329,8 @@ public void getvalues()
   if(recCount!=0)
   customers.add(an);
   }
+ }
+ catch(exception e){}  
  return null;
 }
 //----------------------------------------- Choose Report End ---------------------------------------------
@@ -272,26 +338,37 @@ public void getvalues()
 //------------------------------------ Edit and Update Report Start ---------------------------------------
 public PageReference EditReport()  
 {
+ try{
  EditReportBool=TRUE;
  EditRep = new Reports__c ();
  EditRep = [select id,RE_Description__c ,RE_Name__c from Reports__c where ID =: eventname];   
+ }
+ catch(exception e){}  
  return null;
 }
 
 public PageReference UpdateReport()  
 {
+ try{
  EditRep.RE_Description__c = EditRep.RE_Description__c;
  EditRep.RE_Name__c = EditRep.RE_Name__c;
  update EditRep;
  Pagereference pg = new Pagereference('/apex/BL_EventAdmin_Reports');
  pg.setRedirect(true);
  return pg; 
+ }
+ catch(exception e){}  
+ return null;
 }
 //------------------------------------- Edit and Update Report End ----------------------------------------
 
 //------------------------------------ Back and Cancel Report Start ---------------------------------------
 public void BackAction() 
 {
+ String browserType = Apexpages.currentPage().getHeaders().get('USER-AGENT'); 
+ if(browserType != null && browserType.contains('MSIE')){
+  Apexpages.currentPage().getHeaders().put('X-UA-Compatible', 'IE=9');
+ }
  IndustryReportBool = false;
  GeographyReportBool = false;
  choosedreportsbool = false;
@@ -301,6 +378,10 @@ public void BackAction()
 
 public PageReference cancel()
 {
+ String browserType = Apexpages.currentPage().getHeaders().get('USER-AGENT'); 
+ if(browserType != null && browserType.contains('MSIE')){
+  Apexpages.currentPage().getHeaders().put('X-UA-Compatible', 'IE=9');
+ }
  EditReportBool=False;
  return null;
 }
@@ -309,6 +390,7 @@ public PageReference cancel()
 //-------------------------------------------- Export Start -----------------------------------------------
 public PageReference seltoexport()
 {
+try{
 attforexport= new LIST<LIST<Event_Attendee_Mapping__c>>();
 integer recCount=0;  
 query2=[SELECT id,TicketTypes__c,AS_id__r.AS_Age__c,AS_id__r.AS_BirthDate__c,AS_id__r.AS_BlogUrl__c,AS_id__r.AS_BusinessDescription__c,AS_id__r.AS_BusinessDunsNumber__c,
@@ -363,8 +445,10 @@ for(Event_Attendee_Mapping__c s:query2)
     }
   if(recCount !=0)
   attforexport.add(bn);       
-pagereference pg =page.BL_EventAdmin_ExportinReports;
-return pg;
+  pagereference pg =page.BL_EventAdmin_ExportinReports;
+  return pg;
+ }
+ catch(exception e){}  
 return null;
 }
 //-------------------------------------------- Export End -----------------------------------------------

@@ -1,37 +1,4 @@
-public with sharing class Eventattendees{
-
-
-public boolean Successbool { get; set; }
-
- public PageReference movetoBoothpage() {
- pageReference pg = new pageReference('/apex/BL_eventadmin_samplebooth');
- return pg;
- }
-
-
-
-    public PageReference converLead() {
-    system.debug('8888888889999999999991111111111111 '+eventName1);
-    set<string> setOfJunctions = new  set<string>();
-   
-    for(string sej:eventName1.split(',')){
-    setOfJunctions.add(sej);
-    }
-    
-    
-    
-    set<id> attsummaryListIds = new set<id>();
-    for(Event_Attendee_Mapping__c EAMapping :[SELECT id,AS_id__r.id, EV_id__r.id ,Boothleads_Profile__c  from Event_Attendee_Mapping__c where id IN :setOfJunctions] ){
-     attsummaryListIds.add(EAMapping.AS_id__r.id);
-    }
-     if(setOfJunctions.size()>0){
-     Successbool = true;
-     }
-    ConverBoothAdmin outerCls = new ConverBoothAdmin();
-    outerCls.boothadminConversion(attsummaryListIds,Eventselected);
-        return null;
-    }
-
+public with sharing class BL_EventAdmin_AttendeesCon{
 
     public boolean fortwoprinters{get;set;}
     public void saveandprintforedit() {
@@ -222,7 +189,7 @@ public PageReference checkUserId() {
    public List<Selectoption> Divoptionsforsecondline {get;set;}
    public Event__c eventDIVS{get;set;}
    public LIST<selectoption> SelectedValuesfortwoprinters{get;set;}
-    public Eventattendees()
+    public BL_EventAdmin_AttendeesCon()
     {   
     String browserType = Apexpages.currentPage().getHeaders().get('USER-AGENT'); //gets the browser name
 if(browserType != null && browserType.contains('MSIE')){
@@ -479,7 +446,7 @@ Apexpages.currentPage().getHeaders().put('X-UA-Compatible', 'IE=9');
      eventlist=[select CreatedDate,AS_id__r.AS_LastName__c,AS_id__r.AS_FirstName__c,AS_id__r.AS_ImageUrl__c,
                       AS_id__r.AS_Company__c,EA_AttendeeBarcode__c,AS_id__r.AS_CellPhone__c,
                       EA_isBadgePrinted__c,AS_id__r.AS_Email__c,AS_id__r.Registration_type__c,IsPrifileUpdate__c
-                      ,Boothleads_Profile__c  from Event_Attendee_Mapping__c where EV_id__r.id =: eventSelected  ORDER BY AS_id__r.AS_Company__c Limit 3000];
+                      from Event_Attendee_Mapping__c where EV_id__r.id =: eventSelected  ORDER BY AS_id__r.AS_Company__c Limit 3000];
         system.debug('==================='+eventlist);                 
      ew=new List<eventwrapper>();
      for(Event_Attendee_Mapping__c s:eventlist)
@@ -536,7 +503,7 @@ Apexpages.currentPage().getHeaders().put('X-UA-Compatible', 'IE=9');
      eventlist=[select AS_id__r.AS_LastName__c,AS_id__r.AS_FirstName__c,AS_id__r.AS_ImageUrl__c,
                       AS_id__r.AS_Company__c,EA_AttendeeBarcode__c,AS_id__r.AS_CellPhone__c,CreatedDate,
                       EA_isBadgePrinted__c,AS_id__r.AS_Email__c,AS_id__r.Registration_type__c,IsPrifileUpdate__c
-                      ,Boothleads_Profile__c  from Event_Attendee_Mapping__c where AS_id__r.AS_LastName__c like: alphas+'%'
+                      from Event_Attendee_Mapping__c where AS_id__r.AS_LastName__c like: alphas+'%'
                         AND EV_id__r.id =: eventSelected ORDER BY AS_id__r.AS_Company__c];      
     system.debug('---------'+eventlist);
      ew=new List<eventwrapper>();
@@ -631,10 +598,6 @@ Apexpages.currentPage().getHeaders().put('X-UA-Compatible', 'IE=9');
 //-------------------------------------SAVING NEW ATTENDEE METHOD----------------------------------------------
    public void SaveAttendee() 
    {
-   String browserType = Apexpages.currentPage().getHeaders().get('USER-AGENT');
-   if(browserType != null && browserType.contains('MSIE')){
-    Apexpages.currentPage().getHeaders().put('X-UA-Compatible', 'IE=9');
-   } 
    limitofbadges=false;
     try
         {
@@ -724,7 +687,7 @@ Apexpages.currentPage().getHeaders().put('X-UA-Compatible', 'IE=9');
       attendeeevent=myAttendeeJunction.id;
       eventatt=[select id,As_id__r.AS_FirstName__c,As_id__r.AS_LastName__c,As_id__r.AS_Company__c,EV_ID__C,
                         TicketTypes__c,EV_id__r.EV_Title__c,AS_id__r.AS_Title__c,EA_AttendeeBarcode__c 
-                       ,Boothleads_Profile__c  from Event_Attendee_Mapping__c where id =:attendeeevent]; 
+                       from Event_Attendee_Mapping__c where id =:attendeeevent]; 
      eventselected=eventselected;
      getevents();
      
@@ -775,7 +738,7 @@ Apexpages.currentPage().getHeaders().put('X-UA-Compatible', 'IE=9');
       addattendee=false;
       eventatt=[select id,As_id__r.AS_FirstName__c,As_id__r.AS_LastName__c,As_id__r.AS_Company__c,EV_ID__C,
                         TicketTypes__c,EV_id__r.EV_Title__c,AS_id__r.AS_Title__c,
-                       EA_AttendeeBarcode__c ,Boothleads_Profile__c  from Event_Attendee_Mapping__c where id =:attendeeevent];
+                       EA_AttendeeBarcode__c from Event_Attendee_Mapping__c where id =:attendeeevent];
      
      eventselected=eventselected;
      getevents();
@@ -803,7 +766,7 @@ Apexpages.currentPage().getHeaders().put('X-UA-Compatible', 'IE=9');
     {
     limitofbadges=false;
     List<selectoption> Options = new List<selectoption>(); 
-    Event_Attendee_Mapping__c attmap=[select EA_isBadgePrinted__c ,Boothleads_Profile__c  from Event_Attendee_Mapping__c where id=:eventname1];
+    Event_Attendee_Mapping__c attmap=[select EA_isBadgePrinted__c from Event_Attendee_Mapping__c where id=:eventname1];
     if(attmap.EA_isBadgePrinted__c == true)
     {               
      statusvalue='Printed';
@@ -820,7 +783,7 @@ Apexpages.currentPage().getHeaders().put('X-UA-Compatible', 'IE=9');
     }
     public Event_Attendee_Mapping__c changingprintstatus()
     {
-    Event_Attendee_Mapping__c attmap=[select EA_isBadgePrinted__c ,Boothleads_Profile__c  from Event_Attendee_Mapping__c where id=:eventname1];
+    Event_Attendee_Mapping__c attmap=[select EA_isBadgePrinted__c from Event_Attendee_Mapping__c where id=:eventname1];
     if(statusvalue == 'Printed')
     {
     attmap.EA_isBadgePrinted__c=true;
@@ -843,7 +806,7 @@ Apexpages.currentPage().getHeaders().put('X-UA-Compatible', 'IE=9');
     {
     limitofbadges=false;
      List<selectoption> Options = new List<selectoption>(); 
-     Event_Attendee_Mapping__c attmap=[select IsPrifileUpdate__c ,Boothleads_Profile__c  from Event_Attendee_Mapping__c where id=:eventname1];
+     Event_Attendee_Mapping__c attmap=[select IsPrifileUpdate__c from Event_Attendee_Mapping__c where id=:eventname1];
      if(attmap.IsPrifileUpdate__c == true)
      {               
      statusvalue='sent';
@@ -861,7 +824,7 @@ Apexpages.currentPage().getHeaders().put('X-UA-Compatible', 'IE=9');
     public Event_Attendee_Mapping__c changingemailstatus()
     {
     limitofbadges=false;
-    Event_Attendee_Mapping__c attmap=[select IsPrifileUpdate__c ,Boothleads_Profile__c  from Event_Attendee_Mapping__c where id=:eventname1];
+    Event_Attendee_Mapping__c attmap=[select IsPrifileUpdate__c from Event_Attendee_Mapping__c where id=:eventname1];
     if(statusvalue == 'Sent')
     {
     attmap.IsPrifileUpdate__c=true;
@@ -908,7 +871,7 @@ Apexpages.currentPage().getHeaders().put('X-UA-Compatible', 'IE=9');
         for(TicketTypes__c Tic:tickets){
         options.add(new SelectOption((String)Tic.TT_Name__c, Tic.TT_Name__c));
         }
-    TicTypesforedit=[select TicketTypes__c ,Boothleads_Profile__c  from Event_Attendee_Mapping__c where id=:eventName1];
+    TicTypesforedit=[select TicketTypes__c from Event_Attendee_Mapping__c where id=:eventName1];
     
     TTT=TicTypesforedit.TicketTypes__c;
     list<string> regticket=TTT.split(',');
@@ -933,7 +896,7 @@ Apexpages.currentPage().getHeaders().put('X-UA-Compatible', 'IE=9');
         }      
     i++;
     }
-    DivTypesforedit=[select DiversityType__c ,Boothleads_Profile__c  from Event_Attendee_Mapping__c where id=:eventName1];
+    DivTypesforedit=[select DiversityType__c from Event_Attendee_Mapping__c where id=:eventName1];
     system.debug('::::::::::::::::::::::'+DivTypesforedit.DiversityType__c);
      DiversityTypesforfirstline=new string[]{};
      DiversityTypesforsecondline=new string[]{};
@@ -952,7 +915,7 @@ Apexpages.currentPage().getHeaders().put('X-UA-Compatible', 'IE=9');
     
     
     
-    Event_Attendee_Mapping__c attendeeid = [select AS_id__c ,Boothleads_Profile__c  from Event_Attendee_Mapping__c where id=:eventName1];
+    Event_Attendee_Mapping__c attendeeid = [select AS_id__c from Event_Attendee_Mapping__c where id=:eventName1];
     newattendee = new AttendeeSummary__c ();
     event1234=new list<AttendeeSummary__c>();
     event1234= [select id,name,AS_Age__c,isUpdated__c,AS_BirthDate__c,AS_BlogUrl__c,AS_BusinessDescription__c,AS_BusinessDunsNumber__c,
@@ -1081,13 +1044,9 @@ Apexpages.currentPage().getHeaders().put('X-UA-Compatible', 'IE=9');
     public boolean imageerror{get;set;}
     public string imageerrormsg{get;set;}
     public PageREference UpdateAttendee() {
-    String browserType = Apexpages.currentPage().getHeaders().get('USER-AGENT');
-if(browserType != null && browserType.contains('MSIE')){
-Apexpages.currentPage().getHeaders().put('X-UA-Compatible', 'IE=9');
-}
   system.debug('gggggggggggggg&&&&&&&'+attendeeImage);
   limitofbadges=false;
-     Event_Attendee_Mapping__c EveAttmaprec = [select id ,Boothleads_Profile__c  from Event_Attendee_Mapping__c 
+     Event_Attendee_Mapping__c EveAttmaprec = [select id from Event_Attendee_Mapping__c 
                                                              where id=:eventname1];
 
     system.debug('***************************EmailExist Or Not'+newattendee.AS_Email__c);
@@ -1097,7 +1056,7 @@ Apexpages.currentPage().getHeaders().put('X-UA-Compatible', 'IE=9');
    if(AttendeeEmail.size()>0)
    {
        try{
-       EventAttendee_Email = [select id ,Boothleads_Profile__c  from Event_Attendee_Mapping__c 
+       EventAttendee_Email = [select id from Event_Attendee_Mapping__c 
                                                              where AS_id__r.AS_Email__c =:newattendee.AS_Email__c 
                                                              AND EV_id__c=:eventSelected ];
     }catch(exception e){}
@@ -1132,7 +1091,7 @@ Apexpages.currentPage().getHeaders().put('X-UA-Compatible', 'IE=9');
       
             eventatt=[select id,As_id__r.AS_FirstName__c,As_id__r.AS_LastName__c,As_id__r.AS_Company__c,EV_ID__C,
                        TicketTypes__c,EV_id__r.EV_Title__c,AS_id__r.AS_Title__c,
-                       EA_AttendeeBarcode__c ,Boothleads_Profile__c  from Event_Attendee_Mapping__c where id =:EveAttmaprec.id]; 
+                       EA_AttendeeBarcode__c from Event_Attendee_Mapping__c where id =:EveAttmaprec.id]; 
             
            try{
           TicTypesforedit.TicketTypes__c='';
@@ -1155,7 +1114,7 @@ Apexpages.currentPage().getHeaders().put('X-UA-Compatible', 'IE=9');
             }catch(exception e){}
              eventatt=[select id,As_id__r.AS_FirstName__c,As_id__r.AS_LastName__c,As_id__r.AS_Company__c,EV_ID__C,
                        TicketTypes__c,EV_id__r.EV_Title__c,AS_id__r.AS_Title__c,
-                       EA_AttendeeBarcode__c ,Boothleads_Profile__c  from Event_Attendee_Mapping__c where id =:EveAttmaprec.id]; 
+                       EA_AttendeeBarcode__c from Event_Attendee_Mapping__c where id =:EveAttmaprec.id]; 
               
       if(attendeeImage != NULL && ( myimageName != '' || myimageName != NULL )){   
         if(attendeeImage.size() != null )
@@ -1220,7 +1179,7 @@ Apexpages.currentPage().getHeaders().put('X-UA-Compatible', 'IE=9');
             }catch(exception e){}
              eventatt=[select id,As_id__r.AS_FirstName__c,As_id__r.AS_LastName__c,As_id__r.AS_Company__c,EV_ID__C,
                        TicketTypes__c,EV_id__r.EV_Title__c,AS_id__r.AS_Title__c,
-                       EA_AttendeeBarcode__c ,Boothleads_Profile__c  from Event_Attendee_Mapping__c where id =:EveAttmaprec.id]; 
+                       EA_AttendeeBarcode__c from Event_Attendee_Mapping__c where id =:EveAttmaprec.id]; 
               
       if(attendeeImage != NULL && ( myimageName != '' || myimageName != NULL )){   
         if(attendeeImage.size() != null )
@@ -1332,7 +1291,7 @@ Apexpages.currentPage().getHeaders().put('X-UA-Compatible', 'IE=9');
           system.debug('--------------Updated jun record-----------------'+EveAttmaprec.id);
         eventatt=[select id,As_id__r.AS_FirstName__c,As_id__r.AS_LastName__c,As_id__r.AS_Company__c,EV_ID__C,
                        TicketTypes__c,EV_id__r.EV_Title__c,AS_id__r.AS_Title__c,
-                       EA_AttendeeBarcode__c ,Boothleads_Profile__c  from Event_Attendee_Mapping__c where id =:EveAttmaprec.id];
+                       EA_AttendeeBarcode__c from Event_Attendee_Mapping__c where id =:EveAttmaprec.id];
        if(attendeeImage != NULL && ( myimageName != '' || myimageName != NULL )){   
         if(attendeeImage.size() != null )
       {
@@ -1370,10 +1329,6 @@ Apexpages.currentPage().getHeaders().put('X-UA-Compatible', 'IE=9');
 
     public PageReference Cancel()
      {
-     String browserType = Apexpages.currentPage().getHeaders().get('USER-AGENT'); 
-if(browserType != null && browserType.contains('MSIE')){
-Apexpages.currentPage().getHeaders().put('X-UA-Compatible', 'IE=9');
-}
      fortwoprinters=false;
      limitofbadges=false;
     duplicateAttendeeBool=false;
@@ -1412,10 +1367,6 @@ Apexpages.currentPage().getHeaders().put('X-UA-Compatible', 'IE=9');
          
     public void PrintBadge()
      {
-     String browserType = Apexpages.currentPage().getHeaders().get('USER-AGENT');
-if(browserType != null && browserType.contains('MSIE')){
-Apexpages.currentPage().getHeaders().put('X-UA-Compatible', 'IE=9');
-}
      limitofbadges=false;
       EventReqStringBool =false;
       attid=new List<id>();
@@ -1433,7 +1384,7 @@ Apexpages.currentPage().getHeaders().put('X-UA-Compatible', 'IE=9');
       attendeeslist = [select AS_id__c,AS_id__r.id, AS_id__r.AS_LastName__c,AS_id__r.AS_FirstName__c,
                               AS_id__r.AS_Company__c,EA_AttendeeBarcode__c,AS_id__r.AS_CellPhone__c,IsPrifileUpdate__c,
                               EA_isBadgePrinted__c,AS_id__r.AS_Title__c,EV_id__r.EV_Title__c,TicketTypes__c    
-                              ,Boothleads_Profile__c  from Event_Attendee_Mapping__c where EV_id__c =: eventselected];
+                              from Event_Attendee_Mapping__c where EV_id__c =: eventselected];
       system.debug('atttttttttttt list'+attendeeslist);           
       for( Event_Attendee_Mapping__c  aa: attendeeslist)
      {
@@ -1451,7 +1402,7 @@ Apexpages.currentPage().getHeaders().put('X-UA-Compatible', 'IE=9');
      attendeeslist=[select AS_id__c,AS_id__r.id, AS_id__r.AS_LastName__c,AS_id__r.AS_FirstName__c,
                               AS_id__r.AS_Company__c,EA_AttendeeBarcode__c,AS_id__r.AS_CellPhone__c,IsPrifileUpdate__c,
                               EA_isBadgePrinted__c,AS_id__r.AS_Title__c,EV_id__r.EV_Title__c,TicketTypes__c     
-                              ,Boothleads_Profile__c  from Event_Attendee_Mapping__c where  id in:attid];
+                              from Event_Attendee_Mapping__c where  id in:attid];
      }
      if(attendeeslist.size() <=500){
      system.debug('==============================attendeeslist.size==============='+attendeeslist.size());
@@ -1595,7 +1546,7 @@ Apexpages.currentPage().getHeaders().put('X-UA-Compatible', 'IE=9');
       attendeeslist = [select AS_id__c,AS_id__r.id, AS_id__r.AS_LastName__c,AS_id__r.AS_FirstName__c,
                               AS_id__r.AS_Company__c,EA_AttendeeBarcode__c,AS_id__r.AS_CellPhone__c,IsPrifileUpdate__c,
                               EA_isBadgePrinted__c,AS_id__r.AS_Title__c,EV_id__r.EV_Title__c,TicketTypes__c     
-                              ,Boothleads_Profile__c  from Event_Attendee_Mapping__c where EV_id__c =: eventselected];
+                              from Event_Attendee_Mapping__c where EV_id__c =: eventselected];
                  
       for( Event_Attendee_Mapping__c  aa: attendeeslist)
      {
@@ -1613,7 +1564,7 @@ Apexpages.currentPage().getHeaders().put('X-UA-Compatible', 'IE=9');
      attendeeslist=[select AS_id__c,AS_id__r.id, AS_id__r.AS_LastName__c,AS_id__r.AS_FirstName__c,
                               AS_id__r.AS_Company__c,EA_AttendeeBarcode__c,AS_id__r.AS_CellPhone__c,IsPrifileUpdate__c,
                               EA_isBadgePrinted__c,AS_id__r.AS_Title__c,EV_id__r.EV_Title__c,TicketTypes__c     
-                              ,Boothleads_Profile__c  from Event_Attendee_Mapping__c where  id in:attid];
+                              from Event_Attendee_Mapping__c where  id in:attid];
      }
       for(Event_Attendee_Mapping__c s:attendeeslist){
       count++;
@@ -1766,7 +1717,7 @@ Apexpages.currentPage().getHeaders().put('X-UA-Compatible', 'IE=9');
     limitofbadges=false;
     emailalert=false;    
     if(eventName1 != null || eventName1 !=''){
-    Event_Attendee_Mapping__c delrec =[select id ,Boothleads_Profile__c  from Event_Attendee_Mapping__c where id=: eventName1];
+    Event_Attendee_Mapping__c delrec =[select id from Event_Attendee_Mapping__c where id=: eventName1];
     Delete delrec ;
     getevents();
     }     
@@ -1774,7 +1725,7 @@ Apexpages.currentPage().getHeaders().put('X-UA-Compatible', 'IE=9');
     
     public boolean  EventReqStringbool3{get;set;}
     public PageReference attendeedetail() {
-    Event_Attendee_Mapping__c ss=[select AS_id__r.id ,Boothleads_Profile__c  from Event_Attendee_Mapping__c  where id =:eventname1 limit 1];
+    Event_Attendee_Mapping__c ss=[select AS_id__r.id from Event_Attendee_Mapping__c  where id =:eventname1 limit 1];
     PageReference pg = new pagereference('/apex/qrcode_attendee_details?id='+eventname1 );
     pg.setRedirect(true);
     return pg;  
@@ -1789,10 +1740,6 @@ Apexpages.currentPage().getHeaders().put('X-UA-Compatible', 'IE=9');
     }
     //------------------------------------------------------POPUP FOR SELECTING DESIRED LABEL-----------------------------------
     public void popup() {
-    String browserType = Apexpages.currentPage().getHeaders().get('USER-AGENT');
-    if(browserType != null && browserType.contains('MSIE')){
-    Apexpages.currentPage().getHeaders().put('X-UA-Compatible', 'IE=9');
-    }
     attid=new List<id>();
     limitofbadges=false;
     emailalert=false;
@@ -1805,7 +1752,7 @@ Apexpages.currentPage().getHeaders().put('X-UA-Compatible', 'IE=9');
     if(Allrecords == true)
    {
     attforexport=new List<Event_Attendee_Mapping__c>(); 
-    attforexport=[select id ,Boothleads_Profile__c  from Event_Attendee_Mapping__c WHERE ev_Id__c =: eventselected];
+    attforexport=[select id FROM Event_Attendee_Mapping__c WHERE ev_Id__c =: eventselected];
     if(attforexport.size()>500)
     {
       limitofbadges = TRUE;
@@ -1843,7 +1790,7 @@ Apexpages.currentPage().getHeaders().put('X-UA-Compatible', 'IE=9');
      attid.add((id)aa);
      }
      
-     attendeeslist=[select id ,Boothleads_Profile__c  from Event_Attendee_Mapping__c where  id in:attid];
+     attendeeslist=[select id from Event_Attendee_Mapping__c where  id in:attid];
    
 
     system.debug(':::::::::::::::::size:::::::::::'+attendeeslist.size());
@@ -1879,10 +1826,6 @@ Apexpages.currentPage().getHeaders().put('X-UA-Compatible', 'IE=9');
     } 
    //--------------------------------------------------------------------------------------EMAIL BADGE------------------------
      public PageReference emailBadge() {
-     String browserType = Apexpages.currentPage().getHeaders().get('USER-AGENT');
-    if(browserType != null && browserType.contains('MSIE')){
-    Apexpages.currentPage().getHeaders().put('X-UA-Compatible', 'IE=9');
-    }
      emailalert=false;
      limitofbadges=false;
      if(eventname1 != '')
@@ -1896,7 +1839,7 @@ Apexpages.currentPage().getHeaders().put('X-UA-Compatible', 'IE=9');
         } 
     list<Event_Attendee_Mapping__c> emailids=[select id,EA_AttendeeBarcode__c,AS_id__r.AS_LastName__c,
                                                        AS_id__r.AS_FirstName__c, AS_id__r.AS_Email__c
-                                                      ,Boothleads_Profile__c  from Event_Attendee_Mapping__c where id IN : attid];
+                                                      From Event_Attendee_Mapping__c where id IN : attid];
     list<Messaging.SingleEmailMessage> emails = new List<Messaging.SingleEmailMessage>();
     for(Event_Attendee_Mapping__c eid: emailids)
      { 
@@ -1911,12 +1854,12 @@ Apexpages.currentPage().getHeaders().put('X-UA-Compatible', 'IE=9');
      email.setHTMLBody(message='Hello '+' '+''+ eid.AS_id__r.AS_FirstName__c +'<br/>'+''+'<br/>'+
      ' Your badge for the registered event is attached as a pdf. You can view this'+'<br/>'+ 
           'badge from your mobile device.'+'<br/>'+
-          'If you have any questions please contact Booth Leads customer support.'+'<br/>'+''+'<br/>'+'<br/>'+
+          'If you have any questions please contact your '+'<br/>'+
+          'Event Administrator.'+'<br/>'+'<br/>'+
           
           ' Thank you,' +'<br/>'+
-          'Booth Leads customer support'+'<br/>'+
-          'support@boothleads.com.'+'<br/>'+
-          'Phone: 1-(800)-492-1289.' 
+          'BoothLeads customer support'+'<br/>'+
+          'support@boothleads.com.'
           
           );
                                                                                                
@@ -1965,7 +1908,7 @@ Apexpages.currentPage().getHeaders().put('X-UA-Compatible', 'IE=9');
     checkedbadge= new List<Event_Attendee_Mapping__c>();
     List<Event_Attendee_Mapping__c> changed=new List<Event_Attendee_Mapping__c>{};
   
-    checkedbadge=[select id, EA_isBadgePrinted__c ,Boothleads_Profile__c  from Event_Attendee_Mapping__c where id in:attid];
+    checkedbadge=[select id, EA_isBadgePrinted__c from Event_Attendee_Mapping__c where id in:attid];
     for(Event_Attendee_Mapping__c dd:checkedbadge)
     {
     dd.EA_isBadgePrinted__c=true;
@@ -2091,13 +2034,8 @@ Apexpages.currentPage().getHeaders().put('X-UA-Compatible', 'IE=9');
     return null;
     }
     //----------------------------------------Printing att badge---------------------
-    public Event_Attendee_Mapping__c eamforprint{get;set;}
     public pagereference attbadge()
     {
-    eamforprint=[select EA_isBadgePrinted__c ,Boothleads_Profile__c  from Event_Attendee_Mapping__c where id =: eventatt.id];
-    eamforprint.EA_isBadgePrinted__c = true;
-    update eamforprint;
-    
     pdfbool=false;
     if(selectedvalues == 'Dymo Label(30856,Single Label)'){
     pagereference pg=page.qrcode_badgeofanattendee;
@@ -2112,7 +2050,6 @@ Apexpages.currentPage().getHeaders().put('X-UA-Compatible', 'IE=9');
     //-------------------------for Delete All--------------------------------------------
     public pagereference deleteallattendees()
     {
-    
     limitofbadges=false;
     EventReqStringBool=false;
     emailalert=false;
@@ -2125,8 +2062,7 @@ Apexpages.currentPage().getHeaders().put('X-UA-Compatible', 'IE=9');
     if(Allrecords == true)
     {
      attforexport=new List<Event_Attendee_Mapping__c>(); 
-     attforexport=[select id ,Boothleads_Profile__c  from Event_Attendee_Mapping__c WHERE ev_Id__c =: eventselected AND Boothleads_Profile__c =: 'Attendee'];
-     
+     attforexport=[select id FROM Event_Attendee_Mapping__c WHERE ev_Id__c =: eventselected];
      delete attforexport;
     }
     else
@@ -2141,7 +2077,7 @@ Apexpages.currentPage().getHeaders().put('X-UA-Compatible', 'IE=9');
         attid.add((id)aa);
         system.debug('aaaannnnnnnn'+aa);
         }
-      attforexport=[select id ,Boothleads_Profile__c  from Event_Attendee_Mapping__c WHERE id in: attid And Boothleads_Profile__c =: 'Attendee'];
+      attforexport=[select id FROM Event_Attendee_Mapping__c WHERE id in: attid];
       delete attforexport;
     }  
     }
@@ -2168,10 +2104,6 @@ Apexpages.currentPage().getHeaders().put('X-UA-Compatible', 'IE=9');
     public list<list<Event_Attendee_Mapping__c>> exportlistoflist{get;set;}
     public pagereference exportAll()
     {
-    String browserType = Apexpages.currentPage().getHeaders().get('USER-AGENT');
-    if(browserType != null && browserType.contains('MSIE')){
-     Apexpages.currentPage().getHeaders().put('X-UA-Compatible', 'IE=9');
-    }
     limitofbadges=false;
     exportlistoflist=new list<list<Event_Attendee_Mapping__c>>{};
     EventReqStringBool =false;
@@ -2197,7 +2129,7 @@ Apexpages.currentPage().getHeaders().put('X-UA-Compatible', 'IE=9');
                                  AS_id__r.AS_ShippingCity__c,AS_id__r.As_Shipping_Country__c,AS_id__r.AS_ShippingPhone__c,AS_id__r.AS_Shippingpoboxno__c,AS_id__r.As_Shipping_States__c,
                                  AS_id__r.AS_shippingzip__c,AS_id__r.As_SuffixNew__c,AS_id__r.AS_ThroughEventBrite__c,AS_id__r.AS_Title__c,AS_id__r.AS_WebsiteUrl__c,AS_id__r.AS_WorkAddress1__c,
                                  AS_id__r.AS_WorkAddress2__c,AS_id__r.AS_WorkCity__c,AS_id__r.AS_Work_Country__c,AS_id__r.AS_WorkPhone__c,AS_id__r.AS_Workpoboxno__c,AS_id__r.AS_Work_States__c,
-                                 AS_id__r.AS_WorkZip__c ,Boothleads_Profile__c  from Event_Attendee_Mapping__c WHERE ev_Id__c =:eventselected];
+                                 AS_id__r.AS_WorkZip__c FROM Event_Attendee_Mapping__c WHERE ev_Id__c =:eventselected];
  
     for(Event_Attendee_Mapping__c s:eventlist){
      s.AS_id__r.AS_BlogUrl__c             = escape(s.AS_id__r.AS_BlogUrl__c);
@@ -2266,7 +2198,7 @@ Apexpages.currentPage().getHeaders().put('X-UA-Compatible', 'IE=9');
                                  AS_id__r.AS_ShippingCity__c,AS_id__r.As_Shipping_Country__c,AS_id__r.AS_ShippingPhone__c,AS_id__r.AS_Shippingpoboxno__c,AS_id__r.As_Shipping_States__c,
                                  AS_id__r.AS_shippingzip__c,AS_id__r.As_SuffixNew__c,AS_id__r.AS_ThroughEventBrite__c,AS_id__r.AS_Title__c,AS_id__r.AS_WebsiteUrl__c,AS_id__r.AS_WorkAddress1__c,
                                  AS_id__r.AS_WorkAddress2__c,AS_id__r.AS_WorkCity__c,AS_id__r.AS_Work_Country__c,AS_id__r.AS_WorkPhone__c,AS_id__r.AS_Workpoboxno__c,AS_id__r.AS_Work_States__c,
-                                 AS_id__r.AS_WorkZip__c ,Boothleads_Profile__c  from Event_Attendee_Mapping__c WHERE id in: attid];
+                                 AS_id__r.AS_WorkZip__c FROM Event_Attendee_Mapping__c WHERE id in: attid];
  
     for(Event_Attendee_Mapping__c s:eventlist){
      s.AS_id__r.AS_BlogUrl__c             = escape(s.AS_id__r.AS_BlogUrl__c);
@@ -2344,10 +2276,6 @@ Apexpages.currentPage().getHeaders().put('X-UA-Compatible', 'IE=9');
     //-----------------------------------------------------------profileUpdateNotification---------------------------------
     public pagereference profileUpdateNotification()
     {
-    String browserType = Apexpages.currentPage().getHeaders().get('USER-AGENT');
-if(browserType != null && browserType.contains('MSIE')){
-Apexpages.currentPage().getHeaders().put('X-UA-Compatible', 'IE=9');
-}
     limitofbadges=false;
     emailalert=false;
     if(eventname1 != '')
@@ -2360,7 +2288,7 @@ Apexpages.currentPage().getHeaders().put('X-UA-Compatible', 'IE=9');
         attid.add((id)aa);
         }  
     list<Event_Attendee_Mapping__c> emailids=[select id,IsPrifileUpdate__c,AS_id__r.id,AS_id__r.AS_FirstName__c, EV_id__r.id,   EV_id__r.EV_Title__c, AS_id__r.AS_Email__c
-                                                      ,Boothleads_Profile__c  from Event_Attendee_Mapping__c where id IN : attid];
+                                                      from Event_Attendee_Mapping__c where id IN : attid];
     list<Messaging.SingleEmailMessage> emails = new List<Messaging.SingleEmailMessage>();
     List<Event_Attendee_Mapping__c> ASUpdate=new List<Event_Attendee_Mapping__c>();
     for(Event_Attendee_Mapping__c eid: emailids)
@@ -2373,14 +2301,13 @@ Apexpages.currentPage().getHeaders().put('X-UA-Compatible', 'IE=9');
              +'Welcome to '+ eid.EV_id__r.EV_Title__c+'!'+''+'<br/><br/>'+
           'Please update your profile by clicking on the link at the end of this email.'+'<br/>'+
           'Your updated profile will provide your up to date contact details as well as your business information to the potential customers using boothleads at '+ eid.EV_id__r.EV_Title__c+'.'+'<br/>'+''+'<br/>'+
-          'If you have any questions please contact Booth Leads customer support.'+'<br/>'+''+'<br/>'+
+          'If you have any questions please contact your Event Administrator.'+'<br/>'+''+'<br/>'+
           'Thank you!'+'<br/>'+
           'BoothLeads customer support'+'<br/>'+
-         +'<a>'+ 'support@boothleads.com' +'</a>'+''+'<br/>'+
-         'Phone: 1-(800)-492-1289'+''+'<br/>'+''+'<br/>'+
+         +'<a>'+ 'support@boothleads.com' +'</a>'+''+'<br/>'+''+'<br/>'+''+'<br/>'+
          'Please update your profile by clicking the below link'+'<br/>'+
-          'https://boothleads.bleadtest.cs5.force.com/attendeeselfregistration?id='+eid.AS_id__r.id+'&'+'eid='+eid.EV_id__r.id+'<br/>'
-          );                                                                                                                                                      
+          'https://boothleads.secure.force.com/attendeeselfregistration?id='+eid.AS_id__r.id+'&'+'eid='+eid.EV_id__r.id+'<br/>'
+          +'Thank you,');                                                                                                                                                      
     emails.add(email); 
     eid.IsPrifileUpdate__c=true;                                                                          
     ASUpdate.add(eid);
@@ -2547,7 +2474,7 @@ Apexpages.currentPage().getHeaders().put('X-UA-Compatible', 'IE=9');
     eventlist= [select AS_id__r.AS_LastName__c,AS_id__r.AS_FirstName__c,AS_id__r.AS_ImageUrl__c,
                       AS_id__r.AS_Company__c,EA_AttendeeBarcode__c,AS_id__r.AS_CellPhone__c,
                       EA_isBadgePrinted__c,AS_id__r.AS_Email__c,IsPrifileUpdate__c,CreatedDate
-                      ,Boothleads_Profile__c  from Event_Attendee_Mapping__c where EV_id__r.id =: eventSelected and (AS_id__r.AS_FirstName__c like :ff+'%' OR AS_id__r.AS_LastName__c like :ff+'%' OR  AS_id__r.AS_Company__c like :ff+'%' OR AS_id__r.AS_Email__c like :ff+'%' OR AS_id__r.AS_CellPhone__c   like :'%'+ff+'%') order by AS_id__r.AS_LastName__c];                                                                        
+                      from Event_Attendee_Mapping__c where EV_id__r.id =: eventSelected and (AS_id__r.AS_FirstName__c like :ff+'%' OR AS_id__r.AS_LastName__c like :ff+'%' OR  AS_id__r.AS_Company__c like :ff+'%' OR AS_id__r.AS_Email__c like :ff+'%' OR AS_id__r.AS_CellPhone__c   like :'%'+ff+'%') order by AS_id__r.AS_LastName__c];                                                                        
      ew=new List<eventwrapper>();
     for(Event_Attendee_Mapping__c s:eventlist)
   {
@@ -2583,7 +2510,7 @@ Apexpages.currentPage().getHeaders().put('X-UA-Compatible', 'IE=9');
     string state1=ss1[1];
     checkedbadge1= new List<Event_Attendee_Mapping__c>();
     List<Event_Attendee_Mapping__c> changed1=new List<Event_Attendee_Mapping__c>{};
-    checkedbadge1=[select id, EA_isBadgePrinted__c ,Boothleads_Profile__c  from Event_Attendee_Mapping__c where id =:ss1[0]];
+    checkedbadge1=[select id, EA_isBadgePrinted__c from Event_Attendee_Mapping__c where id =:ss1[0]];
     for(Event_Attendee_Mapping__c dd1:checkedbadge1)
     {
     if(state1 == 'Not Printed'){
@@ -2607,7 +2534,7 @@ Apexpages.currentPage().getHeaders().put('X-UA-Compatible', 'IE=9');
     string state=ss[1];
     checkedbadge2= new List<Event_Attendee_Mapping__c>();
     List<Event_Attendee_Mapping__c> changed2=new List<Event_Attendee_Mapping__c>{};
-    checkedbadge2=[select id,IsPrifileUpdate__c ,Boothleads_Profile__c  from Event_Attendee_Mapping__c where id =:ss[0]];
+    checkedbadge2=[select id,IsPrifileUpdate__c from Event_Attendee_Mapping__c where id =:ss[0]];
     for(Event_Attendee_Mapping__c dd2:checkedbadge2)
     {
     if(state == 'Not Sent'){
@@ -2631,7 +2558,7 @@ Apexpages.currentPage().getHeaders().put('X-UA-Compatible', 'IE=9');
     string state1=ss1[1];
     checkedbadge1= new List<Event_Attendee_Mapping__c>();
     List<Event_Attendee_Mapping__c> changed1=new List<Event_Attendee_Mapping__c>{};
-    checkedbadge1=[select id, EA_isBadgePrinted__c ,Boothleads_Profile__c  from Event_Attendee_Mapping__c where id =:ss1[0]];
+    checkedbadge1=[select id, EA_isBadgePrinted__c from Event_Attendee_Mapping__c where id =:ss1[0]];
     for(Event_Attendee_Mapping__c dd1:checkedbadge1)
     {
     if(state1 == 'Not Printed'){
@@ -2712,7 +2639,7 @@ listid.add(EAM.id);
 List<id> listid1 =new List<id>();
 listid.add(EAM1.id);
 system.runAs(u){
-Eventattendees testCon = new Eventattendees();
+BL_EventAdmin_AttendeesCon testCon = new BL_EventAdmin_AttendeesCon();
 testCon.userId =u.id;
 //string[] ss1 =listid;
 
@@ -2775,7 +2702,7 @@ testCon.getselect();
 testCon.genpdf();
 testCon.deleteAdminRecord();
 testCon.deleteallattendees();
-//testCon.attbadge();
+testCon.attbadge();
 testCon.escape('mythi,ly');
 testcon.exportAll();
 testCon.cancel();

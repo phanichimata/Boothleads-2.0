@@ -76,13 +76,13 @@ public class BL_ChangePasswordCon {
     public BL_ChangePasswordCon(Boolean b) {
         backBoolean = b;
     }
-    public static testMethod void testChangePasswordController() {
+      static testMethod void testChangePasswordController() {
         // Instantiate a new controller with all parameters in the page
-        ChangePasswordController controller = new ChangePasswordController();
+        BL_ChangePasswordCon controller = new BL_ChangePasswordCon();
         controller.oldPassword = '123456';
         controller.newPassword = 'qwerty1'; 
         controller.verifyNewPassword = 'qwerty1';                
-        
+        controller.Back();
         System.assertEquals(controller.changePassword(),null);                           
     }    
 }

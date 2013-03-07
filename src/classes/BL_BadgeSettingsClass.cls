@@ -230,5 +230,15 @@ public class BL_BadgeSettingsClass{
         return options; 
     }   
     
-
+ static testmethod void Test_BL_BadgeSettingsClass(){
+ BL_BadgeSettingsClass Con = new BL_BadgeSettingsClass();
+ Con.fontface();
+ Con.colors();
+ Con.fieldnames();
+ Con.font();
+ Con.font1();
+ Con.font2();
+ Con.font22806();
+ Con.fieldnames22806();
+ }
 }

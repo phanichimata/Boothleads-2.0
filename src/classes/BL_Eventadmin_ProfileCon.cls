@@ -28,26 +28,42 @@ public BL_Eventadmin_ProfileCon(){
 }
     
 public PageReference ProfileSave(){
-
- EventUser.FirstName = EventUser.FirstName;
- EventUser.LastName= EventUser.LastName;
- EventUser.Email = EventUser.Email;
- EventUser.CompanyAddr2__c = EventUser.CompanyAddr2__c;
- EventUser.CompanyAddr1__c = EventUser.CompanyAddr1__c ;   
- EventUser.Companyphone__c = EventUser.Companyphone__c;    
- EventUser.Country__c = EventUser.Country__c;
- EventUser.States__c = EventUser.States__c;
- EventUser.Company_website__c = EventUser.Company_website__c;
- EventUser.Zipcode__c = EventUser.Zipcode__c;
- EventUser.CompanyFaxNumber__c = EventUser.CompanyFaxNumber__c;
- EventUser.PoBox__c = EventUser.PoBox__c ;
- EventUser.CompanyName = EventUser.CompanyName  ;
-
- update EventUser; 
-
+    try{
+     EventUser.FirstName = EventUser.FirstName;
+     EventUser.LastName= EventUser.LastName;
+     EventUser.Email = EventUser.Email;
+     EventUser.CompanyAddr2__c = EventUser.CompanyAddr2__c;
+     EventUser.CompanyAddr1__c = EventUser.CompanyAddr1__c ;   
+     EventUser.Companyphone__c = EventUser.Companyphone__c;    
+     EventUser.Country__c = EventUser.Country__c;
+     EventUser.States__c = EventUser.States__c;
+     EventUser.Company_website__c = EventUser.Company_website__c;
+     EventUser.Zipcode__c = EventUser.Zipcode__c;
+     EventUser.CompanyFaxNumber__c = EventUser.CompanyFaxNumber__c;
+     EventUser.PoBox__c = EventUser.PoBox__c ;
+     EventUser.CompanyName = EventUser.CompanyName  ;
+    
+     update EventUser; 
+ 
+    AttendeeSummary__c UpdatingAttendee = [select As_FirstName__c,AS_LastName__c from AttendeeSummary__c where AS_Email__c=:EventUser.Email];
+    
+    UpdatingAttendee.AS_FirstName__c = EventUser.FirstName; 
+    UpdatingAttendee.AS_LastName__c = EventUser.LastName;
+    UpdatingAttendee.AS_Company__c  = EventUser.CompanyName;
+    UpdatingAttendee.AS_CellPhone__c  = EventUser.Companyphone__c;
+    UpdatingAttendee.AS_uniqueField__c=(EventUser.FirstName+EventUser.LastName+EventUser.Email).tolowercase();
+    
+    Update UpdatingAttendee;
+ 
+  }catch(Exception ex){
+ 
+ } 
  PageReference pg=new PageReference('/apex/BL_EventAdmin_Dashboard');
  pg.setRedirect(true);
- return pg; 
+ return pg;
+
+ 
+ 
 }    
 
 

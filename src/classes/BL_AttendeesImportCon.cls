@@ -970,7 +970,7 @@ public class BL_AttendeesImportCon {
                                        success +
                                        'We strongly recommend that you check a few of your imported records to verify that your information was imported as expected.'+'<br/><br/>'+
                                        'If you encounter any problems or have any questions, please contact Boothleads Customer Support.<br/><br/>'+
-                                       'Thank you! <br/> BoothLeads Customer Support <br/> support@boothleads.com' ;
+                                       'Thank you! <br/> BoothLeads Customer Support <br/> support@boothleads.com <br/> Phone: 1-(800)-492-1289' ;
                 
                 
                 system.debug('MALLIKKKKKKKKKKK'+ 'OOOOOORRRRR'+ insertedId+'QQQQQQQQ'+ FileName );

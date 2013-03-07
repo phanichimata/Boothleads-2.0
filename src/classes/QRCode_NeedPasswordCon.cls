@@ -7,14 +7,26 @@ public class QRCode_NeedPasswordCon {
     public QRCode_NeedPasswordCon() {}
         
         public PageReference forgotPassword() {
-                boolean success = Site.forgotPassword(username);
+                //boolean success = Site.forgotPassword(username);
                // PageReference pr = Page.portal_forgotpasswordconfirm;
-                PageReference pr = Page.BL_Eventadmin_Signup;
-                pr.setRedirect(true);
+               // PageReference pr = Page.BL_Eventadmin_Signup;
+               // pr.setRedirect(true);
                 
-                if (success) {                          
-                        return pr;
-                }
+              
+                try{
+                 user u = new user();
+                 u=[select id,Password__c from user where userName=:username];
+                  System.ResetPasswordResult rt= system.ResetPassword(u.id,true);
+                  u.password__c =rt.getPassword();
+                  update u;
+                  PageReference pr = Page.BL_Eventadmin_Signup;
+                  pr.setRedirect(true);
+                     return pr;
+                  
+                  
+                 }catch(exception e){}
+                                     
+               
                 return null;
         }
         

@@ -15,7 +15,7 @@
 
 
 public class QRCode_DataImportCon {
- 
+ /**
     
     public String searchStr{get; set;}
     public Blob contentFile { get; set; }
@@ -162,16 +162,8 @@ public class QRCode_DataImportCon {
             DBField.put('NAICS Code 5', 'AS_NAICSCode5__c');
             DBField.put('Registration Type', 'Registration_type__c');
     
-          /*  
-           allFields1='Prefix,Last Name,Email Id,Designation,Mobile Number,Work Fax Number,Gender,Home Address 1,Home City,Home Zip Code,Work Address 2,Work State,Shipping Address 1,Shipping City,Shipping Zip Code,Secondary Business Category,Business Establish Date,Business Tax Id,WebSite URL,Diversity Type,NAICS Code 1,NAICS Code 3,NAICS Code 5';
-           StdImportHeaderNames1= allFields1.split(',');
-          
-           allFields2='First Name,Suffix,Company Name,Home Phone Number,Work Phone Number,Age,Date Of Birth,Home Address 2,Home State,Work Address 1,Work City,Work Zip Code,Shipping Address 2,Shipping State,Primary Business Category,No. Of Employes,Business Revenue,Business DnB Id,Blog URL,Business Description,NAICS Code 2,NAICS Code 4';
-           StdImportHeaderNames2=allFields2.split(',');
-        */
-            RecordStatus = 'BoothLeads.com will now begin to import your file. You will be notified by email at' + '<B>'+' {!$user.Username}'+'</b>'+' when your import is completed.'+ '<br/>'+ 'Based on the current volume of import activity, we estimate that your import will be completed in approximately 3 minutes.';
-            
-           //----------------------------------------------------------------------------
+         
+          ----------------------------------------------------------------------------
             
             BL_SecuritySettingsCon attendeeSetting = new BL_SecuritySettingsCon(ApexPages.currentpage().getparameters().get('id'));
             
@@ -495,15 +487,7 @@ public class QRCode_DataImportCon {
            innerStatic = new LIst<InnerClass>(); 
            inner2Static = new LIst<InnerClass2>();
            
-         /*  LIST<String> arrayofString = new LIST<String>();
-           
-           arrayofString.add('Last Name');
-           arrayofString.add('First Name');
-           arrayofString.add('Title');
-           arrayofString.add('Account Name');
-           arrayofString.add('Email');
-           arrayofString.add('Title');
-           */
+         
          // SelectOption CSVHeaders;// = new SelectOption();
          // CSVHeaders = new SelectOption('malli','mallik');
            
@@ -543,23 +527,12 @@ public class QRCode_DataImportCon {
                {
                    system.debug('yyyyyyyyyyyyyyyyyyyyyyyy'+ dis );
                    system.debug('ttttttttttttttttttttttttt'+ CSVHeaderMapping.get(dis.toLowerCase()) );
-              /* if(dis == 'Prefix')
-                  {
-                      dis = 'Prefix 123'; 
-                      system.debug('zzzzzzzzzzzzzzzzzzzzzzzzz'+ dis );
-                      system.debug('wwwwwwwwwwwwwwwwwwwwwwwww'+ CSVHeaderMapping.get(dis.toLowerCase()) );
-                  } 
-               */   
+               
                   
                   
                    innnnn.add(new innerclass(dis,CSVHeaderMapping.get(dis.toLowerCase())));
                    innerStatic.add(new innerclass(dis,SelectdValue));
-                   
-                  /*
-                   else{
-                   innnnn.add(new innerclass(dis,SelectdValue));
-                   innerStatic.add(new innerclass(dis,SelectdValue));
-                   }  */
+                 
                }
                       
                
@@ -791,12 +764,12 @@ public class QRCode_DataImportCon {
               // LIST<AttendeeSummary__c>  eventAttendees = new LIST<AttendeeSummary__c>();
                MAP<String ,AttendeeSummary__c>  myEventAttendeesMap = new MAP<String, AttendeeSummary__c>();
               //eventAttendees = [select id, AS_Email__c,AS_FirstName__c,AS_LastName__c FROM AttendeeSummary__c WHERE Event_Id__c=: singleEvent];
-        /*
-              for(AttendeeSummary__c toMap :eventAttendees)
-              {
-                  myEventAttendeesMap.put(toMap.Attendee_EmailId__c.trim()+toMap.Attendee_FirstName__c+toMap.Attendee_LastName__c , toMap);
-              }
-              */
+       
+          //  for(AttendeeSummary__c toMap :eventAttendees)
+             // {
+            //      myEventAttendeesMap.put(toMap.Attendee_EmailId__c.trim()+toMap.Attendee_FirstName__c+toMap.Attendee_LastName__c , toMap);
+//}
+         
               
                String insertedId = '';
                LIST<String> insetedEmails = new LIST<String>();
@@ -966,13 +939,7 @@ public class QRCode_DataImportCon {
                   mailCSVAttachment = mailCSVAttachment + ss.replaceAll(',',' ').replaceAll(';;;:::', ',')+'\r';
                 }
              system.debug('$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$'+ mailCSVAttachment );
-              /*  mailCSVAttachment += ('\n'+'SUccess Records'+'\n');
-                
-                for(String suc: SuccessCSVRecords)
-                {
-                   string recordString = suc;
-                   mailCSVAttachment = mailCSVAttachment + recordString;
-                } */
+              
     
                 //Prepare Mail For Failure Attachments
                 Messaging.EmailFileAttachment csvAttc = new Messaging.EmailFileAttachment();
@@ -1299,7 +1266,7 @@ public class QRCode_DataImportCon {
             
       }
     
-    
+    **/
     
     
     }

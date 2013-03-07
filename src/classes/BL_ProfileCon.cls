@@ -1,4 +1,4 @@
-public with sharing class BL_ProfileCon {
+public without sharing class BL_ProfileCon {
 
     public Blob boothadminimage { get; set; }
     public Document mydoc {get; set;}
@@ -11,37 +11,21 @@ public with sharing class BL_ProfileCon {
     public List<string> optionsattdiversity2 {get;set;}
     public MAP<Id,Event_Attendee_Mapping__c> mapIdandObject{get;set;}
     public String selectedgender { get; set; }
-
     public String HomePoBox { get; set; }
-
     public String HomeZipcode { get; set; }
-
     public String ShippingPoBox { get; set; }
-
     public String ShippingZipcode { get; set; }
-
     public String WorkPoBox { get; set; }
-
     public String WorkZipCode { get; set; }
-
     public String NAICSCode5 { get; set; }
-
     public String NAICSCode4 { get; set; }
-
     public String NAICSCode3 { get; set; }
-
     public String NAICSCode2 { get; set; }
-
     public String NAICSCode1 { get; set; }
-
     public String BusinessDunsNumber { get; set; }
-
     public String BusinessTaxId { get; set; }
-
     public String BusinessRevenue { get; set; }
-
     public String NumberOfEmployees { get; set; }
-
     public String age { get; set; }
     
    
@@ -54,10 +38,11 @@ public with sharing class BL_ProfileCon {
    
    } 
    
+   
    List<User_Profile_Event__c> ty =new  List<User_Profile_Event__c>();
-      ty=[select Profile_id__r.PR_Name__c from User_Profile_Event__c where User_id__r.Email=:userInfo.getUserName() and Profile_id__r.PR_Name__c='eventadmin'];
+      ty=[select Profile_id__r.PR_Name__c from User_Profile_Event__c where User_id__r.Email=:userInfo.getUserName() and Profile_id__r.PR_Name__c='eventAdmin'];
        if(ty.size()>0){
-       Pagereference pg = new pagereference('/apex/BL_EventAdmin_Dashboard');
+       Pagereference pg = new pagereference('/apex/BL_eventadmin_Dashboard');
        pg.setredirect(true);
         return pg;
        
@@ -68,24 +53,22 @@ public with sharing class BL_ProfileCon {
   }
 
    
-
+  public PageReference cancel() {
+    string urlforRedirect =Apexpages.Currentpage().getParameters().get('url');  
+    Pagereference pg = new pagereference('/apex/'+urlforRedirect);
+    return pg;
+   
+   } 
 
     
     public boolean booleanforDisplayBoothadminTab { get; set; }
 
   public PageReference save() {
    
-   try{ 
+try{
    if(boothadminimage.size() != null)
    { 
-      /**document mydoc =new document();
-      mydoc.body = boothadminimage;
-      mydoc.folderid = UserInfo.getUserId();
-      mydoc.ispublic=true;
-      mydoc.Name = 'erererer';
-      insert mydoc; 
-      listOfSummary.AS_ImageUrl__c= mydoc.id;**/
-       if(boothadminimage.size()<102400 ){
+      if(boothadminimage.size()<102400 ){
       List<attachment> listOfattachments = new  List<attachment>();
       listOfattachments =[select id from attachment where parentId=:listOfSummary.id];
       delete listOfattachments ;
@@ -97,63 +80,70 @@ public with sharing class BL_ProfileCon {
        insert attach;
        }   
      }
-  }catch(exception e){
-  
+ }catch(exception e){}
+    
+ try{   
+   system.debug('Age :'+age+' NO.OF Employees :'+NumberOfEmployees+'BusinessRevenue : '+BusinessRevenue
+   +'BusinessTaxId :'+BusinessTaxId +'BusinessDunsNumber :'+BusinessDunsNumber +' NAICS 1 :'+NAICSCode1+
+   +' NAICS 2 :'+NAICSCode2 +' NAICS 3'+NAICSCode3+' NAICS 4'+NAICSCode4+'WorkZipCode :'+WorkZipCode +' ShippingPoBox :'+ShippingPoBox
+   +'HomeZipcode :'+HomeZipcode);  
+    
+  if(age != null && age !=''){
+  listOfSummary.AS_Age__c= integer.valueOf(age);
+  }   
+    
+  if(NumberOfEmployees!= null && NumberOfEmployees!=''){
+  listOfSummary.AS_NumberOfEmployees__c =integer.valueOf(NumberOfEmployees);
   }
     
-  listOfSummary.AS_Gender__c =selectedgender; 
-  if(age != null && age !=''){
-  listOfSummary.AS_Age__c= decimal.valueOf(age);
-  }
-   if(NumberOfEmployees!= null && NumberOfEmployees!=''){
-  listOfSummary.AS_NumberOfEmployees__c =decimal.valueOf(NumberOfEmployees);
-  }
+   if(selectedgender !=null && selectedgender !=''){
+   listOfSummary.AS_Gender__c =selectedgender;
+   } 
+    
    if(BusinessRevenue!= null && BusinessRevenue!=''){
-  listOfSummary.AS_BusinessRevenue__c =decimal.valueOf(BusinessRevenue);  }
-  /**
-  if(BusinessTaxId!= null && BusinessTaxId!=''){
-  listOfSummary.AS_BusinessTaxId__c =decimal.valueOf(BusinessTaxId);  
+  listOfSummary.AS_BusinessRevenue__c =integer.valueOf(BusinessRevenue);  }
+  
+    if(BusinessTaxId!= null && BusinessTaxId!=''){
+  listOfSummary.AS_BusinessTaxId__c =BusinessTaxId;  
   }
-  if(BusinessDunsNumber!= null && BusinessDunsNumber!=''){
-  listOfSummary.AS_BusinessDunsNumber__c = decimal.valueOf(BusinessDunsNumber); 
+    
+      if(BusinessDunsNumber!= null && BusinessDunsNumber!=''){
+  listOfSummary.AS_BusinessDunsNumber__c =BusinessDunsNumber; 
   }
-  */
-   if(NAICSCode1!= null && NAICSCode1!=''){
-  listOfSummary.AS_NAICSCode1__c =decimal.valueOf(NAICSCode1); 
+   
+    
+  if(NAICSCode1!= null && NAICSCode1!=''){
+  listOfSummary.AS_NAICSCode1__c =integer.valueOf(NAICSCode1); 
   }
   if(NAICSCode2!= null && NAICSCode2!=''){
-  listOfSummary.AS_NAICSCode1__c =decimal.valueOf(NAICSCode2); 
+  listOfSummary.AS_NAICSCode2__c =integer.valueOf(NAICSCode2); 
   }
   if(NAICSCode3!= null && NAICSCode3!=''){
-  listOfSummary.AS_NAICSCode1__c =decimal.valueOf(NAICSCode3); 
+  listOfSummary.AS_NAICSCode3__c =integer.valueOf(NAICSCode3); 
   }
   if(NAICSCode4!= null && NAICSCode4!=''){
-  listOfSummary.AS_NAICSCode1__c =decimal.valueOf(NAICSCode4); 
+  listOfSummary.AS_NAICSCode4__c =integer.valueOf(NAICSCode4); 
   }
   if(NAICSCode5!= null && NAICSCode5!=''){
-  listOfSummary.AS_NAICSCode1__c =decimal.valueOf(NAICSCode5); 
+  listOfSummary.AS_NAICSCode5__c =integer.valueOf(NAICSCode5); 
   }
+    
   if(WorkZipCode!= null && WorkZipCode!=''){
-  listOfSummary.AS_WorkZipCode__c= decimal.valueOf(WorkZipCode); 
+  listOfSummary.AS_WorkZip__c= WorkZipCode; 
   }
   
-  if(WorkPoBox!= null && WorkPoBox!=''){
-  listOfSummary.AS_WorkPoBox__c= decimal.valueOf(WorkPoBox);
+  if(ShippingZipcode!= null && ShippingZipcode!=''){
+  listOfSummary.AS_shippingzip__c= ShippingZipcode; 
   }
-    if(ShippingZipcode!= null && ShippingZipcode!=''){
-  listOfSummary.AS_ShippingZipcode__c= decimal.valueOf(ShippingZipcode); 
-  }
-     if(ShippingPoBox!= null && ShippingPoBox!=''){
-  listOfSummary.AS_ShippingPoBox__c= decimal.valueOf(ShippingPoBox); 
-  }
-   if(HomePoBox!= null && HomePoBox!=''){
-  listOfSummary.AS_HomePoBox__c= decimal.valueOf(HomePoBox); 
-  }
+    
+  
+    
+   
     if(HomeZipcode!= null && HomeZipcode!=''){
-  listOfSummary.AS_HomeZipcode__c= decimal.valueOf(HomeZipcode);
-  }
-listOfSummary.AS_uniqueField__c =(listOfSummary.AS_FirstName__c+listOfSummary.AS_LastName__c+listOfSummary.AS_Email__c).tolowercase();
-
+  listOfSummary.AS_HomeZip__c= HomeZipcode;
+  }   
+    
+  
   saveDiversity();
    
   update listOfSummary;
@@ -204,6 +194,7 @@ listOfSummary.AS_uniqueField__c =(listOfSummary.AS_FirstName__c+listOfSummary.AS
    pg.setRedirect(true);
    return pg; 
     }   
+ }catch(exception e){return null;}  
 }
 public string bolId {get;set;}
 public string attachmentId{get;set;}
@@ -212,6 +203,7 @@ public LIST<selectoption> states{get;set;}
  public  List<SelectOption> options {get;set;}
 public string nodiversity{get;set;}
     public BL_ProfileCon(){ 
+        try{
    listOfSummary = new AttendeeSummary__c();
    nodiversity='';
    attachmentId='';
@@ -229,8 +221,8 @@ public string nodiversity{get;set;}
                   a.AS_HomeAddress2__c, a.AS_HomeAddress1__c, a.AS_Gender__c, a.AS_FirstName__c, a.AS_FaxNumber__c,
                   a.AS_Email__c, a.AS_DiversityType__c, a.AS_Company__c, a.AS_CellPhone__c, 
                   a.AS_BusinessRevenue__c, a.AS_BusinessEstablishedDate__c, a.AS_BusinessDescription__c,
-                  a.AS_BlogUrl__c, a.AS_BirthDate__c, a.AS_Age__c,a.AS_Work_Country__c,a.AS_Work_States__c,a.As_Home_Country__c,a.As_Home_State__c From AttendeeSummary__c a 
-                  where a.AS_Email__c =: UserInfo.getUserName()  limit 1];
+                  a.AS_BlogUrl__c, a.AS_BirthDate__c, a.AS_Age__c,a.AS_Work_Country__c,a.AS_Work_States__c,a.As_Home_Country__c,a.As_Home_State__c,AS_BusinessTaxId__c,AS_WorkZip__c,AS_HomeZip__c,AS_shippingzip__c,
+                  AS_BusinessDunsNumber__c From AttendeeSummary__c a where a.AS_Email__c =: UserInfo.getUserName()  limit 1];
                   
              List<attachment> Listatt= new List<attachment>();
              Listatt = [select id,name from attachment where parentid=:listOfSummary.id];
@@ -286,83 +278,22 @@ integer i=0;
   }
    
            
-           
+          
    age =string.valueOf(listOfSummary.AS_Age__c); 
    NumberOfEmployees=string.valueOf(listOfSummary.AS_NumberOfEmployees__c); 
    BusinessRevenue =string.valueOf(listOfSummary.AS_BusinessRevenue__c); 
-  // BusinessTaxId=string.valueOf(listOfSummary.AS_BusinessTaxId__c); 
-  // BusinessDunsNumber =string.valueOf(listOfSummary.AS_BusinessDunsNumber__c); 
+   BusinessTaxId =string.valueOf(listOfSummary.AS_BusinessTaxId__c);
+   BusinessDunsNumber =string.valueOf(listOfSummary.AS_BusinessDunsNumber__c);
    NAICSCode1 =string.valueOf(listOfSummary.AS_NAICSCode1__c); 
    NAICSCode2 =string.valueOf(listOfSummary.AS_NAICSCode2__c); 
    NAICSCode3 =string.valueOf(listOfSummary.AS_NAICSCode3__c); 
    NAICSCode4 =string.valueOf(listOfSummary.AS_NAICSCode4__c); 
    NAICSCode5=string.valueOf(listOfSummary.AS_NAICSCode5__c); 
-   WorkZipCode =string.valueOf(listOfSummary.AS_WorkZipCode__c); 
-   WorkPoBox =string.valueOf(listOfSummary.AS_WorkPoBox__c); 
-   ShippingZipcode =string.valueOf(listOfSummary.AS_ShippingZipcode__c); 
-   ShippingPoBox =string.valueOf(listOfSummary.AS_ShippingPoBox__c); 
-   HomeZipcode =string.valueOf(listOfSummary.AS_HomeZipcode__c); 
-   HomePoBox =string.valueOf(listOfSummary.AS_HomePoBox__c); 
-   
-   /**
-   states = new LIST<selectoption>();
-        states.add(new SelectOption('None','--None--'));
-        states.add(new SelectOption('AL','Alabama'));
-        states.add(new SelectOption('AK', 'Alaska'));
-        states.add(new SelectOption('AZ','Arizona'));
-        states.add(new SelectOption('AR','Arkansas'));
-        states.add(new SelectOption('CA','California'));
-        states.add(new SelectOption('CO','Colorado'));
-        states.add(new SelectOption('CT','Connecticut'));
-        states.add(new SelectOption('DE','Delaware'));
-        states.add(new SelectOption('DC','District of Columbia'));
-        states.add(new SelectOption('FL','Florida'));
-        states.add(new SelectOption('GA','Georgia'));
-        states.add(new SelectOption('HI','Hawaii'));
-        states.add(new SelectOption('ID','Idaho'));
-        states.add(new SelectOption('IL','Illinois'));
-        states.add(new SelectOption('IN','Indiana'));
-        states.add(new SelectOption('IA','Iowa'));
-        states.add(new SelectOption('KS','Kansas'));
-        states.add(new SelectOption('KY','Kentucky'));
-        states.add(new SelectOption('LA','Louisiana'));
-        states.add(new SelectOption('ME','Maine'));
-        states.add(new SelectOption('MD','Maryland'));
-        states.add(new SelectOption('MA','Massachusetts'));
-        states.add(new SelectOption('MI','Michigan'));
-        states.add(new SelectOption('MN','Minnesota'));
-        states.add(new SelectOption('MS','Mississippi'));
-        states.add(new SelectOption('MO','Missouri'));
-        states.add(new SelectOption('MT','Montana'));
-        states.add(new SelectOption('NE','Nebraska'));
-        states.add(new SelectOption('NV','Nevada'));
-        states.add(new SelectOption('NH','New Hampshire'));
-        states.add(new SelectOption('NJ','New Jersey'));
-        states.add(new SelectOption('NM','New Mexico'));
-        states.add(new SelectOption('NY','New York'));
-        states.add(new SelectOption('NC','North Carolina'));
-        states.add(new SelectOption('ND','North Dakota'));
-        states.add(new SelectOption('OH','Ohio'));
-        states.add(new SelectOption('OK','Oklahoma'));
-        states.add(new SelectOption('OR','Oregon'));
-        states.add(new SelectOption('PA','Pennsylvania'));
-        states.add(new SelectOption('RI','Rhode Island'));
-        states.add(new SelectOption('SC','South Carolina'));
-        states.add(new SelectOption('SD','South Dakota'));
-        states.add(new SelectOption('TN','Tennessee'));
-        states.add(new SelectOption('TX','Texas'));
-        states.add(new SelectOption('UT','Utah'));
-        states.add(new SelectOption('VT','Vermont'));
-        states.add(new SelectOption('VA','Virginia'));
-        states.add(new SelectOption('WA','Washington'));
-        states.add(new SelectOption('WV','West Virginia'));
-        states.add(new SelectOption('WI','Wisconsin'));
-        states.add(new SelectOption('WY','Wyoming'));
-   
-   **/
-   
-   
+   WorkZipCode =string.valueOf(listOfSummary.AS_WorkZip__c); 
+   ShippingZipcode =string.valueOf(listOfSummary.AS_shippingzip__c); 
+   HomeZipcode =string.valueOf(listOfSummary.AS_HomeZip__c); 
   
+     
    if(listOfSummary.AS_DiversityType__c != NULL){
    if(listOfSummary.AS_DiversityType__c.contains('Minority Owned Business Enterprise'))
    Select0 = True;
@@ -403,7 +334,7 @@ integer i=0;
        booleanforDisplayBoothadminTab = true;
       }   
     }
- 
+        }catch(exception e){}
   }
     
  //Diversity Type
@@ -486,6 +417,9 @@ public class inn{
  this.iInn =i;
  }
 }
+
+
+
 static testmethod void BL_ProfileCon()
 {
  Profile p = [select id from profile where name='Standard User'];
@@ -526,7 +460,7 @@ static testmethod void BL_ProfileCon()
    AttendeeSummary__c att1 = new AttendeeSummary__c(AS_Age__c=20,AS_BirthDate__c=date.valueOf('1995-05-05'),AS_BlogUrl__c='www.globalnest.com',AS_BusinessDescription__c='fgsdamnabfbhsd',AS_BusinessDunsNumber__c='2450153',
                AS_BusinessEstablishedDate__c=date.valueOf('1995-05-06'),AS_BusinessRevenue__c=324533,AS_BusinessTaxId__c='hngsdvdvf',AS_CellPhone__c='9858590231',
                AS_Company__c='testattendeecompany',AS_DiversityType__c='Minority Owned Business Enterprise;Disadvantaged Business Enterprise;Service Disabled Veteran Business Enterprise;Small Business Enterprise;Ability One;Woman Owned Business Enterprise;SBA 8(A) Program;Veteran Owned Business Enterprise;Lesbian Gay Bisexual Transgender Business;Alaskan Native Corporation Owned Firm;Small Disadvantaged Business;Historically Underutilized Business Zone;Disabled Business Enterprise;Historically Black Colleges And Universities;SELF-CERTIFIED SMALL DISADVANTAGED BUSINESS ',
-               AS_Email__c='test123@noemail.com',AS_FaxNumber__c='9858985032',AS_FirstName__c='testattendeesummaryfirstname',AS_Gender__c='Female',
+               AS_Email__c='test1234@noemail.com',AS_FaxNumber__c='9858985032',AS_FirstName__c='testattendeesummaryfirstname',AS_Gender__c='Female',
                AS_HomeAddress1__c='mjbfnmf',AS_HomeAddress2__c='nbdfhj',AS_HomeCity__c='mhsdfgfd',As_Home_Country__c='India',AS_HomePhone__c='6998878422',
                AS_HomePoBox__c=22125,AS_HomePoboxNo__c='84367',As_Home_State__c='Goa',AS_HomeZipcode__c=32121,AS_ImageUrl__c='www.globalnest.com',AS_LastName__c='testattendeelastname',AS_NAICSCode1__c=524621,
                AS_NAICSCode2__c=524421,AS_NAICSCode3__c=524671,AS_NAICSCode4__c=523621,AS_NAICSCode5__c=528921,AS_NumberOfEmployees__c=200,AS_prefixNew__c='mr',
@@ -568,8 +502,7 @@ static testmethod void BL_ProfileCon()
    List<id> listid =new List<id>();
    listid.add(eam.id);
    
-  // document mydoc =new document();
-  // insert mydoc;   
+  
    
  system.runAs(u)
  {   
@@ -577,14 +510,7 @@ static testmethod void BL_ProfileCon()
   
   blp.login();
   blp.save();
- /** blp.mydoc.body = EncodingUtil.base64Decode('WW91IGNhbiBlbmNvZGUgYSB0ZXN0IGRvY3VtZW50IGFzIGEgYmFzZTY0IHN0cmluZywgdGhlbiBoYW5kIHRoYXQgdmFsdWUgdG8gdGhlIGJsb2Igb2JqZWN0IHlvdSd2ZSBib3VuZCB0byB5b3VyIGlucHV0ZmlsZSdzIGJvZHkgYXR0cmlidXRlLg==');
-  blp.mydoc.folderid = u.id;
-  blp.mydoc.ispublic=true;
-  blp.mydoc.Name = 'erererer';  
-  blp.boothadminimage= 
-  blp.mydoc.Name = 'erererer';
-  blp.mydoc.Body = Blob.valueOf('erererer');
-  blp.save(); */
+ 
   blp.login();
   blp.saveDiversity();   
   

@@ -40,9 +40,10 @@ public LIST<User_Profile_Event__c> UEBvs1{get;set;}
 public BL_BoothAdmin_DashboardCon() 
 {
  String browserType = Apexpages.currentPage().getHeaders().get('USER-AGENT'); 
-if(browserType != null && browserType.contains('MSIE')){
-Apexpages.currentPage().getHeaders().put('X-UA-Compatible', 'IE=9');
-}
+ if(browserType != null && browserType.contains('MSIE')){
+  Apexpages.currentPage().getHeaders().put('X-UA-Compatible', 'IE=9');
+ }
+ try{
  allEventsIds= new LIST<ID>();
  eventsList = new LIST<ID>();
  eventsAll = new LIST<SelectOption>();
@@ -55,7 +56,8 @@ Apexpages.currentPage().getHeaders().put('X-UA-Compatible', 'IE=9');
         
  UEBvs1= [SELECT ID, EV_id__c,EV_id__r.EV_Title__c,Profile_id__r.PR_Name__c
           FROM User_Profile_Event__c 
-          WHERE User_id__r.Email=:UserInfo.getUserName()];
+          WHERE User_id__r.Email=:UserInfo.getUserName()
+          AND Ev_id__r.Ev_Title__c!=Null];
  booleanforDisplayBoothadminTab =false; 
   for(User_Profile_Event__c ube: UEBvs1)
   {   
@@ -78,6 +80,8 @@ Apexpages.currentPage().getHeaders().put('X-UA-Compatible', 'IE=9');
  bvsScaned();
  hourlyscanchart();
  }
+ }
+ catch(exception e){}   
 }
 //------------------------------------------- Constructor End --------------------------------------------
 
@@ -184,6 +188,7 @@ return appleuser;
 //--------------------------------- Event Selection Action Support Start ---------------------------------
 public void EventDetailDashBoard()
 {    
+ try{
  if(EventString != 'a12b34c56d78e910')
  {    
   eventsList = new LIST<ID>();       
@@ -199,13 +204,16 @@ public void EventDetailDashBoard()
   bvsIndustry();
   bvsScaned();
   hourlyscanchart();
- }                 
+ }  
+ }
+ catch(exception e){}                 
 } 
 //---------------------------------- Event Selection Action Support End ----------------------------------
 
 //---------------------------------------- Geography Chart Start -----------------------------------------
  public void bvsgeography()
  {
+  try{
    Mgraphy = [SELECT BVS_id__r.EA_AttendeeBarcode__r.AS_id__r.AS_Work_States__c  w,count(id) 
              FROM User_Event_BVS__c 
              WHERE EV_id__c  IN: eventsList AND UPE_id__r.BoothAdmin_id__c=:userinfo.getUserId() and BVS_id__r.EA_AttendeeBarcode__c!=null and BVS_id__r.EA_AttendeeBarcode__r.AS_id__r.AS_Work_States__c !=null AND  BVS_id__r.EA_AttendeeBarcode__r.AS_id__r.AS_Work_States__c != 'None'
@@ -216,13 +224,16 @@ public void EventDetailDashBoard()
   {
    grphy.add(new geographyinner(ta)); 
   }   
-  bvsgeographyreport();   
+  bvsgeographyreport();  
+  }
+ catch(exception e){}   
  }
 //----------------------------------------- Geography Chart End ------------------------------------------
 
 //---------------------------------------- Geography Grid Start ------------------------------------------       
  public void bvsgeographyreport()
  {  
+  try{
   georep = new LIST<LIST<User_Event_BVS__c>>();
   integer recCount=0;       
   query= [SELECT id, BVS_id__r.EA_AttendeeBarcode__r.AS_id__r.AS_FirstName__c,BVS_id__r.EA_AttendeeBarcode__r.AS_id__r.AS_LastName__c,BVS_id__r.EA_AttendeeBarcode__r.AS_id__r.AS_CellPhone__c,BVS_id__r.EA_AttendeeBarcode__r.AS_id__r.AS_Email__c,BVS_id__r.EA_AttendeeBarcode__r.AS_id__r.AS_Work_States__c 
@@ -232,7 +243,7 @@ public void EventDetailDashBoard()
            AND BVS_id__r.EA_AttendeeBarcode__c!=null 
            AND  BVS_id__r.EA_AttendeeBarcode__r.AS_id__r.AS_Work_States__c != null 
            AND  BVS_id__r.EA_AttendeeBarcode__r.AS_id__r.AS_Work_States__c != 'None'
-           ORDER BY BVS_id__r.EA_AttendeeBarcode__r.AS_id__r.AS_Work_States__c DESC NULLS LAST LIMIT 2250];
+           ORDER BY BVS_id__r.EA_AttendeeBarcode__r.AS_id__r.AS_Work_States__c LIMIT 2250];
   gn=new List<User_Event_BVS__c>();          
   for(User_Event_BVS__c s:query)     
   {
@@ -252,12 +263,15 @@ public void EventDetailDashBoard()
   }
   if(recCount !=0)
   georep.add(gn);  
+  }
+ catch(exception e){}  
  }    
 //---------------------------------------- Geography Grid End --------------------------------------------
 
 //--------------------------------------- Industry Chart Start -------------------------------------------    
  public void bvsIndustry()
- {       
+ {  
+  try{     
   Minduchrt =  [SELECT BVS_id__r.EA_AttendeeBarcode__r.AS_id__r.AS_PrimaryBusinessCategory1__c  p,count(id) 
                 FROM User_Event_BVS__c 
                 WHERE EV_id__c  IN: eventsList 
@@ -282,6 +296,9 @@ public void EventDetailDashBoard()
   else if(maxValueIndustry <= 10){ 
      maxValueIndustry =10;
     }
+    else if(maxValueIndustry <= 20){ 
+     maxValueIndustry =20;
+    }
     else if(maxValueIndustry <= 30){ 
      maxValueIndustry =30;
     }
@@ -293,12 +310,15 @@ public void EventDetailDashBoard()
      maxValueIndustry = 100 *(modmod+1);    
     } 
   bvsIndustryreport();
+  }
+ catch(exception e){}  
  }
 //---------------------------------------- Industry Chart End --------------------------------------------
 
 //---------------------------------------- Industry Grid Start -------------------------------------------         
  public void bvsIndustryreport()
  {   
+  try{
   indRep = new LIST<LIST<User_Event_BVS__c>>();
   integer recCount=0;          
   query1= [SELECT id, BVS_id__r.EA_AttendeeBarcode__r.AS_id__r.AS_FirstName__c,BVS_id__r.EA_AttendeeBarcode__r.AS_id__r.AS_LastName__c,BVS_id__r.EA_AttendeeBarcode__r.AS_id__r.AS_CellPhone__c,BVS_id__r.EA_AttendeeBarcode__r.AS_id__r.AS_Email__c,BVS_id__r.EA_AttendeeBarcode__r.AS_id__r.AS_PrimaryBusinessCategory1__c 
@@ -308,7 +328,7 @@ public void EventDetailDashBoard()
                 AND BVS_id__r.EA_AttendeeBarcode__c!=null 
                 AND  BVS_id__r.EA_AttendeeBarcode__r.AS_id__r.AS_PrimaryBusinessCategory1__c !=null 
                 AND  BVS_id__r.EA_AttendeeBarcode__r.AS_id__r.AS_PrimaryBusinessCategory1__c != 'None' 
-                ORDER BY BVS_id__r.EA_AttendeeBarcode__r.AS_id__r.AS_PrimaryBusinessCategory1__c DESC NULLS LAST LIMIT 2250];       
+                ORDER BY BVS_id__r.EA_AttendeeBarcode__r.AS_id__r.AS_PrimaryBusinessCategory1__c LIMIT 2250];       
   an=new List<User_Event_BVS__c>();          
   for(User_Event_BVS__c v:query1)     
   {
@@ -327,13 +347,16 @@ public void EventDetailDashBoard()
    }      
   }
   if(recCount!=0)
-  indRep.add(an);  
+  indRep.add(an); 
+  }
+ catch(exception e){}   
  }
 //----------------------------------------- Industry Grid End --------------------------------------------   
  
 //-------------------------------------- Hourly Scan Chart Start -----------------------------------------  
 public void hourlyscanchart()
 { 
+try{
  hourlyscans = new list<hourlyscansinner>();
  EventDate = new LIST<SelectOption>();
  eventtime = [SELECT id, EV_EndTime__c, StartTime__c,EV_StartDate__c,EV_EndDate__c FROM Event__c WHERE ID =: Eventstring];
@@ -357,10 +380,13 @@ public void hourlyscanchart()
   checkeventdates=false;
  }
  scannedChartByDate();
+ }
+ catch(exception e){}  
 }
 
 public void scannedChartByDate()
 {
+try{
  String ssss =  eventtime.StartTime__c.SubString(0,eventtime.StartTime__c.lastIndexOf(':'));
  scanchart= [SELECT HOUR_IN_DAY(convertTimezone(BVS_id__r.ScanTime__c)),count(id)
              FROM User_Event_BVS__c 
@@ -418,7 +444,9 @@ public void scannedChartByDate()
  else{
   Integer modmod = maxValueHourly / 100;    
   maxValueHourly = 100 *(modmod+1);    
- }       
+ }
+ }
+ catch(exception e){}         
 }
 
 public void pickdate()
@@ -431,6 +459,7 @@ public void pickdate()
 //------------------------------ Leads Scanned by Booth Users Chart Start --------------------------------   
  public void bvsScaned()
  { 
+  try{
   MscanedPeople = [SELECT BVS_id__r.User_id__r.FirstName f,BVS_id__r.User_id__r.LastName l, count(id) 
                    FROM User_Event_BVS__c 
                    WHERE EV_id__c  IN: eventsList AND UPE_id__r.BoothAdmin_id__c=:userinfo.getUserId() 
@@ -455,6 +484,9 @@ public void pickdate()
  else if(maxValueLeads <= 10){ 
   maxValueLeads =10;
  }
+ else if(maxValueLeads <= 20){ 
+  maxValueLeads =20;
+ }
   else if(maxValueLeads <= 30){
   maxValueLeads = 30;
  } 
@@ -465,6 +497,8 @@ public void pickdate()
   Integer modmod = maxValueLeads/ 100;    
   maxValueLeads = 100 *(modmod+1);    
  }
+ }
+ catch(exception e){}  
 }
 //------------------------------- Leads Scanned by Booth Users Chart End ---------------------------------                                        
 //--------------------------------------- Dashboard Section End ----------------------------------------- 

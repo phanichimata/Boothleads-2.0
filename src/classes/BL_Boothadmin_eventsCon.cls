@@ -1,6 +1,5 @@
 public with sharing class BL_Boothadmin_eventsCon {
 
- 
   public PageReference login() {
    if(userInfo.getUserType()=='guest'){
     Pagereference pg = new pagereference('/apex/BL_Eventadmin_signup');
@@ -21,6 +20,8 @@ public with sharing class BL_Boothadmin_eventsCon {
       
   }
 
+/**
+ 
     
 
 public List<Event__c>  events{get;set;}
@@ -138,20 +139,7 @@ public String escapeSpecialCharacters(String input){
         }
       
       
-     /* 
-        if(input!= null && input != '' && (input.contains('"') )){
-           input = input.replace('"','\\\"');
-         }
-        if(input!= null && input != '' && (input.contains('<') )){
-        input = input.replace('<','');
-        
-        }
-        system.debug('vachindhaaaaaaaaaaaaaaaaaaaaaaaaa  ttttttttttt'+input);
-         if(input!= null && input != '' && (input.contains('\\') )){
-           system.debug('vachindhaaaaaaaaaaaaaaaaaaaaaaaaa after '+input);
-          input = input.replace('\\','\\\\');
-        }
-     */
+   
    return input;
   }
 
@@ -180,6 +168,6 @@ public pageReference getEventDetails()
     }
 
 
-
+*/
 
 }

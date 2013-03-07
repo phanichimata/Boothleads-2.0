@@ -5,6 +5,10 @@ public with sharing class Bl_reportsCon {
 public boolean boolinclude { get; set; }
 
 public PageReference login() {
+String browserType = Apexpages.currentPage().getHeaders().get('USER-AGENT'); 
+if(browserType != null && browserType.contains('MSIE')){
+Apexpages.currentPage().getHeaders().put('X-UA-Compatible', 'IE=9');
+}
    if(userInfo.getUserType()=='guest'){
     Pagereference pg = new pagereference('/apex/BL_Eventadmin_signup');
     pg.setredirect(true);
@@ -35,11 +39,15 @@ public PageReference login() {
 
 
     public PageReference seltoexport() {
+    String browserType = Apexpages.currentPage().getHeaders().get('USER-AGENT'); 
+if(browserType != null && browserType.contains('MSIE')){
+Apexpages.currentPage().getHeaders().put('X-UA-Compatible', 'IE=9');
+}
      system.debug('--------------------------------------------------------------'+Eventname);
      
     string selectedEventsForExport = apexpages.currentpage().getParameters().get('one');
     if(Eventname == 'Report By Geography' || Eventname == 'Report By Industry' || Eventname ==''){
-     ApexPages.addMessage(new ApexPages.message(ApexPages.severity.INFO,'Select at least one attendee'));
+     ApexPages.addMessage(new ApexPages.message(ApexPages.severity.INFO,'Select at least one lead'));
     return null;
     }else if ((null != Eventname && ''!=Eventname) ){
     BVSList = new List<BoothVisitSummary__c>(); 
@@ -170,6 +178,10 @@ public PageReference login() {
 
 public Boolean displayPopUp{get;set;}
     public PageReference closePopup() {
+    String browserType = Apexpages.currentPage().getHeaders().get('USER-AGENT'); //gets the browser name
+    if(browserType != null && browserType.contains('MSIE')){
+    Apexpages.currentPage().getHeaders().put('X-UA-Compatible', 'IE=9');
+    }
      displayPopup = false; 
         displayPopUpForGridadd = FALSE;   
         return null;
@@ -218,6 +230,10 @@ booleanforDisplayBoothadminTab =true;
 public   List<BoothVisitSummary__c> modbvsList{get;set;}
 
     public PageReference getEventDetails() {
+    String browserType = Apexpages.currentPage().getHeaders().get('USER-AGENT'); 
+if(browserType != null && browserType.contains('MSIE')){
+Apexpages.currentPage().getHeaders().put('X-UA-Compatible', 'IE=9');
+}
      system.debug('111111111111111111111' + eventname );
      repPbcBool= FALSE;
      repWorkBool= FALSE;
@@ -278,6 +294,10 @@ public   List<BoothVisitSummary__c> modbvsList{get;set;}
 
 
     public PageReference closePopup1() {
+    String browserType = Apexpages.currentPage().getHeaders().get('USER-AGENT'); //gets the browser name
+    if(browserType != null && browserType.contains('MSIE')){
+    Apexpages.currentPage().getHeaders().put('X-UA-Compatible', 'IE=9');
+    }
     displayPopUpForGrid  =false;
         return null;
     }

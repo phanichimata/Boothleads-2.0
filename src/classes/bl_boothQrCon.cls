@@ -81,7 +81,7 @@ public string boothname{get;set;}
 
       public PageReference generateQrcode() {
   
-  
+ try{ 
   String sfdcBaseURL = URL.getSalesforceBaseUrl().toExternalForm();
     string ret=sfdcBaseURL+'/BL_MobileScreen?id='+BoothName+'&vid=1'+'&Eid='+selectedEvent; 
     String encoded = EncodingUtil.urlEncode(ret, 'UTF-8');   
@@ -90,6 +90,10 @@ public string boothname{get;set;}
      system.debug('ppppppppppppppppppppp '+ret);
      
     displayPopUpForQRCODE = true;
+ }catch(exception e){
+ 	
+ 
+ }
         return null;
     }
 
@@ -97,6 +101,7 @@ public string boothname{get;set;}
 
 
     public PageReference save() {
+    	try{
     system.debug('0000000000000000000000 '+sitename);
       if(boothEdit.Data_Types__c =='Contact Information'){
         if(sitename !=null){
@@ -184,6 +189,8 @@ public string boothname{get;set;}
      system.debug('~~~~~~~~~~~~~~~~~~'+boothEdit);
      firstMethod();  
      firstDiplayBool = true;secondDisplay = false; registrationDisplay  = false;broucherDisplay = false;   
+  
+    	}catch(exception e){}
         return null;
     }
 
@@ -191,7 +198,7 @@ public string boothname{get;set;}
     
 
     public PageReference editRecord() {
-    
+    try{
     firstDiplayBool = false;secondDisplay = false; registrationDisplay  = false;broucherDisplay = false;
     boothEdit  = new Booth_Qrcode__c();
     boothEdit = [select id,Address__c,Address_2__c,Booth__c,City__c,Company__c,Country__c,Email_Address__c,Data_Types__c,Link_LabelName__c,Name__c,Phone_number__c,Pin_code__c,POBox__c,Registration_Link__c,State__c,Title__c,Website_URL__c,(select id,name from attachments limit 1) from Booth_Qrcode__c where id=:Apexpages.currentpage().getparameters().get('editRecord')];
@@ -209,7 +216,7 @@ public string boothname{get;set;}
       broucherDisplay = true;
     
     }
-    
+    }catch(exception e){}    
    
    return null;
     }
@@ -218,9 +225,11 @@ public string boothname{get;set;}
 
 
  public PageReference deleteRecord() {
+try{ 	
  Booth_Qrcode__c s =[select id from Booth_Qrcode__c where id=:Apexpages.currentpage().getparameters().get('deleterecord')];
  delete s;
  firstMethod();
+}catch(exception e){} 
  return null;
 }
 
@@ -230,6 +239,7 @@ public List<selectOption> options{get;set;}
 
 
 public bl_boothQrCon(){
+try{	
 String browserType = Apexpages.currentPage().getHeaders().get('USER-AGENT'); 
 if(browserType != null && browserType.contains('MSIE')){
 Apexpages.currentPage().getHeaders().put('X-UA-Compatible', 'IE=9');
@@ -251,6 +261,7 @@ onchangeRender();
 firstDiplayBool  = true;
 
 firstMethod();
+}catch(exception e){} 
 }
 
 
@@ -272,7 +283,7 @@ public List<Booth_Qrcode__c> forEmpty{get;set;}
 
 
 public pageReference firstMethod(){
-
+try{
 rendervalue  = false;
 forEmpty = new List<Booth_Qrcode__c>();
 forUrlType= new List<Booth_Qrcode__c>();
@@ -321,9 +332,8 @@ system.debug('w111111111111111111 '+ListOfUserLinks.size());
   if(ListOfUserLinks.size()>=5){ 
   displaybuttons =false;
   }
-  
- 
- booth = new Booth_Qrcode__c();
+  booth = new Booth_Qrcode__c();
+ }catch(exception e){} 
 return null;
 }
 
@@ -331,6 +341,7 @@ return null;
 //---------------------------- Add contact Method --------------------------
   
     public PageReference addContact() {
+   try{ 	
       system.debug('44444444444444444444444 '+sitename);
     booth.Data_Types__c ='Contact Information';
     booth.Link_LabelName__c =sitename;
@@ -385,32 +396,39 @@ return null;
      sitename ='';
      
     firstMethod();
+    }catch(exception e){} 
     return null;
     }
 
 
 // ---------------------------- Add Broacher Method -------------------------- 
     public PageReference addbrochureAction() {
+   try{ 
+   	if(broacherBlob!=null){
+    system.debug('33333333333377777777777 '+ broacherBlob.size());
     booth.Data_Types__c ='Company Broacher';
      booth.Event__c=selectedEvent;
      booth.Booth__c=boothname;
     insert booth;
     
     attachment a = new attachment();
-    if(broacherBlob!=null){
+   
     a.parentId=booth.id;
     a.body =broacherBlob;
     a.Name =fileName;
     insert a;
-    }
     broacherBlob=null;
     firstMethod();
+    }
+    
+    }catch(exception e){} 
         return null;
     }
     
 
 // ---------------------------- Add Registration  Link Method --------------------------  -->
     public PageReference addAction() {
+   try{
     system.debug('77777777777777777777 '+ sn);
     booth.Link_LabelName__c =sn;     
     booth.Booth__c=boothname;
@@ -425,7 +443,7 @@ return null;
     upsert booth;
     sn ='';
     firstMethod();
- 
+ }catch(exception e){} 
     return null;
     }
 

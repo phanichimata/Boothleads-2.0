@@ -4,10 +4,8 @@ public boolean Successbool { get; set; }
 
     public PageReference movetoBoothpage() {
     pageReference pg = new pageReference('/apex/BL_eventadmin_samplebooth');
-    
-        return pg;
+     return pg;
     }
-
 
     public PageReference Attendees() {
      Successbool =false; 
@@ -28,10 +26,12 @@ public boolean Successbool { get; set; }
     }
 
 public boolean showselectCSV{get;set;}
+
+
     public PageReference importValues() {
       string eventId=ApexPages.currentpage().getParameters().get('Id');
       string eventName;
-      List<event__c> forEventName =[select Id,  EV_Title__c from event__c];
+      List<event__c> forEventName =[select Id,  EV_Title__c from event__c where id=:eventId];
       if(forEventName.size()>0){
        eventName=forEventName [0].EV_Title__c;
       }     
@@ -52,17 +52,21 @@ public boolean showselectCSV{get;set;}
       system.debug('77777777777777777777       '+parsedCSV);
       
    // ------------------------- Insert Contacts --------------------------------
-      String EmailBody = 'Congratulations!!'+'\n'+'Your login for your Booth Admin Portal for Event '+'"'+eventName+'"'+' was successfully created.'
-                               +'\n\n'+'Please visit http://www.boothleads.com to login to your Booth Admin Portal.'+'\n\n'+'If you have any questions, please contact your Event Administrator.'
-                               +'\n\n'+'Please note that your Booth Leads portal access is valid only for 30 days from the end of your event.'+'\n'+'Please remember to export all your leads.'
-                               +'\n'+'If you need access beyond this, please contact support.'
-                               +'\n\n\n'+'Thank you!'+'\n'+'BoothLeads Customer Support'+'\n'+'support@boothleads.com';  
-               
+      String EmailBody = 'We are working with BoothLeads to help you with your event '+ eventName +'. All badges will now have a QR code specific to your name and company. You will be able to scan the QR code on-site, make notes about that individual and follow up with them.'+'\n\n'+'You have been added to the BoothLeads database for '+ eventName +'\n\n\n'+'Now what?'
++'\n\n\n'+'• Go to http://www.boothleads.com to login into your Booth Admin Portal as well as your mobile app.USERNAME AND PASSWORD ARE PROVIDED AT THE BOTTOM OF THIS EMAIL.'
++'\n\n\n'+'• Here are some youtube videos to give you an idea of what will happen:'+'\n\n'+' o What is a QR code: http://www.youtube.com/watch?v=b8EpazIwFys'+'\n\n'+' o How to generate a QR code so that attendees can view your brochures or '+'\n'+' flyers: http://www.youtube.com/watch?v=jcg2qbS_TaM&feature=youtu.be'
++'\n\n\n'+'• Next step….Download the appropriate app to your phone either from Google'+'\n'+'Play Store or AppStore or BlackBerry World.'
++'\n\n\n\n'+' Then you are ready to scan the badges on-site!'+'\n\n'+' Please note that your Booth Leads portal access is valid only for 30 days from the end of your event'
++'\n\n'+ ' We will be available on-site at the show (across from the registration desk) to assist you throughout the event.'+'\n\n'+' If you need assistance before that time, contact us at support@boothleads.com.'+'\n\n\n'+' Thank you!'+'\n'+' BoothLeads Customer Support'+'\n'+' Phone: 1-(800)-492-1289' ;
       
-      String EmailSubject = 'Welcome to '+'"'+eventName+'"'+' Event - Your registration was successful';
+    
+      
+      String EmailSubject = 'Booth Leads and '+eventName;
 
-   
+     system.debug('666666668888888889999999 '+parsedCSV.size());
       for(Integer i=1;i<parsedCSV.size();i++){
+      
+      system.debug('4444444455555555555551111111'+parsedCSV[i]);
         contact con =new contact();
         for(innclas innIterator:inn){ 
          if(innIterator.selectedValue!='NONE'){
@@ -81,8 +85,8 @@ public boolean showselectCSV{get;set;}
                con.Email =inputvalues[integer.valueOf(innIterator.selectedValue)];
             }catch(exception e){}
            } 
-           // Con.AccountId = '001O0000007AN41'; 
-            Con.AccountId='001F000000rVD6z';
+         //  Con.AccountId = '001O0000007AN41'; 
+             Con.AccountId='001F000000rVD6z';
             Con.Email_Subject__c = EmailSubject;
             Con.Email_Notes__c = EmailBody;
       }            
@@ -162,7 +166,7 @@ public boolean showselectCSV{get;set;}
                 }catch(exception e){}
                }else if(DBField.get(innIterator.dbFieldvalue)=='Country__c'){
                try{
-                u.CompanyCountry__c =inputvalues[integer.valueOf(innIterator.selectedValue)];
+                u.Country__c =inputvalues[integer.valueOf(innIterator.selectedValue)];
                 //att.AS_Work_Country__c =inputvalues[integer.valueOf(innIterator.selectedValue)];                  
                 }catch(exception e){}
                }
@@ -177,7 +181,7 @@ public boolean showselectCSV{get;set;}
                 }catch(exception e){}
                }
                else if(DBField.get(innIterator.dbFieldvalue)=='States__c'){
-               try{ u.CompanyState__c =inputvalues[integer.valueOf(innIterator.selectedValue)];
+               try{ u.States__c =inputvalues[integer.valueOf(innIterator.selectedValue)];
               //  att.AS_Work_States__c =inputvalues[integer.valueOf(innIterator.selectedValue)];                    
                 }catch(exception e){}
                } else if(DBField.get(innIterator.dbFieldvalue)=='Zipcode__c'){
@@ -189,8 +193,8 @@ public boolean showselectCSV{get;set;}
                
           u.contactId=mapContact.get(u.email);
           u.Alias ='BAdmin';
-          u.ProfileID ='00eF0000000FYkG';
-         // u.ProfileID ='00eO0000000Dkqz';
+        u.ProfileID ='00eF0000000FYkG';
+          //  u.ProfileID ='00eO0000000Dkqz';
           u.LocaleSidKey ='en_US';
           u.LanguageLocaleKey ='en_US';
           u.TimeZoneSidKey ='America/Los_Angeles';
@@ -235,7 +239,7 @@ public boolean showselectCSV{get;set;}
          
    List<user> emailPasswords = new List<user>();  
     
-  
+  try{
   for(user BoothAdminUser:[select id,userName,Email from user where Id IN:insertedRecordIds]){
     System.ResetPasswordResult rt= system.ResetPassword(BoothAdminUser.id,true);
     BoothAdminUser.password__c =rt.getPassword();
@@ -244,7 +248,10 @@ public boolean showselectCSV{get;set;}
    
    }
       dataBase.Saveresult[] rty= dataBase.update(emailPasswords,false) ;
-      
+  }catch(exception e){
+  	
+  
+  }  
      
    
     
@@ -254,6 +261,7 @@ public boolean showselectCSV{get;set;}
    LIST<user> updatedList = new LIST<user>();
    List<id> sendEmailToUploaded = new List<Id>(); 
    
+   
   for(user updateU:usersalredyExitsinSys){
   try{
     if(mapEmailWithUsetUpload.get(updateU.userName)!=null){
@@ -262,6 +270,49 @@ public boolean showselectCSV{get;set;}
        system.debug('XXXXXXXXXXXXXXXXXX '+supportUser);
        updateU.firstName=supportUser.FirstName;
        updateU.LastName=supportUser.lastName;   
+      
+      if(supportUser.CompanyName!=null && supportUser.CompanyName!=''){
+       updateU.CompanyName=supportUser.CompanyName;
+       }
+       
+      if(supportUser.Company_website__c!=null && supportUser.Company_website__c!=''){
+       updateU.Company_website__c=supportUser.Company_website__c;
+       }
+       
+       if(supportUser.CompanyAddr1__c!=null && supportUser.CompanyAddr1__c!=''){
+       updateU.CompanyAddr1__c=supportUser.CompanyAddr1__c;
+       }
+       
+       if(supportUser.CompanyAddr2__c!=null && supportUser.CompanyAddr2__c!=''){
+       updateU.CompanyAddr2__c=supportUser.CompanyAddr2__c;
+       }
+       
+       if(supportUser.CompanyCity__c!=null && supportUser.CompanyCity__c!=''){
+       updateU.CompanyCity__c=supportUser.CompanyCity__c;
+       }
+       
+         if(supportUser.Country__c!=null && supportUser.Country__c!=''){
+       updateU.Country__c=supportUser.Country__c;
+       }
+       
+         if(supportUser.CompanyFaxNumber__c!=null && supportUser.CompanyFaxNumber__c!=''){
+         updateU.CompanyFaxNumber__c=supportUser.CompanyFaxNumber__c;
+       }
+       
+         if(supportUser.Companyphone__c!=null && supportUser.Companyphone__c!=''){
+       updateU.Companyphone__c=supportUser.Companyphone__c;
+       }
+       
+         if(supportUser.States__c!=null && supportUser.States__c!=''){
+       updateU.States__c=supportUser.States__c;
+       }
+       
+       
+         if(supportUser.Zipcode__c!=null && supportUser.Zipcode__c!=''){
+       updateU.Zipcode__c=supportUser.Zipcode__c;
+       }
+       
+       
        updatedList.add(updateU);
     }
    Database.saveResult[] updatedRec =dataBase.update(updatedList,false);
@@ -280,6 +331,7 @@ public boolean showselectCSV{get;set;}
   system.debug('MMMMMMMMMMMMMMMMMM '+insertedRecordIds); 
   
   try{
+     List<Messaging.SingleEmailMessage> mails= new List<Messaging.SingleEmailMessage>();
   for(user sendEmail:[select id,firstname,Name,LastName,email,userName from user where id IN :sendEmailToUploaded ]){
     string email =sendEmail.Email;
     Messaging.SingleEmailMessage mail = new Messaging.SingleEmailMessage();
@@ -289,13 +341,13 @@ public boolean showselectCSV{get;set;}
     mail.setHtmlBody('Dear '+sendEmail.Name+','+'<br /><br />Congratulations!!<br />Your login for your Booth Admin Portal for Event "'
     +eventName  +'" was successfully created.<br /><br />Please visit http://www.boothleads.com to login to your Booth Admin Portal.<br /><br />If you have any questions, please contact your Event Administrator.<br /><br />Please note that your Booth Leads portal access is valid only for 30 days from the end of your event.<br />Please remember to export all your leads.<br />If you need access beyond this, please contact support.<br /><br />'
     +'Thank you!<br />BoothLeads Customer Support<br />support@boothleads.com');
-   
-    Messaging.sendEmail(new Messaging.SingleEmailMessage[] { mail });
- 
-  
-  }
+    mails.add(mail);
+   }
+     Messaging.sendEmail(mails);
   }catch(exception e){}
   
+  
+  try{
   Set<string> failedrecINinsert = new Set<string>();
   LIST<user> findfailedRecords = new LIST<user>();
   findfailedRecords =[SELECT id,Email,UserName from user where id IN :insertedRecordIds];
@@ -328,11 +380,13 @@ system.debug('YYYYYYYYYYYYYYYYYYYYY '+AllfailedRecords);
      
      integer csvSize = parsedCSV.size();
      
+     integer  successedRecords =(csvSize-1) - AllfailedRecords.size();     
+     
      String success1 =  'Number of records imported: '+(csvSize-1) + '<br/>'+
-                                 'Number of records created successfully: '+ insertedRecordIds.size()+'<br/>'+
+                                 'Number of records created successfully: '+successedRecords +'<br/>'+
                                  'Number of records failed: '+ AllfailedRecords.size()+'<br/><br/>';
                                  
-               String emailMessage1 =  'BoothLeads.com has just completed your import process!'+'<br/><br/>'+
+               String emailMessage1 =  'BoothLeads.com has just completed your booth admin import process!'+'<br/><br/>'+
                                        success1 +
                                        'We strongly recommend that you check a few of your imported records to verify that your information was imported as expected.'+'<br/><br/>'+
                                        'If you encounter any problems or have any questions, please contact Boothleads Customer Support.<br/><br/>'+
@@ -352,7 +406,7 @@ system.debug('YYYYYYYYYYYYYYYYYYYYY '+AllfailedRecords);
     Messaging.singleEmailMessage  Mail = new Messaging.singleEmailMessage();
     system.debug(' 9999999999999 88888888888888 '+ vgf);
     mail.setToAddresses(new String[] {vgf});
-    mail.setSubject('Import Booth admins Summary');
+    mail.setSubject('Import Booth Admins Summary');
     mail.setFileAttachments(new Messaging.EmailFileAttachment[] { attach });
     mail.setHtmlBody(emailMessage1 );
    Messaging.SendEmailResult[] msResult= Messaging.sendEmail(new Messaging.SingleEmailMessage[] { mail }); 
@@ -387,6 +441,11 @@ system.debug('YYYYYYYYYYYYYYYYYYYYY '+AllfailedRecords);
    myMethod(insertedRecordIds,eventId,mapBoothWithUser);
    showselectCSV = false;
     Successbool =true; 
+    
+  }catch(exception e){
+  	
+  
+  }
    return null;
  }
  
@@ -395,8 +454,10 @@ system.debug('YYYYYYYYYYYYYYYYYYYYY '+AllfailedRecords);
  
   @future 
   static void myMethod(SET<Id> insertedUsers,string eventidtoInsert,MAP<string,id> boothNapping) {
+  try{
   system.debug('ZZZZZZZZZZZZZZZZZZZZ '+insertedUsers);
   system.debug('AAAAAAAAAAAAAAAAAAAAAA '+eventidtoInsert);
+  
   MAP<string,id> mapBoothWithUser1 = new  MAP<string,id>();
   
   mapBoothWithUser1=boothNapping;
@@ -507,7 +568,7 @@ Database.UpsertResult[] MySaveResultAtt =dataBase.upsert(insertAttendees,Attende
     rpList.add(rp2);
   }
    database.insert(rpList);
-   
+  }catch(exception e){}  
     
 }
 
@@ -543,10 +604,10 @@ public Blob importedFile{ get; set; }
            DBField.put('Company Address 1','CompanyAddr1__c'); 
            DBField.put('Company Address 2','CompanyAddr2__c'); 
            DBField.put('Company City','CompanyCity__c'); 
-           DBField.put('Company Country','CompanyCountry__c'); 
+           DBField.put('Company Country','Country__c'); 
            DBField.put('Company FaxNumber','CompanyFaxNumber__c'); 
            DBField.put('Company Phone','Companyphone__c'); 
-           DBField.put('Company State','CompanyState__c'); 
+           DBField.put('Company State','States__c'); 
            DBField.put('Company Zipcode','Zipcode__c'); 
       
         } 
@@ -595,6 +656,7 @@ public Blob importedFile{ get; set; }
 
 public void passValuesToInnser(){
   inn = new List<innclas>();
+  system.debug('phaniiiiiiiiiii 11111222222222223333333 '+dbvalue+'  5555555 666666666 '+CSVHeaderMapping);
    for(string dd:dbvalue){
     inn.add(new innclas(dd,CSVHeaderMapping.get(dd.toLowerCase())));
   }
@@ -695,18 +757,39 @@ selectedValue=opt;
           Event__c event = new Event__c(EV_Title__c = 'Test Event', StartTime__c = '09:00 AM', EV_EndTime__c='09:00 PM',EV_StartDate__c = Date.newInstance(2012,05,01),EV_EndDate__c = Date.newInstance(2012,05,01) );
           insert event;
           
+           Event__c event2 = new Event__c(EV_Title__c = 'Test Event 2', StartTime__c = '09:00 AM', EV_EndTime__c='09:00 PM',EV_StartDate__c = Date.newInstance(2012,05,01),EV_EndDate__c = Date.newInstance(2012,05,01) );
+          insert event2;
+          
           SecurityControls__c sc = new SecurityControls__c(EV_id__c = event.id, EV_Req_Fields__c= 'AS_FirstName__c' );
           insert sc;
           
          PageReference pageRef = Page.BL_boothadmin_Import;
           Test.setCurrentPage(pageRef);
           Apexpages.currentPage().getParameters().put('id', event.id);
+          
           BL_BoothAdmin_ImportCon imp= new BL_BoothAdmin_ImportCon();
            Apexpages.currentPage().getParameters().put('id', event.id);
-          string dataFromJavaScript = String.valueOf('LastName,Email,CompanyName,Company Website,Company Address 1,Company Address 2,Company City,Company Country,Company FaxNumber,Company Phone,Company State,Company Zipcode \r Phani Chimata,mythilyn@globalnest.com,"Globalnest Technologie,s","""Patrika Nagar""",Madhapur,Hyderabad,Andra Pradesh,India,500082,9550710718,9550710718,www.google.com, ????:::::******&&&&&&%%%%;;;;TestfileName'); 
+           
+          string dataFromJavaScript = String.valueOf('FirstName,LastName,Email,CompanyName,Company Website,Company Address 1,Company Address 2,Company City,Company Country,Company FaxNumber,Company Phone,Company State,Company Zipcode \r Phani,Chimata,phanifrt@globalnest.com,"Globalnest Technologie,s","""Patrika Nagar""",Madhapur,Hyderabad,Andra Pradesh,India,500082,9550710718,9550710718,www.google.com, ????:::::******&&&&&&%%%%;;;;TestfileName'); 
            Apexpages.currentPage().getParameters().put('one', dataFromJavaScript );
-           imp.MapWindow()  ;
+          string srtr = String.valueOf('FirstName,LastName,Email,CompanyName,Company Website,Company Address 1,Company Address 2,Company City,Company Country,Company FaxNumber,Company Phone,Company State,Company Zipcode \r Phani,Chimata,phani123@globalnest.com,"Globalnest Technologie,s","""Patrika Nagar""",Madhapur,Hyderabad,Andra Pradesh,India,500082,9550710718,9550710718,www.google.com'); 
+           List<string> abcd = new List<string>();
+           abcd=srtr.split('\r');
+           imp.MapWindow();
+           imp.parsedCSV=abcd;
            imp.importValues();
+             Apexpages.currentPage().getParameters().put('id', event2.id);
+             string srtr2 = String.valueOf('FirstName,LastName,Email,CompanyName,Company Website,Company Address 1,Company Address 2,Company City,Company Country,Company FaxNumber,Company Phone,Company State,Company Zipcode \r Phani,Chimata,phani123@globalnest.com,"Globalnest Technologie,s","""Patrika Nagar""",Madhapur,Hyderabad,Andra Pradesh,India,500082,9550710718,9550710718,www.google.com'); 
+           List<string> abcd2 = new List<string>();
+             abcd2=srtr2.split('\r');
+             imp.parsedCSV=abcd2;
+           imp.importValues();
+           
+           imp.movetoBoothpage();
+           imp.Attendees();
+           imp.exportToCSV();
+           imp.closePopup();
+           
            }
    
    

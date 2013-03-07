@@ -42,6 +42,7 @@ public List<BoothVisitSummary__c> BVSListsel{get;set;}
   
   
 public BL_AttendeesCon(){
+    try{
 String browserType = Apexpages.currentPage().getHeaders().get('USER-AGENT'); 
 if(browserType != null && browserType.contains('MSIE')){
 Apexpages.currentPage().getHeaders().put('X-UA-Compatible', 'IE=9');
@@ -57,13 +58,18 @@ searchString ='';
       }   
     }
 getEvents();
-   
+    }catch(exception e){}   
 }
 
    
 
  public PageReference search() 
  {   
+    try{
+    String browserType = Apexpages.currentPage().getHeaders().get('USER-AGENT'); 
+if(browserType != null && browserType.contains('MSIE')){
+Apexpages.currentPage().getHeaders().put('X-UA-Compatible', 'IE=9');
+}
   set<id> setofboothpersonnelIds = new  set<id>();
    bvsList = new List<List<BoothVisitSummary__c>>();
    List<BoothVisitSummary__c> bvsListbefore = new List<BoothVisitSummary__c>(); 
@@ -129,6 +135,8 @@ getEvents();
        
 if(recCount !=0)
    bvsList.add(bvsvaluesbefore1);     
+     
+    }catch(exception e){}   
             
           return null;
     
@@ -144,23 +152,28 @@ if(recCount !=0)
 
 
   public PageReference cancel() {
+   String browserType = Apexpages.currentPage().getHeaders().get('USER-AGENT'); 
+if(browserType != null && browserType.contains('MSIE')){
+Apexpages.currentPage().getHeaders().put('X-UA-Compatible', 'IE=9');
+}
      email=false;
         return null;
     }
 
 
      public PageReference sendEmail() {
+   try{     
      system.debug('Value Of eventNAme     '+eventname);
-     
+    if(EmailTo!=''){ 
     if(eventname != '' && eventname != null){
     BVSListsel = checkBVSList(eventname);
-    transfer = 'Prefix::::::::;;;;;;;;First Name::::::::;;;;;;;;Last Name::::::::;;;;;;;;Suffix::::::::;;;;;;;;Email Id::::::::;;;;;;;;Company::::::::;;;;;;;;Designation::::::::;;;;;;;;Mobile Number::::::::;;;;;;;;Age::::::::;;;;;;;;Gender::::::::;;;;;;;;Date Of Birth::::::::;;;;;;;;Home Phone Number::::::::;;;;;;;;Home Address1::::::::;;;;;;;;Home Address2::::::::;;;;;;;;Home City::::::::;;;;;;;;Home State::::::::;;;;;;;;Home Country::::::::;;;;;;;;Home Zip Code::::::::;;;;;;;;Primary Business Category::::::::;;;;;;;;Secondary Business Category::::::::;;;;;;;;No.Of Employees::::::::;;;;;;;;Businees Established Date::::::::;;;;;;;;Business Duns Number::::::::;;;;;;;;Business Revenue::::::::;;;;;;;;Business Tax Id::::::::;;;;;;;;Blog URL::::::::;;;;;;;;Website URL::::::::;;;;;;;;Diversity Type::::::::;;;;;;;;Businees Description::::::::;;;;;;;;Work Phone::::::::;;;;;;;;Work Address1::::::::;;;;;;;;Work Address2::::::::;;;;;;;;Work city::::::::;;;;;;;;Work State::::::::;;;;;;;;Work Country::::::::;;;;;;;;Work Zip Code::::::::;;;;;;;;Shipping Phone::::::::;;;;;;;;Shipping Address1::::::::;;;;;;;;Shipping Address2::::::::;;;;;;;;Shipping City::::::::;;;;;;;;Shipping State::::::::;;;;;;;;Shipping country::::::::;;;;;;;;Shipping Zip Code::::::::;;;;;;;;NAICS Code1::::::::;;;;;;;;NAICS Code2::::::::;;;;;;;;NAICS Code3::::::::;;;;;;;;NAICS Code4::::::::;;;;;;;;NAICS Code5::::::::;;;;;;;;Follow-up Date::::::::;;;;;;;;Scanned By::::::::;;;;;;;;Notes'+'\r';
+    transfer = 'Prefix::::::::;;;;;;;;First Name::::::::;;;;;;;;Last Name::::::::;;;;;;;;Suffix::::::::;;;;;;;;Email Id::::::::;;;;;;;;Company::::::::;;;;;;;;Designation::::::::;;;;;;;;Mobile Number::::::::;;;;;;;;Age::::::::;;;;;;;;Gender::::::::;;;;;;;;Date Of Birth::::::::;;;;;;;;Home Phone Number::::::::;;;;;;;;Home Address1::::::::;;;;;;;;Home Address2::::::::;;;;;;;;Home City::::::::;;;;;;;;Home State::::::::;;;;;;;;Home Country::::::::;;;;;;;;Home Zip Code::::::::;;;;;;;;Primary Business Category::::::::;;;;;;;;Secondary Business Category::::::::;;;;;;;;No.Of Employees::::::::;;;;;;;;Businees Established Date::::::::;;;;;;;;Business Duns Number::::::::;;;;;;;;Business Revenue::::::::;;;;;;;;Business Tax Id::::::::;;;;;;;;Blog URL::::::::;;;;;;;;Website URL::::::::;;;;;;;;Diversity Type::::::::;;;;;;;;Businees Description::::::::;;;;;;;;Work Phone::::::::;;;;;;;;Work Address1::::::::;;;;;;;;Work Address2::::::::;;;;;;;;Work city::::::::;;;;;;;;Work State::::::::;;;;;;;;Work Country::::::::;;;;;;;;Work Zip Code::::::::;;;;;;;;Shipping Phone::::::::;;;;;;;;Shipping Address1::::::::;;;;;;;;Shipping Address2::::::::;;;;;;;;Shipping City::::::::;;;;;;;;Shipping State::::::::;;;;;;;;Shipping country::::::::;;;;;;;;Shipping Zip Code::::::::;;;;;;;;NAICS Code1::::::::;;;;;;;;NAICS Code2::::::::;;;;;;;;NAICS Code3::::::::;;;;;;;;NAICS Code4::::::::;;;;;;;;NAICS Code5::::::::;;;;;;;;Follow-up Date::::::::;;;;;;;;Scanned By::::::::;;;;;;;;Notes::::::::;;;;;;;;follow-up type::::::::;;;;;;;;Survey Question1::::::::;;;;;;;;Survey Question2::::::::;;;;;;;;Survey Question3::::::::;;;;;;;;Survey Answer1::::::::;;;;;;;;Survey Answer2::::::::;;;;;;;;SurveyAnswer3'+'\r';
     for(BoothVisitSummary__c ss:BVSListsel) {
     
     string asb = string.valueOf(ss.EA_AttendeeBarcode__r.AS_id__r.AS_BirthDate__c);
     if(ss.EA_AttendeeBarcode__r.AS_id__r.As_prefixNew__c != null){
      
-     transfer += ss.EA_AttendeeBarcode__r.AS_id__r.As_prefixNew__c+'::::::::;;;;;;;;'+ss.EA_AttendeeBarcode__r.AS_id__r.AS_FirstName__c+'::::::::;;;;;;;;'+ss.EA_AttendeeBarcode__r.AS_id__r.AS_LastName__c+'::::::::;;;;;;;;'+ss.EA_AttendeeBarcode__r.AS_id__r.As_SuffixNew__c+'::::::::;;;;;;;;'+ss.EA_AttendeeBarcode__r.AS_id__r.AS_Email__c+'::::::::;;;;;;;;'+ss.EA_AttendeeBarcode__r.AS_id__r.AS_Company__c+'::::::::;;;;;;;;'+ss.EA_AttendeeBarcode__r.AS_id__r.AS_Title__c+'::::::::;;;;;;;;'+ss.EA_AttendeeBarcode__r.AS_id__r.AS_CellPhone__c+'::::::::;;;;;;;;'+ss.EA_AttendeeBarcode__r.AS_id__r.AS_Age__c+'::::::::;;;;;;;;'+ss.EA_AttendeeBarcode__r.AS_id__r.AS_Gender__c+'::::::::;;;;;;;;'+asb+'::::::::;;;;;;;;'+ss.EA_AttendeeBarcode__r.AS_id__r.AS_HomePhone__c+'::::::::;;;;;;;;'+ss.EA_AttendeeBarcode__r.AS_id__r.AS_HomeAddress1__c+'::::::::;;;;;;;;'+ss.EA_AttendeeBarcode__r.AS_id__r.AS_HomeAddress2__c+'::::::::;;;;;;;;'+ss.EA_AttendeeBarcode__r.AS_id__r.AS_HomeCity__c+'::::::::;;;;;;;;'+ss.EA_AttendeeBarcode__r.AS_id__r.As_Home_State__c+'::::::::;;;;;;;;'+ss.EA_AttendeeBarcode__r.AS_id__r.As_Home_Country__c+'::::::::;;;;;;;;'+ss.EA_AttendeeBarcode__r.AS_id__r.AS_HomeZip__c+'::::::::;;;;;;;;'+ss.EA_AttendeeBarcode__r.AS_id__r.AS_PrimaryBusinessCategory1__c+'::::::::;;;;;;;;'+ss.EA_AttendeeBarcode__r.AS_id__r.AS_SecondaryBusinessCategory1__c+'::::::::;;;;;;;;'+ss.EA_AttendeeBarcode__r.AS_id__r.AS_NumberOfEmployees__c+'::::::::;;;;;;;;'+ss.EA_AttendeeBarcode__r.AS_id__r.AS_BusinessEstablishedDate__c+'::::::::;;;;;;;;'+ss.EA_AttendeeBarcode__r.AS_id__r.AS_BusinessDunsNumber__c+'::::::::;;;;;;;;'+ss.EA_AttendeeBarcode__r.AS_id__r.AS_BusinessRevenue__c+'::::::::;;;;;;;;'+ss.EA_AttendeeBarcode__r.AS_id__r.AS_BusinessTaxId__c+'::::::::;;;;;;;;'+ss.EA_AttendeeBarcode__r.AS_id__r.AS_BlogUrl__c+'::::::::;;;;;;;;'+ss.EA_AttendeeBarcode__r.AS_id__r.AS_WebsiteUrl__c+'::::::::;;;;;;;;'+ss.EA_AttendeeBarcode__r.AS_id__r.AS_DiversityType__c+'::::::::;;;;;;;;'+ss.EA_AttendeeBarcode__r.AS_id__r.AS_BusinessDescription__c+'::::::::;;;;;;;;'+ss.EA_AttendeeBarcode__r.AS_id__r.AS_WorkPhone__c+'::::::::;;;;;;;;'+ss.EA_AttendeeBarcode__r.AS_id__r.AS_WorkAddress1__c+'::::::::;;;;;;;;'+ss.EA_AttendeeBarcode__r.AS_id__r.AS_WorkAddress2__c+'::::::::;;;;;;;;'+ss.EA_AttendeeBarcode__r.AS_id__r.AS_WorkCity__c+'::::::::;;;;;;;;'+ss.EA_AttendeeBarcode__r.AS_id__r.AS_Work_States__c+'::::::::;;;;;;;;'+ss.EA_AttendeeBarcode__r.AS_id__r.AS_Work_Country__c+'::::::::;;;;;;;;'+ss.EA_AttendeeBarcode__r.AS_id__r.AS_WorkZip__c+'::::::::;;;;;;;;'+ss.EA_AttendeeBarcode__r.AS_id__r.AS_ShippingPhone__c+'::::::::;;;;;;;;'+ss.EA_AttendeeBarcode__r.AS_id__r.AS_ShippingAddress1__c+'::::::::;;;;;;;;'+ss.EA_AttendeeBarcode__r.AS_id__r.AS_ShippingAddress2__c+'::::::::;;;;;;;;'+ss.EA_AttendeeBarcode__r.AS_id__r.AS_ShippingCity__c+'::::::::;;;;;;;;'+ss.EA_AttendeeBarcode__r.AS_id__r.As_Shipping_States__c+'::::::::;;;;;;;;'+ss.EA_AttendeeBarcode__r.AS_id__r.As_Shipping_Country__c+'::::::::;;;;;;;;'+ss.EA_AttendeeBarcode__r.AS_id__r.AS_shippingzip__c+'::::::::;;;;;;;;'+ss.EA_AttendeeBarcode__r.AS_id__r.AS_NAICSCode1__c+'::::::::;;;;;;;;'+ss.EA_AttendeeBarcode__r.AS_id__r.AS_NAICSCode2__c+'::::::::;;;;;;;;'+ss.EA_AttendeeBarcode__r.AS_id__r.AS_NAICSCode3__c+'::::::::;;;;;;;;'+ss.EA_AttendeeBarcode__r.AS_id__r.AS_NAICSCode4__c+'::::::::;;;;;;;;'+ss.EA_AttendeeBarcode__r.AS_id__r.AS_NAICSCode5__c+'::::::::;;;;;;;;'+ss.Follow_Update__c+'::::::::;;;;;;;;'+ss.User_id__r.Name+'::::::::;;;;;;;;'+ss.BVS_Notes__c+'\r'; 
+     transfer += ss.EA_AttendeeBarcode__r.AS_id__r.As_prefixNew__c+'::::::::;;;;;;;;'+ss.EA_AttendeeBarcode__r.AS_id__r.AS_FirstName__c+'::::::::;;;;;;;;'+ss.EA_AttendeeBarcode__r.AS_id__r.AS_LastName__c+'::::::::;;;;;;;;'+ss.EA_AttendeeBarcode__r.AS_id__r.As_SuffixNew__c+'::::::::;;;;;;;;'+ss.EA_AttendeeBarcode__r.AS_id__r.AS_Email__c+'::::::::;;;;;;;;'+ss.EA_AttendeeBarcode__r.AS_id__r.AS_Company__c+'::::::::;;;;;;;;'+ss.EA_AttendeeBarcode__r.AS_id__r.AS_Title__c+'::::::::;;;;;;;;'+ss.EA_AttendeeBarcode__r.AS_id__r.AS_CellPhone__c+'::::::::;;;;;;;;'+ss.EA_AttendeeBarcode__r.AS_id__r.AS_Age__c+'::::::::;;;;;;;;'+ss.EA_AttendeeBarcode__r.AS_id__r.AS_Gender__c+'::::::::;;;;;;;;'+asb+'::::::::;;;;;;;;'+ss.EA_AttendeeBarcode__r.AS_id__r.AS_HomePhone__c+'::::::::;;;;;;;;'+ss.EA_AttendeeBarcode__r.AS_id__r.AS_HomeAddress1__c+'::::::::;;;;;;;;'+ss.EA_AttendeeBarcode__r.AS_id__r.AS_HomeAddress2__c+'::::::::;;;;;;;;'+ss.EA_AttendeeBarcode__r.AS_id__r.AS_HomeCity__c+'::::::::;;;;;;;;'+ss.EA_AttendeeBarcode__r.AS_id__r.As_Home_State__c+'::::::::;;;;;;;;'+ss.EA_AttendeeBarcode__r.AS_id__r.As_Home_Country__c+'::::::::;;;;;;;;'+ss.EA_AttendeeBarcode__r.AS_id__r.AS_HomeZip__c+'::::::::;;;;;;;;'+ss.EA_AttendeeBarcode__r.AS_id__r.AS_PrimaryBusinessCategory1__c+'::::::::;;;;;;;;'+ss.EA_AttendeeBarcode__r.AS_id__r.AS_SecondaryBusinessCategory1__c+'::::::::;;;;;;;;'+ss.EA_AttendeeBarcode__r.AS_id__r.AS_NumberOfEmployees__c+'::::::::;;;;;;;;'+ss.EA_AttendeeBarcode__r.AS_id__r.AS_BusinessEstablishedDate__c+'::::::::;;;;;;;;'+ss.EA_AttendeeBarcode__r.AS_id__r.AS_BusinessDunsNumber__c+'::::::::;;;;;;;;'+ss.EA_AttendeeBarcode__r.AS_id__r.AS_BusinessRevenue__c+'::::::::;;;;;;;;'+ss.EA_AttendeeBarcode__r.AS_id__r.AS_BusinessTaxId__c+'::::::::;;;;;;;;'+ss.EA_AttendeeBarcode__r.AS_id__r.AS_BlogUrl__c+'::::::::;;;;;;;;'+ss.EA_AttendeeBarcode__r.AS_id__r.AS_WebsiteUrl__c+'::::::::;;;;;;;;'+ss.EA_AttendeeBarcode__r.AS_id__r.AS_DiversityType__c+'::::::::;;;;;;;;'+ss.EA_AttendeeBarcode__r.AS_id__r.AS_BusinessDescription__c+'::::::::;;;;;;;;'+ss.EA_AttendeeBarcode__r.AS_id__r.AS_WorkPhone__c+'::::::::;;;;;;;;'+ss.EA_AttendeeBarcode__r.AS_id__r.AS_WorkAddress1__c+'::::::::;;;;;;;;'+ss.EA_AttendeeBarcode__r.AS_id__r.AS_WorkAddress2__c+'::::::::;;;;;;;;'+ss.EA_AttendeeBarcode__r.AS_id__r.AS_WorkCity__c+'::::::::;;;;;;;;'+ss.EA_AttendeeBarcode__r.AS_id__r.AS_Work_States__c+'::::::::;;;;;;;;'+ss.EA_AttendeeBarcode__r.AS_id__r.AS_Work_Country__c+'::::::::;;;;;;;;'+ss.EA_AttendeeBarcode__r.AS_id__r.AS_WorkZip__c+'::::::::;;;;;;;;'+ss.EA_AttendeeBarcode__r.AS_id__r.AS_ShippingPhone__c+'::::::::;;;;;;;;'+ss.EA_AttendeeBarcode__r.AS_id__r.AS_ShippingAddress1__c+'::::::::;;;;;;;;'+ss.EA_AttendeeBarcode__r.AS_id__r.AS_ShippingAddress2__c+'::::::::;;;;;;;;'+ss.EA_AttendeeBarcode__r.AS_id__r.AS_ShippingCity__c+'::::::::;;;;;;;;'+ss.EA_AttendeeBarcode__r.AS_id__r.As_Shipping_States__c+'::::::::;;;;;;;;'+ss.EA_AttendeeBarcode__r.AS_id__r.As_Shipping_Country__c+'::::::::;;;;;;;;'+ss.EA_AttendeeBarcode__r.AS_id__r.AS_shippingzip__c+'::::::::;;;;;;;;'+ss.EA_AttendeeBarcode__r.AS_id__r.AS_NAICSCode1__c+'::::::::;;;;;;;;'+ss.EA_AttendeeBarcode__r.AS_id__r.AS_NAICSCode2__c+'::::::::;;;;;;;;'+ss.EA_AttendeeBarcode__r.AS_id__r.AS_NAICSCode3__c+'::::::::;;;;;;;;'+ss.EA_AttendeeBarcode__r.AS_id__r.AS_NAICSCode4__c+'::::::::;;;;;;;;'+ss.EA_AttendeeBarcode__r.AS_id__r.AS_NAICSCode5__c+'::::::::;;;;;;;;'+ss.Follow_Update__c+'::::::::;;;;;;;;'+ss.User_id__r.Name+'::::::::;;;;;;;;'+ss.BVS_Notes__c+'::::::::;;;;;;;;'+ss.BVS_FollowUps__c+'::::::::;;;;;;;;'+ss.BVS_SurveyQuestion1__c+'::::::::;;;;;;;;'+ss.BVS_SurveyQuestion2__c+'::::::::;;;;;;;;'+ss.BVS_SurveyQuestion3__c+'::::::::;;;;;;;;'+ss.BVS_SurveyAnswer1__c+'::::::::;;;;;;;;'+ss.BVS_SurveyAnswer2__c+'::::::::;;;;;;;;'+ss.BVS_SurveyAnswer3__c+'\r'; 
     }else{
     transfer +=''+'::::::::;;;;;;;;'+ss.EA_AttendeeBarcode__r.AS_id__r.AS_FirstName__c+'::::::::;;;;;;;;'+ss.EA_AttendeeBarcode__r.AS_id__r.AS_LastName__c+'::::::::;;;;;;;;'+ss.EA_AttendeeBarcode__r.AS_id__r.As_SuffixNew__c+'::::::::;;;;;;;;'+ss.EA_AttendeeBarcode__r.AS_id__r.AS_Email__c+'::::::::;;;;;;;;'+ss.EA_AttendeeBarcode__r.AS_id__r.AS_Company__c+'::::::::;;;;;;;;'+ss.EA_AttendeeBarcode__r.AS_id__r.AS_Title__c+'::::::::;;;;;;;;'+ss.EA_AttendeeBarcode__r.AS_id__r.AS_CellPhone__c+'::::::::;;;;;;;;'+ss.EA_AttendeeBarcode__r.AS_id__r.AS_Age__c+'::::::::;;;;;;;;'+ss.EA_AttendeeBarcode__r.AS_id__r.AS_Gender__c+'::::::::;;;;;;;;'+asb +'::::::::;;;;;;;;'+ss.EA_AttendeeBarcode__r.AS_id__r.AS_HomePhone__c+'::::::::;;;;;;;;'+ss.EA_AttendeeBarcode__r.AS_id__r.AS_HomeAddress1__c+'::::::::;;;;;;;;'+ss.EA_AttendeeBarcode__r.AS_id__r.AS_HomeAddress2__c+'::::::::;;;;;;;;'+ss.EA_AttendeeBarcode__r.AS_id__r.AS_HomeCity__c+'::::::::;;;;;;;;'+ss.EA_AttendeeBarcode__r.AS_id__r.As_Home_State__c+'::::::::;;;;;;;;'+ss.EA_AttendeeBarcode__r.AS_id__r.As_Home_Country__c+'::::::::;;;;;;;;'+ss.EA_AttendeeBarcode__r.AS_id__r.AS_HomeZip__c+'::::::::;;;;;;;;'+ss.EA_AttendeeBarcode__r.AS_id__r.AS_PrimaryBusinessCategory1__c+'::::::::;;;;;;;;'+ss.EA_AttendeeBarcode__r.AS_id__r.AS_SecondaryBusinessCategory1__c+'::::::::;;;;;;;;'+ss.EA_AttendeeBarcode__r.AS_id__r.AS_NumberOfEmployees__c+'::::::::;;;;;;;;'+ss.EA_AttendeeBarcode__r.AS_id__r.AS_BusinessEstablishedDate__c+'::::::::;;;;;;;;'+ss.EA_AttendeeBarcode__r.AS_id__r.AS_BusinessDunsNumber__c+'::::::::;;;;;;;;'+ss.EA_AttendeeBarcode__r.AS_id__r.AS_BusinessRevenue__c+'::::::::;;;;;;;;'+ss.EA_AttendeeBarcode__r.AS_id__r.AS_BusinessTaxId__c+'::::::::;;;;;;;;'+ss.EA_AttendeeBarcode__r.AS_id__r.AS_BlogUrl__c+'::::::::;;;;;;;;'+ss.EA_AttendeeBarcode__r.AS_id__r.AS_WebsiteUrl__c+'::::::::;;;;;;;;'+ss.EA_AttendeeBarcode__r.AS_id__r.AS_DiversityType__c+'::::::::;;;;;;;;'+ss.EA_AttendeeBarcode__r.AS_id__r.AS_BusinessDescription__c+'::::::::;;;;;;;;'+ss.EA_AttendeeBarcode__r.AS_id__r.AS_WorkPhone__c+'::::::::;;;;;;;;'+ss.EA_AttendeeBarcode__r.AS_id__r.AS_WorkAddress1__c+'::::::::;;;;;;;;'+ss.EA_AttendeeBarcode__r.AS_id__r.AS_WorkAddress2__c+'::::::::;;;;;;;;'+ss.EA_AttendeeBarcode__r.AS_id__r.AS_WorkCity__c+'::::::::;;;;;;;;'+ss.EA_AttendeeBarcode__r.AS_id__r.AS_Work_States__c+'::::::::;;;;;;;;'+ss.EA_AttendeeBarcode__r.AS_id__r.AS_Work_Country__c+'::::::::;;;;;;;;'+ss.EA_AttendeeBarcode__r.AS_id__r.AS_WorkZip__c+'::::::::;;;;;;;;'+ss.EA_AttendeeBarcode__r.AS_id__r.AS_ShippingPhone__c+'::::::::;;;;;;;;'+ss.EA_AttendeeBarcode__r.AS_id__r.AS_ShippingAddress1__c+'::::::::;;;;;;;;'+ss.EA_AttendeeBarcode__r.AS_id__r.AS_ShippingAddress2__c+'::::::::;;;;;;;;'+ss.EA_AttendeeBarcode__r.AS_id__r.AS_ShippingCity__c+'::::::::;;;;;;;;'+ss.EA_AttendeeBarcode__r.AS_id__r.As_Shipping_States__c+'::::::::;;;;;;;;'+ss.EA_AttendeeBarcode__r.AS_id__r.As_Shipping_Country__c+'::::::::;;;;;;;;'+ss.EA_AttendeeBarcode__r.AS_id__r.AS_shippingzip__c+'::::::::;;;;;;;;'+ss.EA_AttendeeBarcode__r.AS_id__r.AS_NAICSCode1__c+'::::::::;;;;;;;;'+ss.EA_AttendeeBarcode__r.AS_id__r.AS_NAICSCode2__c+'::::::::;;;;;;;;'+ss.EA_AttendeeBarcode__r.AS_id__r.AS_NAICSCode3__c+'::::::::;;;;;;;;'+ss.EA_AttendeeBarcode__r.AS_id__r.AS_NAICSCode4__c+'::::::::;;;;;;;;'+ss.EA_AttendeeBarcode__r.AS_id__r.AS_NAICSCode5__c+'::::::::;;;;;;;;'+ss.Follow_Update__c+'::::::::;;;;;;;;'+ss.User_id__r.Name+'::::::::;;;;;;;;'+ss.BVS_Notes__c+'\r'; 
     
@@ -202,24 +215,33 @@ if(recCount !=0)
       
       system.debug('##################'+ email );
    }
+ }  
+   }catch(exception e){}  
      return null;
  }
 
 
      public void EmailCsv(){
+    try{
+    String browserType = Apexpages.currentPage().getHeaders().get('USER-AGENT');
+if(browserType != null && browserType.contains('MSIE')){
+Apexpages.currentPage().getHeaders().put('X-UA-Compatible', 'IE=9');
+}
      subject ='Leads From Booth Leads';
       system.debug('909090909099090909090909   '+eventname); 
       if(eventname != '' && eventname != null){
       email=true;
      }else{
      system.debug('44444444444444444444444 ');
-     ApexPages.addMessage(new ApexPages.message(ApexPages.severity.INFO,'Select at least one attendee'));
+     ApexPages.addMessage(new ApexPages.message(ApexPages.severity.INFO,'Select at least one lead'));
      }
+    }catch(exception e){} 
    }
 
 public boolean booleanforDisplayBoothadminTab{get;set;}
 
     public PageReference valuesOfeventswithselectedvalue() {
+ try{       
    string xx = ApexPages.currentPage().getParameters().get('valu');
    integer recCount = 0;
    set<Id>  setofboothpersonnelIds = new set<Id>();
@@ -276,7 +298,7 @@ public boolean booleanforDisplayBoothadminTab{get;set;}
 if(recCount !=0)
    bvsList.add(bvsvaluesbefore1);    
        
-            
+ }catch(exception e){}          
             return null;
    
  }
@@ -284,6 +306,7 @@ if(recCount !=0)
 
 
  public List<BoothVisitSummary__c> checkBVSList(String listOfBVS){
+ try{
   integer ph;
   List<BoothVisitSummary__c>  localBVSListSelected = new List<BoothVisitSummary__c> ();
   List<ID> selectedBVSList = new List<ID>();
@@ -389,8 +412,10 @@ if(recCount !=0)
                   rt.BVS_Notes__c =escape(rt.BVS_Notes__c);
              }
            } 
-       }    
+       }
        return localBVSListSelected;
+ }catch(exception e){return null;}       
+       
   }
 
 
@@ -403,6 +428,11 @@ if(recCount !=0)
     public string displayerrorForNoselection{get;set;}
     
     public PageReference seltoexport() {
+        try{
+        String browserType = Apexpages.currentPage().getHeaders().get('USER-AGENT');
+if(browserType != null && browserType.contains('MSIE')){
+Apexpages.currentPage().getHeaders().put('X-UA-Compatible', 'IE=9');
+}
      supportList = new List<BoothVisitSummary__c>(); 
     supportList = checkBVSList(Eventname);
     if(supportList.size()>0){
@@ -414,10 +444,10 @@ if(recCount !=0)
   
     
    }else{
- ApexPages.addMessage(new ApexPages.message(ApexPages.severity.INFO,'Select at least one attendee'));
+ ApexPages.addMessage(new ApexPages.message(ApexPages.severity.INFO,'Select at least one lead'));
     return null;
   } 
-    
+    }catch(exception e){return null;}    
    
    }
 
@@ -425,6 +455,7 @@ if(recCount !=0)
  public Id urlIdOfImage {get;set;}
 
     public void  getEventDetails() {
+ try{       
     attendeeSummary = new BoothVisitSummary__c();
     attachmentIdOfImage =null;
     urlIdOfImage =null;
@@ -527,6 +558,7 @@ if(recCount !=0)
             }
       
       }
+ }catch(exception e){}     
     }
    
   public List<String> listOfintegers{get;set;}
@@ -535,7 +567,7 @@ if(recCount !=0)
   public map<string,string> mapImage {get;set;}
   
     public PageReference getEvents() {
-    
+    try{
      system.debug('^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ eventSelected '+eventSelected );
     mapImage  = new map<string,string>();
     if(eventSelected == NULL || eventSelected =='ALL' ){
@@ -666,7 +698,7 @@ if(recCount !=0)
      system.debug('11111111111 55555555555555 gg '+bvsList);        
  }
         }   
-        
+    }catch (exception e){}      
       return null;
     }
 
@@ -676,6 +708,7 @@ if(recCount !=0)
 
 
  public List<selectOption> getselectEvents() {
+    try{
        List<User_Profile_Event__c> upeForEvents = new List<User_Profile_Event__c>();
        EvntsForPicklist = new List<Event__c>();
        upeForEvents = [Select u.User_id__c,u.Profile_id__r.PR_Name__c,u.User_id__r.Name, u.UEP_isActive__c, u.SystemModstamp, u.Profile_id__c, u.OwnerId, u.Name, u.LastModifiedDate, u.LastModifiedById, u.LastActivityDate, u.IsDeleted, u.Id, u.EventAdmin_Id__c, u.EV_id__c, u.CreatedDate, u.CreatedById, u.BoothAdmin_id__c, u.BT_id__c, u.BLP_id__c From User_Profile_Event__c u where (u.User_id__r.Email=:userInfo.getUserName() ) and (Status__c!='Mobile only access' And Status__c!='InActive') ];
@@ -694,6 +727,7 @@ if(recCount !=0)
            options.add(new SelectOption(Event.id,Event.EV_Title__c));
            }
            return options;
+    }catch(exception e){return null;}   
      }
      
      

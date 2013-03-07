@@ -68,6 +68,11 @@ public class BL_Attendee_RegisterCon {
     }
     
     public BL_Attendee_RegisterCon(){
+    
+    String browserType = Apexpages.currentPage().getHeaders().get('USER-AGENT'); 
+if(browserType != null && browserType.contains('MSIE')){
+Apexpages.currentPage().getHeaders().put('X-UA-Compatible', 'IE=9');
+}
         
          ticketTypes= new LIST<TicketTypes__c>();
          newAttendee= new AttendeeSummary__c();

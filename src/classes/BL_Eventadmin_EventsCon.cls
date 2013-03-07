@@ -101,6 +101,10 @@ public class BL_Eventadmin_EventsCon {
     }
     
      public void callBadgeSettings(){
+     String browserType = Apexpages.currentPage().getHeaders().get('USER-AGENT'); 
+if(browserType != null && browserType.contains('MSIE')){
+Apexpages.currentPage().getHeaders().put('X-UA-Compatible', 'IE=9');
+}
         BadgeSettingsBool = true;
         BadgeType = new List<selectoption>();
         badgeSet = new BL_BadgeSettingsClass();
@@ -220,6 +224,7 @@ u.EV_id__r.CreatedDate, u.EV_id__r.Attendee_Tags__c,u.EV_id__r.EV_HostingOrgName
     }
     
     public void EventsList(){
+    
  
         listOfEvents = [select Id,EV_id__c,EV_id__r.id,EV_id__r.EV_Title__c,EV_id__r.Status__c,EV_id__r.EV_HostingState__c,EV_id__r.AS_HostingCity__c, EV_id__r.Owner.ID,
                             EV_id__r.EV_HostingLocation__c,EV_id__r.EV_HostingOrgName__c from User_Profile_Event__c where EV_id__c != NULL AND User_id__c=: UserInfo.getUserId() 
@@ -236,6 +241,7 @@ u.EV_id__r.CreatedDate, u.EV_id__r.Attendee_Tags__c,u.EV_id__r.EV_HostingOrgName
     public boolean displayAttendeeRegistrationLink{get;set;}
     
     public void EventValues(){ 
+    
     displayAttendeeRegistrationLink  = false; 
          if(listOfEvents.size()>0){
         EventDetail = [SELECT ID, Name,EV_Title__c,Status__c,EV_HostingState__c,AS_HostingCity__c,EV_HostingLocation__c,
@@ -437,6 +443,10 @@ u.EV_id__r.CreatedDate, u.EV_id__r.Attendee_Tags__c,u.EV_id__r.EV_HostingOrgName
     
     
     public void AttendeeSettings(){
+    String browserType = Apexpages.currentPage().getHeaders().get('USER-AGENT'); 
+if(browserType != null && browserType.contains('MSIE')){
+Apexpages.currentPage().getHeaders().put('X-UA-Compatible', 'IE=9');
+}
       system.debug('BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB'+ EventDetail.id);
       
         attendeeSetting = new BL_SecuritySettingsCon(EventDetail.id);
@@ -449,6 +459,10 @@ u.EV_id__r.CreatedDate, u.EV_id__r.Attendee_Tags__c,u.EV_id__r.EV_HostingOrgName
     }
     
      public void viewEventSchedule(){
+     String browserType = Apexpages.currentPage().getHeaders().get('USER-AGENT'); //gets the browser name
+if(browserType != null && browserType.contains('MSIE')){
+Apexpages.currentPage().getHeaders().put('X-UA-Compatible', 'IE=9');
+}
         
         addSch = new EventSchedule__c(); 
         eventScheduleBool = TRUE;
@@ -507,6 +521,10 @@ u.EV_id__r.CreatedDate, u.EV_id__r.Attendee_Tags__c,u.EV_id__r.EV_HostingOrgName
     }
     
     public void getScheduleforEvent(){
+    String browserType = Apexpages.currentPage().getHeaders().get('USER-AGENT'); 
+if(browserType != null && browserType.contains('MSIE')){
+Apexpages.currentPage().getHeaders().put('X-UA-Compatible', 'IE=9');
+}
              eventscheduleDB =[SELECT ES_EndDate__c,ES_StartDate__c,ES_StartTime__c,id, ES_Description__c, ES_EndTime__c, ES_Location__c, ES_Presenter__c,ES_ProgramName__c FROM EventSchedule__c WHERE EV_id__c =: EventDetail.ID ORDER BY ES_StartTime__c,ES_StartDate__c ];
           
           
@@ -559,6 +577,10 @@ u.EV_id__r.CreatedDate, u.EV_id__r.Attendee_Tags__c,u.EV_id__r.EV_HostingOrgName
       
       
       public void UpdateAttendeeSetting(){
+      String browserType = Apexpages.currentPage().getHeaders().get('USER-AGENT'); 
+if(browserType != null && browserType.contains('MSIE')){
+Apexpages.currentPage().getHeaders().put('X-UA-Compatible', 'IE=9');
+}
             system.debug('11111111111111111111111'+  attendeeSetting.comp  );
           system.debug('2222222222222222222222'+  attendeeSetting.homeinfo );
        
@@ -848,7 +870,7 @@ u.EV_id__r.CreatedDate, u.EV_id__r.Attendee_Tags__c,u.EV_id__r.EV_HostingOrgName
     }
     
     public void AddSchedule(){
-           
+         
            ScheduleHeading = 'Add Schedule';
            addSch = new EventSchedule__c();
            addScheduleBool = TRUE;
@@ -864,6 +886,7 @@ u.EV_id__r.CreatedDate, u.EV_id__r.Attendee_Tags__c,u.EV_id__r.EV_HostingOrgName
      }
       
     Public Void AddEvent(){
+    
     AddEventBtn = true;
     
     Event = new Event__c();
@@ -871,12 +894,13 @@ u.EV_id__r.CreatedDate, u.EV_id__r.Attendee_Tags__c,u.EV_id__r.EV_HostingOrgName
     eventheading = 'Add Event';
     }
     public void getEventDetails(){
+    
            editsch = [SELECT ES_StartDate__c,ES_EndDate__c,name,ES_StartTime__c,id, ES_Description__c, ES_EndTime__c, ES_Location__c, ES_Presenter__c,ES_ProgramName__c FROM EventSchedule__c WHERE ID =: eventname ];
           detailScheduleBool = TRUE;
       }  
    
     public void editSchedule(){
-           
+         
            editsch = [SELECT ES_StartDate__c,ES_EndDate__c,name,ES_StartTime__c,id, ES_Description__c, ES_EndTime__c, ES_Location__c, ES_Presenter__c,ES_ProgramName__c FROM EventSchedule__c WHERE ID =: eventname ];
           
           system.debug('6666666666666666666666'+  editsch );
@@ -915,6 +939,10 @@ u.EV_id__r.CreatedDate, u.EV_id__r.Attendee_Tags__c,u.EV_id__r.EV_HostingOrgName
       } 
        
     Public Void Cancel(){
+    String browserType = Apexpages.currentPage().getHeaders().get('USER-AGENT'); 
+if(browserType != null && browserType.contains('MSIE')){
+Apexpages.currentPage().getHeaders().put('X-UA-Compatible', 'IE=9');
+}
         eventLogoErrorString ='';
     AddEventBtn = FALSE;
     addScheduleBool = FALSE;
@@ -925,7 +953,10 @@ u.EV_id__r.CreatedDate, u.EV_id__r.Attendee_Tags__c,u.EV_id__r.EV_HostingOrgName
     BadgeSettingsBool = FALSE;
     }
     public void CancelSchedule(){
-        
+     String browserType = Apexpages.currentPage().getHeaders().get('USER-AGENT'); 
+if(browserType != null && browserType.contains('MSIE')){
+Apexpages.currentPage().getHeaders().put('X-UA-Compatible', 'IE=9');
+}   
         eventScheduleBool = FALSE;
     
     }
@@ -1129,6 +1160,7 @@ u.EV_id__r.CreatedDate, u.EV_id__r.Attendee_Tags__c,u.EV_id__r.EV_HostingOrgName
     
     public void ShowPreviousList()
     {
+    
        dataSavePointMap = new MAP<ID, DataImport_SavePoint__c>([select ID, NAME, createddate,DS_FileName__c,DS_ImportedHistory__c,Event__r.EV_Title__c,
                                    DS_TotalRecords__c,DS_ImportedId__c,Event__r.EV_StartDate__c FROM  DataImport_SavePoint__c WHERE User_id__c =: UserInfo.getUserId() AND Event__c =: SelectedEventId ORDER BY Event__r.createdDate DESC ]);
        
@@ -1139,6 +1171,7 @@ u.EV_id__r.CreatedDate, u.EV_id__r.Attendee_Tags__c,u.EV_id__r.EV_HostingOrgName
     }
     
     public void deleteDataImportHistory(){
+    
         
          System.debug('^^^^^^^^^^^^^^'+ApexPages.currentPage().getParameters().get('deleteDataImport') );
      
@@ -1188,7 +1221,7 @@ u.EV_id__r.CreatedDate, u.EV_id__r.Attendee_Tags__c,u.EV_id__r.EV_HostingOrgName
     public Boolean avery22806Bool{get; set;}
     
     public void SelectedBadgeSettings(){
-        
+      
         if(EventDetail.Event_Printer__c== 'Dymo Label(30856,Single Label)'){
             dymoBool = TRUE;
             avery5392Bool = FALSE;
@@ -1234,6 +1267,10 @@ u.EV_id__r.CreatedDate, u.EV_id__r.Attendee_Tags__c,u.EV_id__r.EV_HostingOrgName
     
     
     public void saveBadgeSettings(){
+    String browserType = Apexpages.currentPage().getHeaders().get('USER-AGENT'); //gets the browser name
+if(browserType != null && browserType.contains('MSIE')){
+Apexpages.currentPage().getHeaders().put('X-UA-Compatible', 'IE=9');
+}
     
         if(EventDetail.Event_Printer__c == 'Dymo Label(30856,Single Label)' ){
             
@@ -1411,6 +1448,10 @@ u.EV_id__r.CreatedDate, u.EV_id__r.Attendee_Tags__c,u.EV_id__r.EV_HostingOrgName
  
  }
   public void showPopup() {
+   String browserType = Apexpages.currentPage().getHeaders().get('USER-AGENT'); 
+if(browserType != null && browserType.contains('MSIE')){
+Apexpages.currentPage().getHeaders().put('X-UA-Compatible', 'IE=9');
+}
         displayPopup = true;
     }
      public String  strNamesmult{get;set;}
@@ -1456,6 +1497,10 @@ u.EV_id__r.CreatedDate, u.EV_id__r.Attendee_Tags__c,u.EV_id__r.EV_HostingOrgName
 
 
     public void EBEpop(){
+    String browserType = Apexpages.currentPage().getHeaders().get('USER-AGENT'); 
+if(browserType != null && browserType.contains('MSIE')){
+Apexpages.currentPage().getHeaders().put('X-UA-Compatible', 'IE=9');
+} 
     error=false;
     user_key='';
     EventBriteId1 ='';
@@ -1471,6 +1516,10 @@ u.EV_id__r.CreatedDate, u.EV_id__r.Attendee_Tags__c,u.EV_id__r.EV_HostingOrgName
      public boolean error{get;set;}
      public string errormsg{get;set;}
      public PageReference getEventDetails1() {
+     String browserType = Apexpages.currentPage().getHeaders().get('USER-AGENT'); 
+if(browserType != null && browserType.contains('MSIE')){
+Apexpages.currentPage().getHeaders().put('X-UA-Compatible', 'IE=9');
+} 
      System.debug('@@@@@EventBrite Id'+user_key);
     if(user_key == '' || EventBriteId1 == ''){
     error=true;
@@ -1776,16 +1825,28 @@ u.EV_id__r.CreatedDate, u.EV_id__r.Attendee_Tags__c,u.EV_id__r.EV_HostingOrgName
     }
     
     public pagereference EventClose(){
+    String browserType = Apexpages.currentPage().getHeaders().get('USER-AGENT'); 
+if(browserType != null && browserType.contains('MSIE')){
+Apexpages.currentPage().getHeaders().put('X-UA-Compatible', 'IE=9');
+}
   
   eventBritePop2 = false;
    return null;
     
   }  
     public void closePopup() {
+    String browserType = Apexpages.currentPage().getHeaders().get('USER-AGENT'); 
+if(browserType != null && browserType.contains('MSIE')){
+Apexpages.currentPage().getHeaders().put('X-UA-Compatible', 'IE=9');
+}
      eventBritePop1 = false;
         displayPopup = false;
     }
      public pagereference EventToBoothLeads() {
+     String browserType = Apexpages.currentPage().getHeaders().get('USER-AGENT'); 
+if(browserType != null && browserType.contains('MSIE')){
+Apexpages.currentPage().getHeaders().put('X-UA-Compatible', 'IE=9');
+}
      eventBritePop2 = false;
  try{
     String start;
@@ -1861,6 +1922,10 @@ return pf;
     }
 
  public void EBApop(){
+ String browserType = Apexpages.currentPage().getHeaders().get('USER-AGENT'); 
+if(browserType != null && browserType.contains('MSIE')){
+Apexpages.currentPage().getHeaders().put('X-UA-Compatible', 'IE=9');
+} 
 error=false;
 
   eventBritePop10= true;
@@ -1878,6 +1943,10 @@ return null;
     
     public boolean messagebool{get;set;}
     public List<SelectOption> getSelectEventId(){
+    String browserType = Apexpages.currentPage().getHeaders().get('USER-AGENT'); 
+if(browserType != null && browserType.contains('MSIE')){
+Apexpages.currentPage().getHeaders().put('X-UA-Compatible', 'IE=9');
+}
     List<selectoption> Options = new List<selectoption>();
     EventBriteEvents = [Select EV_id__r.id,EV_id__r.EV_Title__c from User_Profile_Event__c where User_id__r.id=:UserInfo.getUserId()];
     system.debug('::::::::::::::::::;;;;;;;'+EventBriteEvents);
@@ -1912,7 +1981,10 @@ return null;
         return null;
     }
     public PageReference getAttendees() {
- 
+    String browserType = Apexpages.currentPage().getHeaders().get('USER-AGENT'); 
+if(browserType != null && browserType.contains('MSIE')){
+Apexpages.currentPage().getHeaders().put('X-UA-Compatible', 'IE=9');
+} 
  
  
     if(SelectEventId1 == null){
@@ -2119,6 +2191,10 @@ return null;
      return null;
    }
 public pagereference EventClose2(){
+String browserType = Apexpages.currentPage().getHeaders().get('USER-AGENT'); 
+if(browserType != null && browserType.contains('MSIE')){
+Apexpages.currentPage().getHeaders().put('X-UA-Compatible', 'IE=9');
+} 
 
 eventbritepop11 = false;
 

@@ -163,7 +163,7 @@ public class QRCode_EventScheduleNewCon {
           system.debug('6666666666666666666666    '+addSch);
             
           system.debug('&&&&&&&&&&&&&&&&&&&&&&&&&&&   '+addSch.ES_ProgramName__c );
-          
+          try{
           addSch.ES_StartDate__c = Date.valueOf(EventStartDate);
           addSch.ES_EndDate__c = Date.valueOf(EventEndDate);
           addSch.EV_id__c = eventid;
@@ -171,7 +171,7 @@ public class QRCode_EventScheduleNewCon {
           addScheduleBool = FALSE;
          system.debug('7777777777777777777777    '+ addSch );
           getScheduleforEvent();
-          
+          } catch(exception e){}
           
       }  
       

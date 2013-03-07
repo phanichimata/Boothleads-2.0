@@ -1,28 +1,21 @@
 public with sharing class sampleapgeUrl {
 
-    public PageReference send() {
-    for(user sendEmail:[select id,firstname,Name,LastName,email,userName from user where id ='005O0000000rvTc' ]){
-   string email ='phani.chimata@gmail.com';
-   Messaging.SingleEmailMessage mail = new Messaging.SingleEmailMessage();
-    mail.setUseSignature(false);
-    mail.setToAddresses(new String[] { email });
-    mail.setSubject('You are registeras as boooth admin Successfully');
-    mail.setHtmlBody('Dear '+sendEmail.Name+','+'<br /><br />Congratulations!!<br />Your login for your Booth Admin Portal for Event "'
-    +forEventName  +'" was successfully created.<br /><br />Please visit http://www.boothleads.com to login to your Booth Admin Portal.<br /><br />If you have any questions, please contact your Event Administrator.<br /><br />Please note that your Booth Leads portal access is valid only for 30 days from the end of your event.<br />Please remember to export all your leads.<br />If you need access beyond this, please contact support.<br /><br />'
-    +'Thank you!<br />BoothLeads Customer Support<br />support@boothleads.com');
-   
-    Messaging.sendEmail(new Messaging.SingleEmailMessage[] { mail });
- 
-  
-  }
-        return null;
-    }
 
-public string forEventName  {get;set;}
-public sampleapgeUrl (){
-forEventName  ='phani Event';
-  
+public void send(){
+
+  String EmailBody = 'We are working with BoothLeads to help you with your event '+ 'Phani Event'+'. All badges will now have a QR code specific to your name and company.You will be able to scan the QR code on-site,make notes about that individual and follow up with them.'+'\n\n'+'You have been added to the BoothLeads database for '+  'Phani Event'+'<u><b> Now what?</b></u>'
++'\n\n\n'+'<ul> Go to http://www.boothleads.com to login into your Booth admin Portal as well as your mobile app. <b>Username and Password are provided at the bottom of this email.</b></ul>'
++'\n\n'+' Here are some youtube videos to give you an idea of what will happen:'+'\n\n'+' o What is a QR code: http://www.youtube.com/watch?v=b8EpazIwFys'+'\n\n'+' o How to use Booth Admin Portal :  http://www.youtube.com/watch?v=jcg2qbS_TaM&feature=youtu.be'
++'\n\n'+'<ul> Next step….Download the appropriate app to your phone either from Google Play Store or AppStore or BlackBerry World.</ul>'
++'\n\n'+'Then you are ready to scan the badges on-site!'+'\n\n'+'Please note that your Booth Leads portal access is valid only for 30 days from the end of your event'
++'\n\n'+ 'Please remember to export all your leads.'+'\n\n'+'If you need access beyond this, please contact support.'+'\n\n'+'Thank you!'+'\n'+'BoothLeads Customer Support'+'\n'+'support@boothleads.com';
+      
+         
+ String EmailSubject = 'Booth Leads and '+ 'Phani Event';
+
+
 }
+
 
 
 }

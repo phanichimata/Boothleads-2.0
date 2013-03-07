@@ -44,6 +44,7 @@ public BL_EventAdmin_DashboardCon()
  if(browserType != null && browserType.contains('MSIE')){
   Apexpages.currentPage().getHeaders().put('X-UA-Compatible', 'IE=9');
  }
+ try{
  allEventsIds= new LIST<ID>();
  LoginUserId = Userinfo.getUserId();
  LIST<User_Profile_Event__c> Events2 = [SELECT id,Ev_id__r.Ev_Title__c,Ev_Id__c 
@@ -82,6 +83,8 @@ public BL_EventAdmin_DashboardCon()
  TotalVisitedAttendees = Visitedattendeecount();
  TotalMobileUsers = Mobileusers();
  TotalScansNum = Totalscans();
+ }
+ catch(exception e){}
 }
 //------------------------------------------- Constructor End --------------------------------------------
 
@@ -121,14 +124,14 @@ return vistedAttendees;
 
 public Integer getBoothcount() 
 {
-Aggregateresult[] boothCount =[SELECT Bt_Id__c
+Aggregateresult[] boothCount =[SELECT BoothAdmin_id__c
                                FROM User_Profile_Event__c
                                WHERE EventAdmin_Id__c =: LoginUserId 
                                AND Ev_id__c IN: eventIds                            
                                AND UEP_isActive__c=true      
                                AND Bt_Id__r.BT_isBoothActive__c=true                  
                                AND Bt_Id__c!=null
-                               GROUP BY Bt_Id__c ];
+                               GROUP BY BoothAdmin_id__c];
 integer boothsCount=boothCount.size();
 return boothsCount;
 } 
@@ -159,7 +162,8 @@ return totalscancount;
 
 //--------------------------------- Event Selection Action Support Start ---------------------------------
 public void EventDetailDashBoard()
-{    
+{ 
+ try{   
  if(EventString != 'aa12b34c56d78e9'){    
   allEventsIds= new LIST<ID>();       
   allEventsIds.add(EventString);          
@@ -178,13 +182,16 @@ public void EventDetailDashBoard()
   indgridreport();
   ioschart();
   hourlyscanchart();    
- }                 
+ }   
+ }
+ catch(exception e){}              
 }
 //---------------------------------- Event Selection Action Support End ----------------------------------
 
 //---------------------------------------- Geography Chart Start -----------------------------------------
  public void geoChart() 
- {     
+ { 
+ try{    
   graphy = [SELECT AS_id__r.AS_Work_States__c w,count(id) 
             FROM Event_Attendee_Mapping__c 
             WHERE Ev_id__c  IN: allEventsIds 
@@ -197,13 +204,16 @@ public void EventDetailDashBoard()
    // ta.AS_id__r.AS_Work_States__c=states.get(ta.AS_id__r.AS_Work_States__c);
    geographyinner es = new geographyinner(ta);   
    grphy.add(es); 
-  }     
+  } 
+  }
+ catch(exception e){}    
  } 
 //----------------------------------------- Geography Chart End ------------------------------------------
 
 //---------------------------------------- Geography Grid Start ------------------------------------------
 public void  geographyreport() 
 {
+ try{
  indusreport= new LIST<LIST<Event_Attendee_Mapping__c>>();
  integer recCount=0;
  query = [SELECT id,AS_id__r.AS_FirstName__c,AS_id__r.AS_LastName__c,AS_id__r.AS_Work_States__c,AS_id__r.AS_CellPhone__c,AS_id__r.AS_Email__c  
@@ -211,7 +221,7 @@ public void  geographyreport()
                 WHERE Ev_id__c IN :allEventsIds 
                 AND AS_id__r.AS_Work_States__c!=null 
                 AND AS_id__r.AS_Work_States__c!= 'None' 
-                ORDER BY AS_id__r.AS_Work_States__c DESC NULLS LAST LIMIT 2250];
+                ORDER BY AS_id__r.AS_Work_States__c ASC NULLS LAST LIMIT 2250];
 /** map<string,string> states=new map<string,string>();
     states.put('None','None');
     states.put('Alabama','AL');
@@ -326,12 +336,15 @@ public void  geographyreport()
   }
   if(recCount !=0)
   indusreport.add(an);
+  }
+ catch(exception e){}
 }
 //---------------------------------------- Geography Grid End --------------------------------------------
 
 //--------------------------------------- Industry Chart Start -------------------------------------------
  public pagereference industryAdminChart() 
  {  
+ try{
   induchrt= [SELECT AS_id__r.AS_PrimaryBusinessCategory1__c p,count(id) 
              FROM Event_Attendee_Mapping__c 
              WHERE Ev_id__C IN: allEventsIds 
@@ -356,6 +369,9 @@ public void  geographyreport()
   else if(maxValueIndustry <= 10){
    maxValueIndustry =10;
   }
+  else if(maxValueIndustry <= 20){
+   maxValueIndustry =20;
+  }
   else if(maxValueIndustry <= 30){ 
    maxValueIndustry =30;
   }
@@ -365,14 +381,18 @@ public void  geographyreport()
   else{
    Integer modmod = maxValueIndustry / 100;    
    maxValueIndustry = 100 *(modmod+1);    
+  }  
   }
-  return null;    
+ 
+ catch(exception e){}  
+  return null;  
  } 
 //---------------------------------------- Industry Chart End --------------------------------------------
 
 //---------------------------------------- Industry Grid Start ------------------------------------------- 
 public void indgridreport() 
 {
+ try{
  indusgridreport=new LIST<LIST<Event_Attendee_Mapping__c>>();
  integer recCount=0;
  query1 = [SELECT id,AS_id__r.AS_FirstName__c,AS_id__r.AS_LastName__c,AS_id__r.AS_Company__c,AS_id__r.AS_PrimaryBusinessCategory1__c,AS_id__r.AS_CellPhone__c,AS_id__r.AS_Email__c  
@@ -380,7 +400,7 @@ public void indgridreport()
                     WHERE Ev_id__c IN: allEventsIds 
                     AND AS_id__r.AS_PrimaryBusinessCategory1__c!=null 
                     AND AS_id__r.AS_PrimaryBusinessCategory1__c!= 'None' 
-                    ORDER BY AS_id__r.AS_PrimaryBusinessCategory1__c DESC NULLS LAST LIMIT 2250];
+                    ORDER BY AS_id__r.AS_PrimaryBusinessCategory1__c ASC NULLS LAST LIMIT 2250];
  gn = new LIST<Event_Attendee_Mapping__c>();
        
   for(Event_Attendee_Mapping__c v:query1)
@@ -402,6 +422,8 @@ public void indgridreport()
   } 
   if(recCount !=0)
   indusgridreport.add(gn);
+  }
+ catch(exception e){}  
 }
 //----------------------------------------- Industry Grid End --------------------------------------------   
  
@@ -412,6 +434,7 @@ public Integer eventEndTime{get; set;}
 
 public void hourlyscanchart()
 { 
+try{
  hourlyscans = new LIST<hourlyscansinner>();
  EventDate = new LIST<SelectOption>();
  
@@ -436,10 +459,13 @@ public void hourlyscanchart()
   checkeventdates=false;
  }
  scannedChartByDate();
+ }
+ catch(exception e){} 
 }
 
 public void scannedChartByDate()
 {
+ try{
  maxValueHourly =0;
  String ssss =  eventtime.StartTime__c.SubString(0,eventtime.StartTime__c.lastIndexOf(':'));
  scanchart= [SELECT HOUR_IN_DAY(convertTimezone(BVS_id__r.ScanTime__c)),count(id)
@@ -481,6 +507,9 @@ public void scannedChartByDate()
  else if(maxValueHourly <= 10){ 
   maxValueHourly =10;
  } 
+ else if(maxValueHourly <= 20){ 
+  maxValueHourly =20;
+ } 
  else if(maxValueHourly <= 30){ 
   maxValueHourly =30;
  }
@@ -490,7 +519,9 @@ public void scannedChartByDate()
  else{
   Integer modmod = maxValueHourly / 100;    
   maxValueHourly = 100 *(modmod+1);    
- }     
+ }    
+ }
+ catch(exception e){}  
 }
 
 public void pickdate()
@@ -503,6 +534,7 @@ public void pickdate()
 //------------------------------------- Device Usage Chart Start ----------------------------------------   
 public pagereference ioschart()
 {
+ try{
  devicechart = [SELECT OsVersion__c s,count(id) 
                 FROM DeviceUsage__c
                 WHERE Ev_id__c IN: allEventsIds 
@@ -514,6 +546,8 @@ public pagereference ioschart()
   iosdeviceinner ss = new iosdeviceinner(is);
   iosdevice.add(ss);
  } 
+ }
+ catch(exception e){}  
  return null;
 }
 //-------------------------------------- Device Usage Chart End ----------------------------------------- 

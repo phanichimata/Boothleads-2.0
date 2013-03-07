@@ -5,6 +5,7 @@ public without sharing class BL_Eventadmin_SampleBoothCon1 {
   public List<User_Profile_Event__c> listOfBoothadminsforExport{get;set;}  
   public Boolean ShowEventName{get;set;}
   public String SelectedEventName{get;set;}
+  public String selectedBoothName{get;set;}
   
   public void CommonMethod(){
   ListOfbooths1();
@@ -193,12 +194,14 @@ Public List<Id> BoothIds{get;set;}
       Button = False;
       ImportButton = False;
       SelectedEventName = '';
+      SelectedBoothName = '';
     }
     if(selectEvent != '--Choose Event--' &&  selectEvent != null) {
      displayBoothExport = True;
      Button = true;
      ImportButton = true;
      ShowButton = False;
+     
     
     }
     if(selectEvent != null && selectBooth != null){
@@ -214,6 +217,7 @@ Public List<Id> BoothIds{get;set;}
      ImportButton = False;
      ShowButton = false;
      SelectedEventName = '';
+      SelectedBoothName = '';
     }
    
    try{
@@ -307,7 +311,10 @@ Public List<Id> BoothIds{get;set;}
         
          InnerAdminClass.add(new BoothAdminInnerDisplay(EventBoothAdm,BStatus));
   }
-  
+      Booth__c BoothName = [select BT_Name__c from Booth__c where id=: SelectBooth ];
+    system.debug(' ------- !!!!!!!!!! @@@@@@@@@@@@-----'+BoothName);
+    SelectedeventName = ''; 
+    SelectedBoothName = 'of '+BoothName.BT_Name__c;
      system.debug('&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&'+selectbooth );
   }     
    
@@ -331,6 +338,8 @@ Public List<Id> BoothIds{get;set;}
      Con = New Contact();
      Booth = new Booth__c();
      BoothAdminUser = new User();
+     
+       Email = '';
       }
       
       Public pageReference AddBoothAdmin(){
@@ -342,12 +351,11 @@ Public List<Id> BoothIds{get;set;}
         DisplayNoEventMessage = False;
         con = new Contact();
         BoothAdminUser = new User();  
-        //showButton =true;    
+        //showButton =true;   
+         
       return null;
   }
-//------------------ Get only booth Details (to be removed) -------
-    Public Void getOnlyBoothDetails(){
-    } 
+
 //------------------ Inner Class --------------
     class BoothAdminInnerDisplay{
     Public String Status{get;set;}
@@ -454,7 +462,7 @@ Public List<Id> BoothIds{get;set;}
                system.debug('======== ERROR 1111111111111 ==========='  );
                  // ApexPages.addMessage(new ApexPages.message(ApexPages.severity.INFO,'He is Already Registerd as BoothAdmin for this Event'));
                  error=true;
-                 errormessage='He is Already Registerd as BoothAdmin for this Event';
+                 errormessage='Email ID is already registered as Booth Admin for this Event';
                }
                else{
                
@@ -525,19 +533,19 @@ Public List<Id> BoothIds{get;set;}
                 // system.debug('---------to Find what will be the output####### -------'+Personnelidtosend );
                 Event__c ee=[select EV_Title__c from Event__c where id =: SelectEvent];
                 String emailMessage =  'Dear '+Firstnametomail+' '+Lastnametomail+','+'<br/><br/>'+
-               'Congratulations!!'+'<br />'+'Your Boothleads id is now added to the event  '+ ee.EV_Title__c +'  Please continue to use your existing username '+' '+ EmailIdtimail +' '+' and password '+'<br />'+
+               'Congratulations!!'+'<br />'+'Your Boothleads id is now added to the event '+ EmailEventName +'<br/>'+' Please continue to use your existing username ' + ''+EmailIdtimail +''+' and password '+'<br />'+
                 'combination to access this new event.'+'<br />'+'<br /><br />'+'Please visit http://www.boothleads.com to login to your Portal.'+'<br /><br />'+
                 'If you have any questions, please contact your Event Administrator.'
                 +'<br/><br/>'+'Please note that your Booth Leads portal access is valid only for 30 days from the end of your event.'
                 +'<br/>'+'Please remember to export all your leads.'+'<br/>'+'If you need access beyond this, please contact support.'
-                +'<br /><br/><br/>'+'BoothLeads Customer Support'+'<br/>'+'Support@boothleads.com'; 
-                 Messaging.singleEmailMessage Mail = new Messaging.singleEmailMessage();
+                +'<br /><br/><br/>'+'BoothLeads Customer Support'+'<br/>'+'Support@boothleads.com';                 
+                Messaging.singleEmailMessage Mail = new Messaging.singleEmailMessage();
                  string [] toAddresses= new string[]
                  {
                      EmailIdtimail
                  };
                      mail.setToAddresses(toAddresses);
-                     mail.setSubject('Booth Admin ID for Mobile App has been created successfully!');
+                     mail.setSubject('Welcome to '+'"'+EmailEventName +'"'+' Event - Your registration was successful');
                      mail.setPlainTextBody(emailMessage);
                      mail.setHtmlBody(emailMessage);
                      Messaging.sendEmail(new Messaging.SingleEmailMessage[] { mail });               
@@ -556,24 +564,28 @@ Public List<Id> BoothIds{get;set;}
                
                system.debug('======:::::::: Retriving Profile Id from Standard Profile Object ========::::::'+UserAsBA);              
               Event__c ee=[select EV_Title__c from Event__c where id =: SelectEvent];
-               String EmailContent = 'Congratulations!!'+'\n'+'Your login for your Booth Admin Portal for Event '+'"'+ee.EV_Title__c+'"'+' was successfully created.'
-                               +'\n\n'+'Please visit http://www.boothleads.com to login to your Booth Admin Portal.'+'\n\n'+'If you have any questions, please contact your Event Administrator.'
-                               +'\n\n'+'Please note that your Booth Leads portal access is valid only for 30 days from the end of your event.'+'\n'+'Please remember to export all your leads.'
-                               +'\n'+'If you need access beyond this, please contact support.'
-                               +'\n\n\n'+'Thank you!'+'\n'+'BoothLeads Customer Support'+'\n'+'support@boothleads.com';  
-               
-              String EmailSubject = 'Welcome to '+'"'+ee.EV_Title__c+'"'+' Event - Your registration was successful';
-               
+              
+              String EmailContent = 'We are working with BoothLeads to help you with your event '+ ee.EV_Title__c +'. All badges will now have a QR code specific to your name and company. You will be able to scan the QR code on-site, make notes about that individual and follow up with them.'+'\n\n'+'You have been added to the BoothLeads database for '+ ee.EV_Title__c +'\n\n\n'+'Now what?'
+                               +'\n\n\n'+'•   Go to  http://www.boothleads.com to login into your Booth Admin Portal as well as your mobile app.USERNAME AND PASSWORD ARE PROVIDED AT THE BOTTOM OF THIS EMAIL.'                              
+                               +'\n\n\n'+'•   Here are some youtube videos to give you an idea of what will happen:'+'\n\n'+'    o   What is a QR code: http://www.youtube.com/watch?v=b8EpazIwFys'+'\n\n'+'    o   How to generate a QR code so that attendees can view your brochures or '+'\n'+'        flyers: http://www.youtube.com/watch?v=jcg2qbS_TaM&feature=youtu.be'
+                               +'\n\n\n'+'•   Next step….Download the appropriate app to your phone either from Google'+'\n'+'Play Store or AppStore or BlackBerry World.'
+                               +'\n\n\n\n'+'        Then you are ready to scan the badges on-site!'+'\n\n'+'        Please note that your Booth Leads portal access is valid only for 30 days from the end of your event'
+                               +'\n\n'+ '        We will be available on-site at the show (across from the registration desk) to assist you throughout the event.'+'\n\n'+'        If you need assistance before that time, contact us at support@boothleads.com.'+'\n\n\n'+'        Thank you!'+'\n'+'        BoothLeads Customer Support'+'\n'+'        Phone: 1-(800)-492-1289'  ;
+                   
+                   String EmailSubject = 'Booth Leads and '+ee.EV_Title__c;
+                   
+                                 
                
                Con.LastName = BoothAdminUser.LastName;
                Con.FirstName = BoothAdminUser.FirstName;
-             // Con.AccountId = '001F000000qdOJp';  // Developement Account Id
-                Con.AccountId = '001O0000007AN41';     
-               Con.Email_Notes__c = EmailContent;
-               Con.Email_Subject__c = EmailSubject;
+             //Con.AccountId = '001F000000qdOJp';  // Developement Account Id
+                 Con.AccountId = '001O0000007AN41';     
+              Con.Email_Notes__c = EmailContent;
+            //  Con.HTML_Email__c = HTMLEmailContent ;
+                  con.Email_Subject__c = EmailSubject;
                insert Con ;
                
-               system.debug('=====::::::::: Inserting Contact :::::::======='+Con );
+               system.debug('=====::::::::: Inserting Contact :::::::======='+Con);
              
                
                 BoothAdminUser.ContactID = Con.id;
@@ -603,18 +615,18 @@ Public List<Id> BoothIds{get;set;}
                
                
                 
-            //    insert BoothAdminUser;
+                insert BoothAdminUser;
                 
                 system.debug('----- ****************'+BoothAdminUser.id);
-                
+                 
                  System.ResetPasswordResult rt= system.ResetPassword(BoothAdminUser.id,true);
                  BoothAdminUser.password__c =rt.getPassword();
-               
+                 Database.DMLOptions dmo = new Database.DMLOptions();
+                 dmo.EmailHeader.triggerUserEmail = true;
+                 BoothAdminUser.setOptions(dmo); 
                  update BoothAdminUser;
                  
-                 Database.DMLOptions dmo = new Database.DMLOptions();
-                dmo.EmailHeader.triggerUserEmail = true;
-                BoothAdminUser.setOptions(dmo);  
+                   
                
                
                 system.debug('----@@@:::Inserting Boothadmin into User Object:::@@@--------'+BoothAdminUser);
@@ -665,18 +677,22 @@ Public List<Id> BoothIds{get;set;}
    ApexPages.addMessages(e);
    DataBase.rollBack(sp);
     }   
-    Email = '';
+  
+    
     }
     
     Public Void CancelBooth(){
-   
+    String browserType = Apexpages.currentPage().getHeaders().get('USER-AGENT'); //gets the browser name
+    if(browserType != null && browserType.contains('MSIE')){
+    Apexpages.currentPage().getHeaders().put('X-UA-Compatible', 'IE=9');
+    }    
     CreatBoothAdminPopUp = FaLSE;
     }
    
 // ---------------------------- Create Multiple Booth Admins to Single Booth --------------------------
                 Public Pagereference SaveOnlyBA(){
                 
-          //----------------------mythily changed----------  
+ 
                 system.debug('-------------- ********************8 ------------------'+SelectBooth);
                   
                 List<User> ComparingUserEmailsev = [Select Id,Email,Username From User Where UserName =: Email AND  Profile.Name=:'Event Admin' ];
@@ -700,7 +716,7 @@ Public List<Id> BoothIds{get;set;}
                if(FindingDuplicates.size()>0){
                //ApexPages.addMessage(new ApexPages.message(ApexPages.severity.INFO,'Booth Admin is Already an Admin for this Booth'));
                 error=true;
-               errormessage='UserName is Already existed as a Booth Admin for this Booth';
+               errormessage='Email ID is already registered as Booth Admin for this Event';
                }
                else{       
                Profile__c CustomProfile = [select Id,PR_Name__c,PR_Version__c from Profile__c where PR_Name__c='BoothAdmin'];
@@ -809,18 +825,19 @@ Public List<Id> BoothIds{get;set;}
                system.debug('======:::::::: Retriving Profile Id from Standard Profile Object ========::::::'+UserAsBA);              
               
                Event__c ee =[select EV_Title__c from Event__c where id =: SelectEvent];
-               String EmailContent = 'Congratulations!!'+'\n'+'Your login for your Booth Admin Portal for Event '+'"'+ee.EV_Title__c+'"'+' was successfully created.'
-                               +'\n\n'+'Please visit http://www.boothleads.com to login to your Booth Admin Portal.'+'\n\n'+'If you have any questions, please contact your Event Administrator.'
-                               +'\n\n'+'Please note that your Booth Leads portal access is valid only for 30 days from the end of your event.'+'\n'+'Please remember to export all your leads.'
-                               +'\n'+'If you need access beyond this, please contact support.'
-                               +'\n\n\n'+'Thank you!'+'\n'+'BoothLeads Customer Support'+'\n'+'support@boothleads.com';  
-         
-               String EmailSubject = 'Welcome to '+'"'+ee.EV_Title__c+'"'+' Event - Your registration was successful';
+              String EmailContent = 'We are working with BoothLeads to help you with your event '+ ee.EV_Title__c +'. All badges will now have a QR code specific to your name and company. You will be able to scan the QR code on-site, make notes about that individual and follow up with them.'+'\n\n'+'You have been added to the BoothLeads database for '+ ee.EV_Title__c +'\n\n\n'+'Now what?'
+                               +'\n\n\n'+'•   Go to  http://www.boothleads.com to login into your Booth Admin Portal as well as your mobile app.USERNAME AND PASSWORD ARE PROVIDED AT THE BOTTOM OF THIS EMAIL.'                              
+                               +'\n\n\n'+'•   Here are some youtube videos to give you an idea of what will happen:'+'\n\n'+'    o   What is a QR code: http://www.youtube.com/watch?v=b8EpazIwFys'+'\n\n'+'    o   How to generate a QR code so that attendees can view your brochures or '+'\n'+'        flyers: http://www.youtube.com/watch?v=jcg2qbS_TaM&feature=youtu.be'
+                               +'\n\n\n'+'•   Next step….Download the appropriate app to your phone either from Google'+'\n'+'Play Store or AppStore or BlackBerry World.'
+                               +'\n\n\n\n'+'        Then you are ready to scan the badges on-site!'+'\n\n'+'        Please note that your Booth Leads portal access is valid only for 30 days from the end of your event'
+                               +'\n\n'+ '        We will be available on-site at the show (across from the registration desk) to assist you throughout the event.'+'\n\n'+'        If you need assistance before that time, contact us at support@boothleads.com.'+'\n\n\n'+'        Thank you!'+'\n'+'        BoothLeads Customer Support'+'\n'+'        Phone: 1-(800)-492-1289'  ;
+                       
+               String EmailSubject = 'Booth Leads and '+ee.EV_Title__c;
                
                Con.LastName = BoothAdminUser.LastName;
                Con.FirstName = BoothAdminUser.FirstName;
-          // Con.AccountId = '001F000000qdOJp'; 
-                 Con.AccountId = '001O0000007AN41';  // Developement Account Id1111111             
+               //Con.AccountId = '001F000000qdOJp'; 
+                  Con.AccountId = '001O0000007AN41';  // Developement Account Id1111111             
                Con.Email_Notes__c = EmailContent;
                Con.Email_Subject__c = EmailSubject;
                insert Con ;
@@ -863,9 +880,7 @@ Public List<Id> BoothIds{get;set;}
                 BoothAdminUser.password__c = rt.getPassword();
                
            
-                Database.DMLOptions dmo = new Database.DMLOptions();
-                dmo.EmailHeader.triggerUserEmail = true;
-                BoothAdminUser.setOptions(dmo);
+               
                 update BoothAdminUser;
                 
                 
@@ -1145,7 +1160,7 @@ Public List<Id> BoothIds{get;set;}
         
          InnerAdminClass.add(new BoothAdminInnerDisplay(EventBoothAdm,BStatus));
   }
-  
+   
   ListOfbooths1();
   exportBoothadmins();
    // ListOfBoothAdmins();

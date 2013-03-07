@@ -88,6 +88,10 @@ public with sharing class BL_SecuritySettingsCon {
     
     
     public BL_SecuritySettingsCon(id eventId){
+     String browserType = Apexpages.currentPage().getHeaders().get('USER-AGENT'); 
+if(browserType != null && browserType.contains('MSIE')){
+Apexpages.currentPage().getHeaders().put('X-UA-Compatible', 'IE=9');
+}
          
          settingsforAtt = new SecurityControls__c();
     try{     

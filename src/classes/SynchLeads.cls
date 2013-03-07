@@ -96,26 +96,18 @@ global static ResponseMessage doPost(){
                 Bs.BVS_Company__c =bal2.Company;
                 Bs.BVS_City__c = bal2.City;
                 Bs.Mrecordid__c = bal2.RecordId+'-'+bal2.UserId;
-                if(bal2.SurveyAnswer1!=null && bal2.SurveyAnswer1 != ''){
                 Bs.BVS_SurveyAnswer1__c = bal2.SurveyAnswer1;
-                }
-                  if(bal2.SurveyAnswer2!=null && bal2.SurveyAnswer2 != ''){
                 Bs.BVS_SurveyAnswer2__c = bal2.SurveyAnswer2;
-                  }
-                    if(bal2.SurveyAnswer3!=null && bal2.SurveyAnswer3 != ''){
-                    Bs.BVS_SurveyAnswer3__c = bal2.SurveyAnswer3;
-                    }
-                      if(bal2.SurveyAnswer4!=null && bal2.SurveyAnswer4 != ''){
+                Bs.BVS_SurveyAnswer3__c = bal2.SurveyAnswer3;
                 Bs.BVS_SurveyAnswer4__c = bal2.SurveyAnswer4;
-                      }
+             
                // Bs.BVS_SurveyQuestion1__c = bal2.SurveyQuestion1; 
                // Bs.BVS_SurveyQuestion2__c = bal2.SurveyQuestion2;
                // Bs.BVS_SurveyQuestion3__c = bal2.SurveyQuestion3;
                // Bs.BVS_SurveyQuestion4__c = bal2.SurveyQuestion4;
                 system.debug('FollowUpsssssssssssssssss '+bal2.FollowupTypes);
-               if(bal2.FollowupTypes!=null && bal2.FollowupTypes!=''){
                  Bs.BVS_FollowUps__c = bal2.FollowupTypes; 
-                }
+               
                 system.debug('444444444444444 '+bal2.NextFollowUpdate);
                 
              if(bal2.NextFollowUpdate!='' && bal2.NextFollowUpdate!=null){  
@@ -126,7 +118,7 @@ global static ResponseMessage doPost(){
                   }
              }     
                 
-                          try{
+             try{
               if(!(bal2.ScannedTime.equals('')) ){
               system.debug('0000000000000000000 '+bal2.ScannedTime);
                   Bs.ScanTime__c= DateTime.ValueOf(bal2.ScannedTime); 

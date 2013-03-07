@@ -1,4 +1,5 @@
 Public class BL_EventAdmin_Profile_Test{
+/**
 static testmethod void BL_EventAdmin_Profile_Test(){
 
 BL_EventAdmin_ProfileCon TestCon = new BL_EventAdmin_ProfileCon();
@@ -11,5 +12,5 @@ BL_EventAdmin_ProfileCon TestCon = new BL_EventAdmin_ProfileCon();
     TestCon.checkUserId();
     TestCon.ProfileSave();
 }
-
+**/
 }
