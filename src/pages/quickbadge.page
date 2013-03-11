@@ -1,0 +1,18 @@
+<apex:page renderAs="pdf" controller="Attendee_Details_PrintCon" >
+<apex:form >
+  Welcome to Attendee Detail Page <br/>
+  {!AttendeeEmail}<br/>
+  <apex:pageBlock ><b> Attendee Details:</b><br/><br/>
+          FirstName:
+ <apex:outputText ><b>{!Attendee.AS_id__r.AS_FirstName__c}</b></apex:outputText><br/><br/>
+          LastName:
+<apex:outputText ><b>{!Attendee.AS_id__r.AS_LastName__c}</b></apex:outputText> <br/><br/>    
+          Email :
+ <apex:outputText ><b>{!Attendee.AS_id__r.AS_Email__c}</b></apex:outputText><br/><br/>   
+        Phone Number:
+ <apex:outputText ><b>{!Attendee.AS_id__r.AS_HomePhone__c}</b></apex:outputText>  <br/><br/>       
+        Hosting Organization Name:
+   <apex:outputText ><b>{!Attendee.AS_id__r.AS_Company__c}</b></apex:outputText><br/><br/>       
+       </apex:pageBlock>  
+</apex:form>
+</apex:page>

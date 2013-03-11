@@ -1,4 +1,4 @@
-<apex:page showHeader="false" controller="BL_BoothPersonnelsCon" standardStylesheets="true" id="thepage" action="{!login}">
+<apex:page showHeader="false" controller="BL_BoothPersonnelsCon" standardStylesheets="false" id="thepage" action="{!login}">
  <c:AjaxLoader LoaderImage="{!$Resource.AjaxLoaderImage}"/>
 <apex:stylesheet value="{!URLFOR($Resource.FormultiEvent,"css/screen.css")}"/> 
 <apex:stylesheet value="{!URLFOR($Resource.FormultiEvent,"css/datePicker.css")}"/>
@@ -429,9 +429,27 @@ return false;
    var hdneventName;  
  </script>
  
- <script type="text/javascript" charset="utf-8" src="http://cdn.sencha.io/ext-4.0.7-gpl/ext-all.js"></script>
- <link rel="stylesheet" type="text/css" href="http://cdn.sencha.io/ext-4.0.7-gpl/resources/css/ext-all.css"/> 
-      
+<!--
+<script type="text/javascript" charset="utf-8" src="http://cdn.sencha.io/ext-4.0.7-gpl/ext-all.js"></script>
+<link rel="stylesheet" type="text/css" href="http://cdn.sencha.io/ext-4.0.7-gpl/resources/css/ext-all.css"/> 
+
+<link rel="Stylesheet" type="text/css" href="{!$Resource.extjs4_5}/extjs4_5/resources/css/ext-all.css"/>
+<script type="text/javascript" src="{!$Resource.extjs4_1}/extjs4_1/ext-all.js"></script>
+<script type="text/javascript" src="{!$Resource.extjs4_3}/extjs4_3/examples/ux/data/PagingMemoryProxy.js"></script>
+<script type="text/javascript" src="{!$Resource.extjs4_3}/extjs4_3/examples/ux/ProgressBarPager.js"></script>
+<script type="text/javascript" src="{!$Resource.extjs4_3}/extjs4_2/examples/grid-plugins.js"></script>
+<script type="text/javascript" src="{!$Resource.extjs4_3}/extjs4_2/examples/paging.js"></script>
+<script type="text/javascript" src="{!$Resource.extjs4_3}/extjs4_3/examples/ux/CheckColumn.js"></script>
+<script type="text/javascript" src="{!$Resource.extjs4_5}/extjs4_5/src/selection/CheckboxModel.js"></script>
+<link rel="Stylesheet" type="text/css" href="{!$Resource.extjs4_3}/extjs4_3/examples/ux/grid/css/GridFilters.css"/>
+-->
+<!-- load ExtJS -->
+<apex:stylesheet value="{!$Resource.ExtJS4}/resources/css/ext-all.css" />
+<apex:includeScript value="{!$Resource.ExtJS4}/ext-all.js"/>  
+<apex:includeScript value="{!$Resource.ExtJS4}/resources/Direct.js"/>  
+<apex:includeScript value="{!$Resource.ExtJS4}/resources/PagingMemoryProxy.js"/>  
+<apex:includeScript value="{!$Resource.ExtJS4}/resources/PagingSelectionPersistence.js"/>  
+<apex:includeScript value="{!$Resource.AjaxLoaderJs}/AjaxLoader.js"/>       
  <script>
 var temp= new Array();
 </script>  
@@ -471,24 +489,6 @@ Ext.onReady(function(){
            
  </apex:repeat>        
      
-  
-   var myDirectfn = function(opts, fn, proxy) {
-    var start = opts.start,
-        end = opts.limit+opts.start,
-        data = [];
-    if (end > myData1.length) end = myData1.length;
-    for (var i = start; i < end; i++)
-        data.push(myData1[i]);
-    data.total = myData1.length;
-    fn(data, {
-        status: true,
-        result: data
-    });
-};
-
-myDirectfn.directCfg = {
-    method: {len:1}
-};
 
 GridTitle =GridTitle+' - '+fr;
 if(myData1.length<=0)
@@ -499,16 +499,16 @@ if(myData1.length<=0)
 
 store = new Ext.data.SimpleStore({
 fields:[{name:'id'},{name:'FirstName'},{name:'LastName'},{name:'Email'},{name:'Company'},{name:'Designation'},{name:'status'}],
+remoteSort: true,
 pageSize: 50,
 proxy: {
-type: 'direct',
-directFn: myDirectfn,
-reader: {
-type: 'array'
+ type: 'pagingmemory',
+ data: myData1,
+ reader: {
+  type: 'array'
+ }
 }
-},
 });
-store.loadData(myData1);
 
 var newstore=new Ext.data.ArrayStore({
  fields: ['abbr', 'action'],
@@ -580,8 +580,7 @@ header:"<b>Name</b>",flex:2, dataIndex:'FirstName',
    combostr=Ext.getCmp('myCombo').getValue();
    var total=temp+','+combostr;
    boothuserstatus1(total);   
-   alert({!boothadminiderror}); 
-   alert('total');                         
+                           
   }, 
  }
  },
@@ -600,17 +599,14 @@ height: 350,
 width: '100%',
 title: GridTitle,
 stripeRows:true,
-bbar: new Ext.PagingToolbar({
-        store: store,
-        pageSize: 50,
-        displayInfo: true  
-}),
-renderTo: 'items-grid1'                            
+bbar: Ext.create('Ext.PagingToolbar', {
+            pageSize: 10,
+            store: store,
+            displayInfo: true
+})                           
 });
-
-  
-store.loadPage(1);
-
+grid.render('items-grid1');
+store.load();
 });
 // -------------------------------------- Grid End -------------------------------------- 
  

@@ -1,0 +1,4 @@
+<apex:page controller="samplepage1con" showHeader="false">
+  
+{!rt.ScanTime__c}
+</apex:page>

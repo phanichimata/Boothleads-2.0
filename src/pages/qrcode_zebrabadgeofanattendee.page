@@ -12,10 +12,9 @@
 <apex:stylesheet value="{!URLFOR($Resource.advancedpdfresource, 'qrstyle2.css')}"/>
 <!--apex:commandButton value="pdf" action="{!generatepdf}"/-->
 
-<apex:repeat value="{!exportlistoflist}" var="dymolist">
-<apex:repeat value="{!dymolist}" var="att">
 
-<table  cellspacing="0" cellpadding="0" border="0" style="margin:0px -15px 0px -10px;">
+
+<table  cellspacing="0" cellpadding="0" border="0" style="margin:0px -15px 0px -10px;page-break-inside:avoid">
 
 <tr>
 
@@ -26,30 +25,24 @@
 
 <apex:image url="/servlet/servlet.FileDownload?file={!attach.EV_EventLogo__c}" style="{!logo};width:80px;height:45px;"/>
 </apex:outputPanel></div>
-<!--{!att.TicketTypes__c}-->
-<span style="float:right; text-align:right; padding-left:10px; padding-right:10px;">Registration Type</span>
+<!--{!eventatt.TicketTypes__c}-->
+<span style="float:right; text-align:right; padding-left:10px; padding-right:10px;">{!eventatt.TicketTypes__c}</span>
 </td></tr>
 
 
 <tr><td></td></tr>
 <tr><td align="center" style="padding:0;margin:0;font-size:30pt;font-face:Calibri (Body);"  colspan="2" >
-  <b>{!att.AS_id__r.AS_FirstName__c}</b>
+  <b>{!eventatt.AS_id__r.AS_FirstName__c}</b>
  <!--<div style="position:absolute; width:98%; float:left;font-size:8pt;padding-top:35px;text-align:center; padding:30px;padding-right:20px;  ">{!eventatt.AS_id__r.AS_Title__c}</div>-->
 </td></tr>
 <tr><td align="center" style="padding:0;margin:0;font-size:24pt;font-face:Calibri (Body);"  colspan="2" >
-{!att.AS_id__r.AS_LastName__c} 
+{!eventatt.AS_id__r.AS_LastName__c} 
  <!--<div style="position:absolute; width:98%; float:left;font-size:8pt;padding-top:35px;text-align:center; padding:30px;padding-right:20px;  ">{!eventatt.AS_id__r.AS_Title__c}</div>-->
 </td></tr>
-
-
-
-
-
-
 <tr><td style="width:80%;font-size:15pt;font-face:Calibri (Body);" >
-{!att.AS_id__r.AS_Company__c}
+{!eventatt.AS_id__r.AS_Company__c}
 </td><td align="left" style="padding-top:1px;" valign="top" rowspan="1">
-<apex:image value="https://chart.googleapis.com/chart?chs=100x100&cht=qr&chl={!att.EA_AttendeeBarcode__c}"/></td>
+<apex:image value="https://chart.googleapis.com/chart?chs=110x110&cht=qr&chl={!eventatt.EA_AttendeeBarcode__c}"/></td>
 </tr><!--
 <tr ><td style="background-color:skyblue;">
 <apex:image value="{!$Resource.badgefooter}" style="align:center"/>
@@ -57,6 +50,5 @@
 
 </table>
 
-</apex:repeat>
-</apex:repeat>
+
 </apex:page>

@@ -1,20 +1,53 @@
-<apex:page controller="Attendee_Details_PrintCon"  standardStylesheets="false" showHeader="false">
-<script language="JavaScript">
-
+<apex:page controller="saveattendee_print" showHeader="false" sidebar="false" standardStylesheets="false" id="Thepage">
+<script>
 function move() {
+var x = document.getElementById('{!$Component.Thepage:Attendee:firstname}').value;
+var y = document.getElementById('{!$Component.Thepage:Attendee:lastname}').value;
+var z = document.getElementById('{!$Component.Thepage:Attendee:phone}').value;
+var c = document.getElementById('{!$Component.Thepage:Attendee:Company}').value;
+x =x.trim();
+y =y.trim();
+z =z.trim();
+c =c.trim();
 
-window.location = 'https://c.cs5.visual.force.com/apex/Attendee_Details_Print?id=a0EO0000002p2V2'
-
+if(x == "")
+{
+alert('please enter firstname');
+return false;
+}else
+if(y == "")
+{
+alert('please enter Lastname');
+return false;
+}else
+if(z == ""){
+alert('please enter Phone number');
+return false;
+}else
+if(c == "")
+{
+alert('please enter Company name');
+return false;
+}else{
+window.location = 'https://boothleads.bleadtest.cs5.force.com/Attendee_Details_Print?id=a0EO0000002p2V2'
 }
-
+}
 </script>
-<style type="text/css">
-@font-face {
-    font-family: "Helvetica Neue";";
-    src: url('{!URLFOR($Resource.Helvetica_font, 'HelveticaBold.ttf')}');
-    src: local(custom_font), url('{!URLFOR($Resource.Helvetica_font)}') format('truetype');
-}
+<style>
+.readonly{
+border: 1px solid #666666;
+-moz-border-radius: 8px;
+-webkit-border-radius: 8px;
+background-color:#FFFFFF;
+border-radius: 8px;
+font-size: 20px;
+padding: 4px 7px;
+outline: 0;
+-webkit-appearance: none;
+width:80%;
 
+
+}
 body{font-family:"Helvetica Neue"; margin:0px auto;padding:0px;background-color:#99ccff; height:100%; margin-bottom:-200px;}
 #header{
     background-image: -moz-linear-gradient(top, #81a8cb, #4477a1); 
@@ -23,7 +56,6 @@ body{font-family:"Helvetica Neue"; margin:0px auto;padding:0px;background-color:
     -ms-filter: "progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr='#81a8cb', endColorstr='#4477a1')";
     
     background-color:#6699cc;font-size:26px; text-align:center; color:#FFFFFF; width:100%;height:40px; padding-top:5px;
-    font-family:"Helvetica Neue";font-family: {!URLFOR($Resource.Helvetica_font)};
 }
 #footer{
     background-image: -moz-linear-gradient(top, #81a8cb, #4477a1); 
@@ -33,7 +65,6 @@ body{font-family:"Helvetica Neue"; margin:0px auto;padding:0px;background-color:
     
     background-color:#6699cc;font-size:26px; text-align:center;color:#FFFFFF;
      position:absolute; bottom:0px; width:100%; height:45px;
-     font-family:"Helvetica Neue";font-family: {!URLFOR($Resource.Helvetica_font)};
 }
 
 .button{
@@ -47,7 +78,7 @@ body{font-family:"Helvetica Neue"; margin:0px auto;padding:0px;background-color:
    text-shadow: 0 -1px 1px rgba(0,0,0,0.25);
     border-bottom: 1px solid rgba(0,0,0,0.25);
   cursor: pointer;
-   
+    width:98%;
     border:0px;
     font-size:18px;
      font-weight:600;
@@ -56,7 +87,6 @@ body{font-family:"Helvetica Neue"; margin:0px auto;padding:0px;background-color:
     background-image: -webkit-gradient(linear,left bottom,left top,color-stop(0, #4477a1),color-stop(1, #81a8cb)); 
     filter:  progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr='#81a8cb', endColorstr='#4477a1');
     -ms-filter: "progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr='#81a8cb', endColorstr='#4477a1')";
-   
  
 }
 .button:hover                           { background-color: #111; color: #fff;text-decoration:none; }
@@ -75,22 +105,7 @@ font-size: 20px;
 padding: 4px 7px;
 outline: 0;
 -webkit-appearance: none;
-width:60%;
-font-family:"Helvetica Neue"; font-family: {!URLFOR($Resource.Helvetica_font)};
-}
-.readonly{
-border: 1px solid #666666;
--moz-border-radius: 8px;
--webkit-border-radius: 8px;
-background-color:#FFFFFF;
-border-radius: 8px;
-font-size: 20px;
-padding: 4px 7px;
-outline: 0;
--webkit-appearance: none;
-width:60%;
-
-
+width:90%;
 }
 
 input.rounded:focus {
@@ -104,59 +119,63 @@ border-color: #339933;
 
 
 
- <apex:form >
+  <apex:form id="attendee">
 <!-- Start of first page -->
 <div id="header">
- <apex:outputText >{!attendee.EV_id__r.EV_Title__c}</apex:outputText> 
+ <apex:outputText >{!eventdetails.EV_Title__c}</apex:outputText> 
   </div>
   <br />
 <!-- /page -->
 <table width="98%" border="0" cellspacing="0" cellpadding="0" style="margin:0px auto;">
   <tr>
-    <td height="85" align="left" valign="top">
+    <td height="85" align="left" valign="top"><font color="#ff0000">*</font>
         FirstName:<br />
                 
                 <!--    <input type="text" name="textinput-hide" id="textinput-hide" placeholder="Text input" value=""/>-->
-              <div class="readonly"> <apex:outputText >{!Attendee.AS_id__r.AS_FirstName__c}</apex:outputText></div>
+               <apex:inputField value="{!attendee.AS_FirstName__c}"  styleclass="rounded"  id="firstname"/>
     </td>
     
-    <td height="85" align="left" valign="top">
+    <td height="85" align="left" valign="top"><font color="#ff0000">*</font>
         LastName: <br />
                
-                <div class="readonly"> <apex:outputText >{!Attendee.AS_id__r.AS_LastName__c}</apex:outputText></div>
+                 <apex:inputField value="{!attendee.AS_LastName__c}" styleclass="rounded" id="lastname"/>
     </td>
-    <td height="85" align="left" valign="top">
-        Email :<br />
-                    
-                    <div class="readonly"><apex:outputText >
-                    {!Attendee.AS_id__r.AS_Email__c}
-                    
-                    </apex:outputText></div>
+    <td height="85" align="left" valign="top"><font color="#ff0000">*</font>
+        Phone Number:<br />
+                   
+                 <apex:inputField value="{!attendee.AS_CellPhone__c}" styleclass="rounded"  id="phone"/>
     </td>
   </tr>
   <tr>
-    <td height="85" align="left" valign="top">Hosting Organization Name:<br />
+    <td height="85" align="left" valign="top">Hosting Organization Name:<br /><font color="#ff0000">*</font>
                
-               <div class="readonly"> <apex:outputText > {!Attendee.AS_id__r.AS_Company__c}</apex:outputtext></div></td>
-    <td height="85" align="left" valign="top">Title:<br />
-               
-               <div class="readonly"> <apex:outputText > {!Attendee.AS_id__r.AS_Title__c}</apex:outputtext></div></td>
-    
+                 <apex:inputField value="{!attendee.AS_Company__c}" styleclass="rounded"  id="Company"/></td>
     <td height="85" align="left" valign="top">
-        Phone Number:<br />
-                   
-               <div class="readonly">  <apex:outputtext value="{!Attendee.AS_id__r.AS_CellPhone__c}" /></div>
+        Title:<br />
+                    
+                     <apex:inputfield value="{!attendee.AS_Title__c}" styleclass="rounded"/></td>
+    <td height="85" align="left" valign="top">
+        Email :<br />
+                    
+                  <!-- <div class="readonly">  <apex:outputText value="{!email}" styleclass="rounded" style="readonly"/></div>-->
+                  
+                  <apex:inputText value="{!email}"  />     
+                   <apex:outputText rendered="{!DisplayError }" value="{!showerror}">
+                    
+                     </apex:outputText>         
     </td>
     <td height="85" align="left" valign="top">&nbsp;</td>
   </tr>
 </table>
 
-
-
 <p align="center" style="width:98%; text-align:center; margin:0px auto;">
      <div style="width:98%; margin:0px auto; text-align:center;">
      
-    <apex:commandLink action="{!printattendee}" target="_blank" style="text-decoration:none;" Onclick="  move();"> <apex:commandButton value="Print Badge" styleClass="button" Onclick=" move();" /></apex:commandLink>
+   <!-- <apex:commandLink target="_blank"  Onclick="return Validate();"><apex:commandButton value="Print Preview" action="{!SaveAndPrint}" Onclick="return Validate();"/></apex:commandLink>-->
+    
+     
+    <apex:commandLink action="{!SaveAndPrint}" target="_blank" style="text-decoration:none;" Onclick="return move();"> <apex:commandButton value="Save & Print" styleClass="button" /></apex:commandLink>
+     
     
      </div>  
 </p>  

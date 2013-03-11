@@ -5,14 +5,47 @@
  <apex:stylesheet value="{!URLFOR($Resource.FormultiEvent,"css/screen.css")}"/> 
  <apex:stylesheet value="{!URLFOR($Resource.FormultiEvent,"css/datePicker.css")}"/>
  <apex:stylesheet value="{!URLFOR($Resource.BoothLeads_DivStyles)}"/>
- <script type="text/javascript" charset="utf-8" src="http://cdn.sencha.io/ext-4.0.7-gpl/ext-all.js"></script>
- <link rel="stylesheet" type="text/css" href="http://cdn.sencha.io/ext-4.0.7-gpl/resources/css/ext-all.css"/>
+ <!--
+<script type="text/javascript" charset="utf-8" src="http://cdn.sencha.io/ext-4.0.7-gpl/ext-all.js"></script>
+<link rel="stylesheet" type="text/css" href="http://cdn.sencha.io/ext-4.0.7-gpl/resources/css/ext-all.css"/> 
+
+<link rel="Stylesheet" type="text/css" href="{!$Resource.extjs4_5}/extjs4_5/resources/css/ext-all.css"/>
+<script type="text/javascript" src="{!$Resource.extjs4_1}/extjs4_1/ext-all.js"></script>
+<script type="text/javascript" src="{!$Resource.extjs4_3}/extjs4_3/examples/ux/data/PagingMemoryProxy.js"></script>
+<script type="text/javascript" src="{!$Resource.extjs4_3}/extjs4_3/examples/ux/ProgressBarPager.js"></script>
+<script type="text/javascript" src="{!$Resource.extjs4_3}/extjs4_2/examples/grid-plugins.js"></script>
+<script type="text/javascript" src="{!$Resource.extjs4_3}/extjs4_2/examples/paging.js"></script>
+<script type="text/javascript" src="{!$Resource.extjs4_3}/extjs4_3/examples/ux/CheckColumn.js"></script>
+<script type="text/javascript" src="{!$Resource.extjs4_5}/extjs4_5/src/selection/CheckboxModel.js"></script>
+<link rel="Stylesheet" type="text/css" href="{!$Resource.extjs4_3}/extjs4_3/examples/ux/grid/css/GridFilters.css"/>
+-->
+<!-- load ExtJS -->
+<apex:stylesheet value="{!$Resource.ExtJS4}/resources/css/ext-all.css" />
+<apex:includeScript value="{!$Resource.ExtJS4}/ext-all.js"/>  
+<apex:includeScript value="{!$Resource.ExtJS4}/resources/Direct.js"/>  
+<apex:includeScript value="{!$Resource.ExtJS4}/resources/PagingMemoryProxy.js"/>  
+<apex:includeScript value="{!$Resource.ExtJS4}/resources/PagingSelectionPersistence.js"/>  
+<apex:includeScript value="{!$Resource.AjaxLoaderJs}/AjaxLoader.js"/> 
  <apex:includeScript value="{!$Resource.PhoneSetup}"/>  
 <style>
 #myevent{width:100%; background-color:FF0000; height:50px;}
-.eventtable{border-right:1px solid #cccccc;text-align:left;background-color:#f3f3f3;height:50px;width:80%;padding-left:25px;border-bottom:3px solid #FFFFFF;padding-left:10px;}
-.eventselect{border-right:1px solid #cccccc;text-align:left;background-color:#b4dff9;height:50px;width:80%;padding-left:25px;border-bottom:3px solid #FFFFFF;padding-left:10px;}
+
+
+
+
+select, option{min-width:90px; max-width:170px}
+
+.eventtable{border-right:0px solid #cccccc;text-align:left;background-color:#f3f3f3;height:10px;width:30%;padding-left:25px;border-bottom:3px solid #FFFFFF;padding-left:10px;}
+
+.eventselect{border-right:0px solid #cccccc;text-align:left;background-color:#b4dff9;height:10px;width:30%;padding-left:25px;border-bottom:3px solid #FFFFFF;padding-left:10px;}
+
 .eventhover{ background-color:#cccccc;}
+
+
+
+
+
+
    a.attendee:link {
         color:#FF0000;
         height: 25px;
@@ -143,6 +176,8 @@ div#header h4 a, div#header h4 a:visited { font-weight: normal; }
 
 div.page-header { padding: 0 0 8px; margin: 18px 0; border-bottom: 1px solid #ddd; }
 div.page-header h1 { padding: 0; margin: 0; font-size: 24px; line-height: 27px; letter-spacing: 0; }
+
+
 
 
    
@@ -339,7 +374,7 @@ div.page-header h1 { padding: 0; margin: 0; font-size: 24px; line-height: 27px; 
         
          
          if(lvTnId.value == ""){
-              alert("Please Furnish Event Title");
+              alert("Please enter Event Title");
               lvTnId.focus();
               return false;
                  }
@@ -351,7 +386,7 @@ div.page-header h1 { padding: 0; margin: 0; font-size: 24px; line-height: 27px; 
       }
             
       if(lvMnId.value == ""){
-              alert("Please Furnish Event Start Date");
+              alert("Please enter Event Start Date");
               lvMnId.focus();
               return false;
       }else{
@@ -369,7 +404,7 @@ div.page-header h1 { padding: 0; margin: 0; font-size: 24px; line-height: 27px; 
               return false;
       }
       if( lvAgId.value == ""){
-              alert("Please Furnish Event End Date");
+              alert("Please enter Event End Date");
               lvAgId.focus();
               return false;
       }else{
@@ -518,14 +553,16 @@ div.page-header h1 { padding: 0; margin: 0; font-size: 24px; line-height: 27px; 
         <div class="nav">
         <div class="table">
      
-         <!--<div class="nav-divider">&nbsp;</div>-->
+        <div class="nav-divider">&nbsp;</div>
          <apex:outputPanel rendered="{!eventAdminBoole}">
-           <ul class="select"><li><apex:outputLink value="/apex/BL_EventAdmin_Dashboard"><b>Dashboard</b> </apex:outputLink>
+         
+           <ul class="select"><li><apex:outputLink value="/apex/BL_EventAdmin_Dashboard"><b>Dashboard</b></apex:outputLink>
           </li></ul>
           </apex:outputPanel>
           
           
            <apex:outputPanel rendered="{!booleanforDisplayBoothadminTab}">
+         
            <ul class="select"><li>
             <apex:outputLink value="/apex/BL_BoothAdmin_Dashboard" rendered="{!NOT(eventAdminBoole)}"><b>Dashboard</b> </apex:outputLink>
           </li></ul>
@@ -535,60 +572,51 @@ div.page-header h1 { padding: 0; margin: 0; font-size: 24px; line-height: 27px; 
           
           <div class="nav-divider">&nbsp;</div>                    
           <ul class="current"><li>
-          <apex:outputLink value="/apex/BL_EventAdmin_Events" rendered="{!eventAdminBoole}"><b>Events</b></apex:outputLink>
+           <apex:outputLink value="/apex/BL_EventAdmin_Events" rendered="{!eventAdminBoole}"><b>Events</b></apex:outputLink>
           
-           <apex:outputLink value="/apex/BL_EventAdmin_Events" rendered="{!NOT(eventAdminBoole)}" ><b>Events</b></apex:outputLink>
-          
-          </li></ul>
+           <apex:outputLink value="/apex/BL_EventAdmin_Events" rendered="{!NOT(eventAdminBoole)}" ><b>Events</b></apex:outputLink>        
+          </li></ul>      
          
-         
-         
-         
-         
-         
-         <apex:outputPanel rendered="{!eventAdminBoole}">
-         <ul class="select"><li>
          <div class="nav-divider">&nbsp;</div>
-         <apex:outputLink value="/apex/BL_Eventadmin_samplebooth" ><b>Booths</b></apex:outputLink>
-           
-           </li></ul>
+         <apex:outputPanel rendered="{!eventAdminBoole}">
          
-          </apex:outputPanel>
+          <ul class="select"><li>         
+           <apex:outputLink value="/apex/BL_Eventadmin_samplebooth" ><b>Booths</b></apex:outputLink>         
+          </li></ul>         
+         </apex:outputPanel>
           
          <!-- ------------------------------- Booth Admin Button --------------------- --> 
           
-           <apex:outputPanel rendered="{!booleanforDisplayBoothadminTab}">>
-         <ul class="select"><li>
-         <div class="nav-divider">&nbsp;</div>
-          <apex:outputLink value="/apex/BL_Boothpersonnels" rendered="{!NOT(eventAdminBoole)}"><b>Booth Users</b></apex:outputLink>
-         </li></ul>
-        </apex:outputPanel>
+          <apex:outputPanel rendered="{!booleanforDisplayBoothadminTab}">
+         
+           <ul class="select"><li>        
+            <apex:outputLink value="/apex/BL_Boothpersonnels" rendered="{!NOT(eventAdminBoole)}"><b>Booth Users</b></apex:outputLink>
+           </li></ul>
+          </apex:outputPanel>
          <!-- ------------------------------- Booth Admin Button End--------------------- --> 
-           <div class="nav-divider">&nbsp;</div>
-
-         <ul class="select"><li><apex:outputLink value="/apex/Qrcode_Eventadmin_Attendees" rendered="{!eventAdminBoole}"><b>Attendees</b> </apex:outputLink>
-        
-         <apex:outputLink value="/apex/BL_Attendees" rendered="{!NOT(eventAdminBoole)}"><b>Leads </b> </apex:outputLink>
-        
-         </li></ul>
+         
          <div class="nav-divider">&nbsp;</div>
+         <ul class="select"><li>
+          <apex:outputLink value="/apex/Qrcode_Eventadmin_Attendees" rendered="{!eventAdminBoole}"><b>Attendees</b> </apex:outputLink>
         
-        <ul class="select"><li><apex:outputLink value="/apex/BL_EventAdmin_Reports" rendered="{!eventAdminBoole}"><b>Reports</b> </apex:outputLink>
+          <apex:outputLink value="/apex/BL_Attendees" rendered="{!NOT(eventAdminBoole)}"><b>Leads </b> </apex:outputLink>
+         </li></ul>
+         
+         <div class="nav-divider">&nbsp;</div>      
+         <ul class="select"><li>
+          <apex:outputLink value="/apex/BL_EventAdmin_Reports" rendered="{!eventAdminBoole}"><b>Reports</b> </apex:outputLink>
         
-        <apex:outputLink value="/apex/BL_reports" rendered="{!NOT(eventAdminBoole)}"><b>Reports</b> </apex:outputLink>
+          <apex:outputLink value="/apex/BL_reports" rendered="{!NOT(eventAdminBoole)}"><b>Reports</b> </apex:outputLink>       
+         </li></ul>
         
-        </li></ul>
         
          <apex:outputPanel rendered="{!booleanforDisplayBoothadminTab}">
-        <div class="nav-divider">&nbsp;</div>
+         <div class="nav-divider">&nbsp;</div>
          <ul class="select"><li>
-            <apex:outputLink value="/apex/BL_BoothQr" rendered="{!NOT(eventAdminBoole)}"><b>Booth QRCodes</b> </apex:outputLink>
-        </li></ul>
-        
+          <apex:outputLink value="/apex/BL_BoothQr" rendered="{!NOT(eventAdminBoole)}"><b>Booth QRCodes</b> </apex:outputLink>
+         </li></ul>
          </apex:outputPanel>
-        
-        
-        
+              
         <div class="clear"></div>
         </div>
         <div class="clear"></div>
@@ -672,7 +700,7 @@ div.page-header h1 { padding: 0; margin: 0; font-size: 24px; line-height: 27px; 
    
    <apex:outputPanel rendered="{!NoEventCreatedBool}">    
    
-  <table width="100%" >
+  <table width="100%"  cellpadding="0" cellspacing="0" border="0">
   <tr>
       <td width="30%" style="background-color:#54b5f1; height:35px; color:#FFFFFF; Font-size:18px;padding-left:15px;border-right:3px solid #FFFFFF;"> My Events</td>
       <td width="70%" style="background-color:#54b5f1; height:35px; color:#FFFFFF; Font-size:18px;padding-left:15px;"> 
@@ -691,14 +719,14 @@ div.page-header h1 { padding: 0; margin: 0; font-size: 24px; line-height: 27px; 
              <apex:param name="eventName" value=""/>
           </apex:actionFunction>
           
-          <apex:dataTable value="{!listOfEvents}" var="ev"  styleClass="attendee" style="width:100%;">
+          <apex:dataTable value="{!listOfEvents}" var="ev"  styleClass="attendee" style="width:100%; border:0px;">
               
-              <apex:column styleClass="{! IF( ev.EV_id__r.EV_Title__c == EventDetail.EV_Title__c , 'eventselect', 'eventtable' )  }" onclick="callingChangeEventFunction('{!ev.EV_id__c}');">
-                  <apex:commandLink value="{!ev.EV_id__r.EV_Title__c}" action="{!changeEvent}" reRender="eventdetail,mapForm,downdetailForm,eventHead,eventsForm" style="text-decoration:none;color:#1bb8f1;font-weight:bold;font-size:14px;" onComplete="eventMap();">
+              <apex:column styleClass="{! IF( ev.EV_id__r.EV_Title__c == EventDetail.EV_Title__c , 'eventselect', 'eventtable' )  }" onclick="callingChangeEventFunction('{!ev.EV_id__c}');" style="width:15px; text-align:left; padding:4px;">
+                  <apex:commandLink value="{!ev.EV_id__r.EV_Title__c}" action="{!changeEvent}" reRender="eventdetail,mapForm,downdetailForm,eventHead,eventsForm" style="text-decoration:none;color:#000000;font-weight:bold;font-size:12px;Padding-Left:15px; display:block; padding: 6px 0px 3px 8px;" onComplete="eventMap();">
                       <apex:param value="{!ev.EV_id__c}" name="eventName"/>
                   </apex:commandLink>    
               </apex:column>
-              <apex:column styleClass="{! IF( ev.EV_id__r.EV_Title__c == EventDetail.EV_Title__c , 'eventselect', 'eventtable' )  }">
+              <apex:column styleClass="{! IF( ev.EV_id__r.EV_Title__c == EventDetail.EV_Title__c , 'eventselect', 'eventtable' )  }"  style="text-align:right; padding:4px;">
                    <apex:outputPanel rendered="{!IF( ($User.Id == ev.EV_id__r.Owner.ID),'true','false' )}">
                      <apex:commandLink action="{!editEvent}" title="Edit">
                           <apex:image url="{!$Resource.EditIconforQrcode}"/>
@@ -1241,8 +1269,11 @@ div.page-header h1 { padding: 0; margin: 0; font-size: 24px; line-height: 27px; 
  <apex:form id="mapForm"> 
  <head>
 
-<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
-<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script> 
+<script type="text/javascript" src="https://maps.google.com/maps/api/js?v=3.5&sensor=true"></script>
+<!--
+<apex:includeScript value="{!$Resource.GoogleMapsJS}/GoogleMapsApi.js"/>
+<apex:includeScript value="{!$Resource.GoogleMapsJS}/JQueryMaps.js"/> -->
+<!-- <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script> -->
 <script type="text/javascript"> 
     
     
@@ -1938,24 +1969,6 @@ var GridTitle='Event Schedule';
   
    myData1.push(rowArray);          
  </apex:repeat>   
-        
-  var myDirectfn = function(opts, fn, proxy) {
-    var start = opts.start,
-        end = opts.limit+opts.start,
-        data = [];
-    if (end > myData1.length) end = myData1.length;
-    for (var i = start; i < end; i++)
-        data.push(myData1[i]);
-    data.total = myData1.length;
-    fn(data, {
-        status: true,
-        result: data
-    });
-};
-
-myDirectfn.directCfg = {
-    method: {len:1}
-};
 
 
 if(myData1.length<=0)
@@ -1967,19 +1980,16 @@ if(myData1.length<=0)
 
 store = new Ext.data.SimpleStore({
 fields:[{name:'id'},{name:'prname'},{name:'Programdate'},{name:'Starttime'},{name:'Endtime'},{name:'Presenter'},{name:'Location'}],
-pageSize: 50,
+remoteSort: true,
+pageSize: 10,
 proxy: {
-type: 'direct',
-directFn: myDirectfn,
-reader: {
-type: 'array'
+ type: 'pagingmemory',
+ data: myData1,
+ reader: {
+  type: 'array'
+ }
 }
-},
-});
-store.loadData(myData1);
-      
- 
-
+});     
 
 grid = Ext.create('Ext.grid.Panel',{
 store: store, 
@@ -2002,7 +2012,8 @@ columns: [
  header:"<b>Action</b>",dataIndex:'Action',flex:0.7,
  renderer: function(value,p,r){
   return '<a href="#" onclick="editRecord(\''+ r.data['id']+'\')" style="color:blue;text-decoration:none;" ><img src="{!URLFOR($Resource.Qrcode_edit)}" border="3"  style="border-color:#003068;width:16px;height:16px" title="Edit"/></a> | <a href=\'#\' onclick="deleteRecord(\''+ r.data['id']+'\')" style="color:blue;text-decoration:none;"><img src="{!URLFOR($Resource.Qrcode_delete)}" border="3"  style="border-color:#003068;width:16px;height:16px" title="Delete"/></a>';
- }
+ },
+ hidden:{!NOT(recordPermissions)}
 },   
 {
  header:"<b> Program Name </b>",dataIndex:'prname',flex:1.5,
@@ -2028,16 +2039,15 @@ height: 350,
 width: '100%',
 title: GridTitle,
 stripeRows:true,
-bbar: new Ext.PagingToolbar({
-        store: store,
-        pageSize: 50,
-        displayInfo: true  
-}),
-renderTo: 'items-grid1'                            
+bbar: Ext.create('Ext.PagingToolbar', {
+            pageSize: 10,
+            store: store,
+            displayInfo: true
+})                            
 });
 
-  
-store.loadPage(1);
+grid.render('items-grid1');
+store.load();
 
 });
 // -------------------------------------- Grid End -------------------------------------- 
@@ -2820,10 +2830,6 @@ function functioncalls()
   </table>
        
 
-    
-<script type="text/javascript" charset="utf-8" src="http://cdn.sencha.io/ext-4.0.7-gpl/ext-all.js"></script>
-<link rel="stylesheet" type="text/css" href="http://cdn.sencha.io/ext-4.0.7-gpl/resources/css/ext-all.css"/> 
-
         
         
 <script>
@@ -2831,204 +2837,6 @@ var temp= new Array();
 </script>  
         
 <script type="text/javascript"> 
-// -------------------------------------------- ExtJS Grid Start ---------------------------------------------------      
-
-Ext.define('Ext.ux.grid.plugin.PagingSelectionPersistence', {
-alias: 'plugin.pagingselectpersist',
-extend: 'Ext.AbstractPlugin',
-pluginId: 'pagingSelectionPersistence',
-//array of selected records
-selection: [],
-//hash map of record id to selected state
-selected: {},    
-init: function(grid) {
- this.grid = grid;
- this.selModel = this.grid.getSelectionModel();
- this.isCheckboxModel = (this.selModel.$className == 'Ext.selection.CheckboxModel');
- this.origOnHeaderClick = this.selModel.onHeaderClick;
- this.bindListeners();
-},
-destroy: function() {
- this.selection = [];
- this.selected = {};
- this.disable();
-},
-enable: function() {
- var me = this;
- if(this.disabled && this.grid) {
-  this.grid.getView().on('refresh', this.onViewRefresh, this);
-  this.selModel.on('select', this.onRowSelect, this);
-  this.selModel.on('deselect', this.onRowDeselect, this);
-  if(this.isCheckboxModel) {
-   this.selModel.onHeaderClick = function(headerCt, header, e) {
-   var isChecked = header.el.hasCls(Ext.baseCSSPrefix + 'grid-hd-checker-on');
-   me.origOnHeaderClick.apply(this, arguments);        
-   if(isChecked) {
-    me.onDeselectPage();
-   }
-   else {
-    me.onSelectPage();
-    }
-   };
-  }
- }
- this.callParent();
-},    
-disable: function() {
- if(this.grid) {
-  this.grid.getView().un('refresh', this.onViewRefresh, this);
-  this.selModel.un('select', this.onRowSelect, this);
-  this.selModel.un('deselect', this.onRowDeselect, this);
-  this.selModel.onHeaderClick = this.origOnHeaderClick;
- }
- this.callParent();
-},
-bindListeners: function() {
- var disabled = this.disabled;
- this.disable();
- if(!disabled) {
-  this.enable();
- }
-}, 
-onViewRefresh : function(view, eOpts) {
- var store = this.grid.getStore(),
- sel = [],
- hdSelectState,
- rec,
- i;
- this.ignoreChanges = true;
- for(i = store.getCount() - 1; i >= 0; i--) {
-  rec = store.getAt(i);
-  if(this.selected[rec.getId()]) {
-   sel.push(rec);
-  }
- }
- this.selModel.select(sel, false);
-
- if(this.isCheckboxModel) {
-  hdSelectState = (this.selModel.selected.getCount() === this.grid.getStore().getCount());
-  this.selModel.toggleUiHeader(hdSelectState);
- }
- this.ignoreChanges = false;
-},
-    
-onRowSelect: function(sm, rec, idx, eOpts) {
- if(this.ignoreChanges === true) {
-  return;
- }
- if(!this.selected[rec.getId()]) 
- {  
-  this.selection.push(rec);
-  this.selected[rec.getId()] = true;
- }
-  var r = grid.getSelectionModel().getSelection();  
-  if(r.length==50)
-  {
-   selectall();
-  } 
-  else if(r.length<50)
-  {
-   deselectall();
-  } 
-   for(i=0; i<=r.length-1; i++){
-    var checkarray=r[i].get('id');   
-   }
-  temp.push(checkarray);
-},
-   
-    
-onRowDeselect: function(sm, rec, idx, eOpts) {
- var i; 
- if(this.ignoreChanges === true) {
-  return;
- }    
- if(this.selected[rec.getId()])
- {  
-  for(i = this.selection.length - 1; i >= 0; i--) {
-   if(this.selection[i].getId() == rec.getId()) {
-    this.selection.splice(i, 1);
-    this.selected[rec.getId()] = false;
-    break;
-   }
-  }
- }
- var r = grid.getSelectionModel().getSelection(); 
- if(r.length==50)
- {
-  selectall();
- } 
- else if(r.length<50)
- {
-  deselectall();
- } 
-  for(i=0; i<=r.length-1; i++){
-   var checkarray=r[i].get('id');   
-  }
- temp.pop(checkarray);
-},
-    
-onSelectPage: function(){ 
- var sel = this.selModel.getSelection(),
- selectedCheckboxLength= this.getPersistedSelection().length, 
- i;
- 
- for(i = 0; i < sel.length; i++) {
-  selection1=this.onRowSelect(this.selModel, sel[i]); 
- }
- if(selectedCheckboxLength!== this.getPersistedSelection().length) {
-  this.selModel.fireEvent('selectionchange', this.selModel, [], {});
- }
- var r = grid.getSelectionModel().getSelection();  
- if(r.length==50)
- {
-  selectall();
- }
- else if(r.length<50)
- {
-  deselectall();
- } 
-  for(i=0; i<=r.length-1; i++){  
-   var checkarray=r[i].get('id');  
-   temp.push(checkarray);
-  }  
-},
-
-onDeselectPage: function() {
-
- var store = this.grid.getStore(),
- selectedCheckboxLength= this.getPersistedSelection().length,
- i;
-    
- for(i = store.getCount()-1 ; i >=0; i--) { 
-  this.onRowDeselect(this.selModel, store.getAt(i)); 
- }    
-     
- if(selectedCheckboxLength!== this.getPersistedSelection().length) {
-  this.selModel.fireEvent('selectionchange', this.selModel, [], {});
- } 
- 
-  for(i=0; i<=r.length-1; i++){  
-   var checkarray=r[i].get('id');  
-   temp.clear(checkarray);
-  }
- 
-},
-   
-getPersistedSelection: function() {
-  return [].concat(this.selection);
-},    
-
-clearPersistedSelection: function(){ 
-    var changed = (this.selection.length > 0);   
-    this.selection = [];
-    this.selected = {};
-    this.onViewRefresh();    
-    if(changed) {
-     this.selModel.fireEvent('selectionchange', this.selModel, [], {});
-   }
-}
-
-});
 
  Ext.onReady(function(){
   var GridTitle='Eventbrite Attendees'; 
@@ -3052,25 +2860,6 @@ clearPersistedSelection: function(){
                    
   myData1.push(rowArray);                  
 </apex:repeat>   
-  
-     
- var myDirectfn = function(opts, fn, proxy) {
-    var start = opts.start,
-        end = opts.limit+opts.start,
-        data = [];
-    if (end > myData1.length) end = myData1.length;
-    for (var i = start; i < end; i++)
-        data.push(myData1[i]);
-    data.total = myData1.length;
-    fn(data, {
-        status: true,
-        result: data
-    });
-};
-
-myDirectfn.directCfg = {
-    method: {len:1}
-};
 
 
 if(myData1.length<=0)
@@ -3082,16 +2871,17 @@ if(myData1.length<=0)
 
 store = new Ext.data.SimpleStore({
 fields:[{name:'id'},{name:'FirstName'},{name:'LastName'}, {name:'Phone'},{name:'Email'},{name:'Company'}],
+remoteSort: true,
 pageSize: 50,
 proxy: {
-type: 'direct',
-directFn: myDirectfn,
-reader: {
-type: 'array'
+ type: 'pagingmemory',
+ data: myData1,
+ reader: {
+  type: 'array'
+ }
 }
-},
 });
-store.loadData(myData1);        
+    
    
 function openrender(value, p, r)
 {
@@ -3100,11 +2890,6 @@ function openrender(value, p, r)
         
 grid = Ext.create('Ext.grid.Panel',{
 store: store, 
-//selModel: Ext.create('Ext.selection.CheckboxModel'),
-plugins: [{ptype : 'pagingselectpersist'},
-{ptype:'cellediting',
-clicksToEdit:1
-}],
 viewConfig: {
 id: 'gv',
 trackOver: true,
@@ -3128,10 +2913,10 @@ height: 350,
 width: '100%',
 title: GridTitle,
 stripeRows:true,
-bbar: new Ext.PagingToolbar({
-        store: store,
-        pageSize: 50,
-        displayInfo: true  
+bbar: Ext.create('Ext.PagingToolbar', {
+            pageSize: 50,
+            store: store,
+            displayInfo: true
 }),
 listeners:
 {
@@ -3139,12 +2924,11 @@ afterrender: function (component)
 {
 component.down('#refresh').hide();
 }
-},
-renderTo: 'TestHello2'                            
+}                       
 });
   
-store.loadPage(1);
-
+grid.render('TestHello2');
+store.load();
 });
 
 

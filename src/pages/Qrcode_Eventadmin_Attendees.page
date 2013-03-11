@@ -8,15 +8,22 @@
 <apex:stylesheet value="{!URLFOR($Resource.FormultiEvent,"css/screen.css")}"/> 
 <apex:stylesheet value="{!URLFOR($Resource.FormultiEvent,"css/datePicker.css")}"/>
 <apex:includeScript value="{!$Resource.PhoneSetup}"/> 
-<script language="javascript">
+<script type="text/javascript">
 function Validate()
-{
- var x = document.getElementById('{!$Component.Thepage:AddAttendee:work_Zip}').value;
-        var y = document.getElementById('{!$Component.Thepage:AddAttendee:shipping_Zip}').value;
-        var z = document.getElementById('{!$Component.Thepage:AddAttendee:Home_Zip}').value;
-        var PhoneId = document.getElementById('{!$Component.Thepage:AddAttendee:phone_no}');
-        var wphno=docuent.getElementById('{!$Component.Thepage:AddAttendee:Workphone}')
-        var dob=docuent.getElementById('{!$Component.Thepage:AddAttendee:dob}')
+{  
+        
+        var x = document.getElementById('{!$Component.Thepage:AddAttendee:work_Zip}');
+       var y = document.getElementById('{!$Component.Thepage:AddAttendee:shipping_Zip}');
+        var z = document.getElementById('{!$Component.Thepage:AddAttendee:Home_Zip}');
+          var PhoneId = document.getElementById('{!$Component.Thepage:AddAttendee:phone_no}');
+        var wphno=document.getElementById('{!$Component.Thepage:AddAttendee:Workphone}');
+     var CodeOne = document.getElementById('{!$Component.Thepage:AddAttendee:CodeOne}');
+     var CodeTwo = document.getElementById('{!$Component.Thepage:AddAttendee:CodeTwo}');
+     var CodeThree = document.getElementById('{!$Component.Thepage:AddAttendee:CodeThree}');
+     var CodeFour = document.getElementById('{!$Component.Thepage:AddAttendee:CodeFour}');
+     var CodeFive = document.getElementById('{!$Component.Thepage:AddAttendee:CodeFive}');
+     var dob = document.getElementById('{!$Component.Thepage:AddAttendee:dob}');
+        
      if(PhoneId.value != ""){     
       if( validatePhoneNumber(PhoneId.value)==false){
            alert('Please Provide valid 10 digit phone number');
@@ -30,9 +37,104 @@ function Validate()
            wphno.focus();
            return false;
          }
-        }     
-         if(isNaN(x)|| x.indexOf(" ")!=-1)
-    {
+        } 
+        
+         if(x.value != ""){
+           
+            if( validateZipCode(x.value)==false)
+             {
+           alert('Please Enter valid Zip Code');
+           x.focus(); 
+           return false;
+             }
+    }     
+         
+              if(y.value != ""){
+            if( validateZipCode(y.value)==false)
+             {
+           alert('Please Enter valid Zip Code');
+            y.focus();
+           return false;
+             }
+    }  
+    
+      if(z.value != ""){
+            if( validateZipCode(z.value)==false)
+             {
+           alert('Please Enter valid Zip Code');
+         z.focus();
+           return false;
+             }
+    }      
+        
+        if(CodeOne.value != ""){
+             if(CodeOne.value.length != eval(6)){
+                 alert('Code must be 6 digits in NAICS code1');
+                 return false;
+             }
+         }  
+         
+           if(CodeTwo.value != ""){
+             if(CodeTwo.value.length != eval(6)){
+                 alert('Code must be 6 digits in NAICS code2');
+                 return false;
+             }
+         }
+         
+         if(CodeThree.value != ""){
+             if(CodeThree.value.length != eval(6)){
+                 alert('Code must be 6 digits in NAICS code3');
+                 return false;
+             }
+         }
+         
+           if(CodeFour.value != ""){
+             if(CodeFour.value.length != eval(6)){
+                 alert('Code must be 6 digits in NAICS code4');
+                 return false;
+             }
+         }
+        
+         if(CodeFive.value != ""){
+         
+             if(CodeFive.value.length != eval(6)){
+                 alert('Code must be 6 digits in NAICS code5');
+                 return false;
+             }
+         }
+        
+         var today =  new Date();
+       
+       var dd = today.getDate();
+      
+       var mm = today.getMonth()+1;
+     
+        var yyyy = today.getFullYear();
+       
+        today = mm+'/'+dd+'/'+yyyy;
+        
+        var d1 = dob.value;
+        var d2 = today;
+        var t1 = new Date(d1);
+        var t2 = new Date(d2);
+        
+         
+         if(t1 != ""){
+         
+         
+             if(t1 >= t2){
+                 alert('DOB must be less than today ');
+                 return false;
+             }
+             else{
+                  return true;
+             }
+         
+         } 
+        
+         
+        /* if(isNaN(x)|| x.indexOf(" ")!=-1)
+        {
                         alert("Workzip code should be the numeric value");
             return false;
                 }
@@ -62,40 +164,19 @@ function Validate()
             {
                             alert("Homezip code value should be 6 digits"); 
                 return false;
-                     }
+                     }*/
     
+
+           
        
-       var today =  new Date();
-       
-       var dd = today.getDate();
-      
-       var mm = today.getMonth()+1;
      
-        var yyyy = today.getFullYear();
-       
-        today = mm+'/'+dd+'/'+yyyy;
-        
-        var d1 = dob.value;
-        var d2 = today;
-        var t1 = new Date(d1);
-        var t2 = new Date(d2);
-        
-         
-         if(t1 != ""){
-         
-         
-             if(t1 >= t2){
-                 alert('DOB must be less than today ');
-                 return false;
-             }
-             else{
-                  return true;
-             }
-         
-         }                
+                    
        
 }
-
+     function validateZipCode(elementValue){
+         var zipCodePattern = /^\d{5}$|^\d{5}-\d{4}$/;
+         return zipCodePattern.test(elementValue);
+    }   
 </script>
 
   <script>
@@ -569,7 +650,7 @@ a.nav:active {color: #000000; text-decoration: none;}
     <!--  start page-heading -->
     <div id="page-heading">
     
-      <table aligh="right" width="98%" border="0">
+      <table aligh="right" width="99%" border="0">
           <tr>
    
         
@@ -643,17 +724,18 @@ a.nav:active {color: #000000; text-decoration: none;}
  <table width="100%" cellspacing="0" cellpadding="0">
  
   <tr> 
-  <td width="70%">
+  <td width="65%">
   <apex:repeat value="{!alphabet}" var="alpha">
-   <apex:commandLink value="{!alpha}" action="{!alphasorting}">
+   <apex:commandLink value="{!alpha}" action="{!alphasorting}" style="padding:0px 2px 0px 2px;">
     <apex:param name="alphabit" value="{!alpha}"/>
-   </apex:commandLink>&nbsp; | &nbsp;
+   </apex:commandLink> | 
   </apex:repeat>
   </td>
- <td align="right" width="30%">
+ <td align="right" width="35%">
  
  <apex:commandButton value="Add Attendee" styleClass="awesome" action="{!createAttendee}" onClick="initializeMembers();" title="Add Attendee"  image="{!$Resource.AddAttendee1}"/>&nbsp;&nbsp;
  <apex:commandbutton value="Import" styleClass="awesome" action="{!ImportAttendee}"  title="Import Attendees" image="{!$Resource.Import1}" />&nbsp;&nbsp;
+  <apex:commandButton value="Convert To Booth Admin" styleClass="awesome" action="{!converLead}" onclick="functioncall();"  title="Convert to Booth Admin" image="{!$Resource.ConverBoothAdmin}" />&nbsp;&nbsp;
  <apex:commandbutton value="Print Badges" styleClass="awesome" onclick="functioncall();" title="Print Badges" action="{!popup}" image="{!$Resource.PrintBadge1}" />&nbsp;&nbsp;
  <!--apex:commandButton value="Import History" action="{!ShowPreviousList}" styleClass="awesome" rendered="{!foundHistoryBool}"/&nbsp;&nbsp;-->
  <apex:commandButton action="{!exportAll}"   styleClass="awesome" onclick="functioncall();" image="{!$Resource.ExportAll1}"  title="Export"/>&nbsp;&nbsp;
@@ -667,6 +749,11 @@ a.nav:active {color: #000000; text-decoration: none;}
  <apex:outputPanel rendered="{!EventReqStringBool}">
   <script>
    alert('Please select at least one attendee.');
+  </script>
+ </apex:outputPanel>
+  <apex:outputPanel rendered="{!limitofbadges}">
+  <script>
+   alert('Please donot select more than 500 attendees at a time to print.');
   </script>
  </apex:outputPanel>
  <!--<apex:commandButton value="Export"  onclick="functioncall();" title="Export Attendees" action="{!ExportToCsv}" styleClass="awesome"/>-->
@@ -769,7 +856,7 @@ a.nav:active {color: #000000; text-decoration: none;}
 <apex:includeScript value="{!$Resource.ExtJS4}/resources/PagingMemoryProxy.js"/>  
 <apex:includeScript value="{!$Resource.ExtJS4}/resources/PagingSelectionPersistence.js"/>  
 <apex:includeScript value="{!$Resource.ExtJS4}/resources/Ext.grid.plugin.CellEditing.js"/>          
-        
+<apex:includeScript value="{!$Resource.AjaxLoaderJs}/AjaxLoader.js"/>        
 <script>
 var temp= new Array();
 </script>  
@@ -798,35 +885,20 @@ Ext.onReady(function(){
   rowArray[4]=eEmail.replace(/\'/g,'\'');
   var cName ="{!row.atnd.AS_id__r.AS_Company__c}";
   rowArray[5]=cName.replace(/\'/g,'\'');
-  rowArray[6]='{!row.status}';
-  rowArray[7]='{!row.estatus}';
-   rowArray[8] ="<apex:outputText value="{0,date,MM/dd/yyyy HH:MM:ss }">
+  
+  var profilevalue="{!row.atnd.Boothleads_Profile__c}";
+
+  rowArray[6]=profilevalue.replace(/\'/g,'\'');
+ 
+  rowArray[7]='{!row.status}';
+  rowArray[8]='{!row.estatus}';
+  rowArray[9]="<apex:outputText value="{0,date,MM/dd/yyyy HH:MM:ss }">
                 <apex:param value="{!row.atnd.CreatedDate}"/>
                </apex:outputText>"; 
- 
- //alert(date);
-  rowArray[9]='{!row.atnd.AS_id__r.AS_ImageUrl__c}';     
+  rowArray[10]='{!row.atnd.AS_id__r.AS_ImageUrl__c}';     
   myData1.push(rowArray);  
   </apex:repeat>
  </apex:repeat> 
- var myDirectfn = function(opts, fn, proxy) {
-    var start = opts.start,
-        end = opts.limit+opts.start,
-        data = [];
-    if (end > myData1.length) end = myData1.length;
-    for (var i = start; i < end; i++)
-        data.push(myData1[i]);
-    data.total = myData1.length;
-    fn(data, {
-        status: true,
-        result: data
-    });
-};
-
-myDirectfn.directCfg = {
-    method: {len:1}
-};
-
 
 if(myData1.length<=0)
 {
@@ -836,17 +908,17 @@ if(myData1.length<=0)
 
 
 store = new Ext.data.SimpleStore({
-fields:[{name:'id'},{name:'FirstName'},{name:'LastName'}, {name:'Phone'},{name:'Email'},{name:'Company'},{name:'printstatus'},{name:'profilestatus'},{name:'createddate'},{name:'img'}],
+fields:[{name:'id'},{name:'FirstName'},{name:'LastName'}, {name:'Phone'},{name:'Email'},{name:'Company'}, {name:'Profile'},{name:'printstatus'},{name:'profilestatus'},{name:'createddate'},{name:'img'}],
+remoteSort: true,
 pageSize: 50,
 proxy: {
-type: 'direct',
-directFn: myDirectfn,
-reader: {
-type: 'array'
+ type: 'pagingmemory',
+ data: myData1,
+ reader: {
+  type: 'array'
+ }
 }
-},
 });
-store.loadData(myData1);
 
 var newstore=new Ext.data.ArrayStore({
  fields: ['abbr', 'action'],
@@ -866,7 +938,9 @@ var newstore1=new Ext.data.ArrayStore({
 
 function openrender(value, p, r)
 {
+
  return String.format('<a <href="#" onClick="selectOneCheckBox(\'{0}\')" style="color:blue;text-decoration:none;">{0}</a>',value, r.data.state, r.data.ptt, 'Open');
+
 }       
 
 
@@ -880,8 +954,7 @@ clicksToEdit:1
 viewConfig: {
 id: 'gv',
 trackOver: true,
-stripeRows: true,
-loadMask: false
+stripeRows: true
 },  
 listeners:
 {
@@ -892,11 +965,19 @@ component.down('#refresh').hide();
 },      
 columns: [
 {header:'id', dataIndex: 'id',hidden:true },   
-{
- header:"<b>Action</b>",dataIndex:'Action',flex:1,
- renderer: function(value,p,r){
-  return '<a href="#" onclick="editRecord(\''+ r.data['id']+'\')" style="color:blue;text-decoration:none;" ><img src="{!URLFOR($Resource.Qrcode_edit)}" border="3"  style="border-color:#003068;width:16px;height:16px" title="Edit"/></a> | <a href=\'#\' onclick="deleteRecord(\''+ r.data['id']+'\')" style="color:blue;text-decoration:none;"><img src="{!URLFOR($Resource.Qrcode_delete)}" border="3"  style="border-color:#003068;width:16px;height:16px" title="Delete"/></a>';
- }
+{header:"<b>Action</b>",flex:1,
+  renderer: function(value,p,r) 
+  {
+   if(r.data.Profile == 'Attendee') {
+     return '<a href="#" onclick="editRecord(\''+ r.data['id']+'\')" style="color:blue;text-decoration:none;" ><img src="{!URLFOR($Resource.Qrcode_edit)}" border="3"  style="border-color:#003068;width:16px;height:16px" title="Edit"/></a> | <a href=\'#\' onclick="deleteRecord(\''+ r.data['id']+'\')" style="color:blue;text-decoration:none;"><img src="{!URLFOR($Resource.Qrcode_delete)}" border="3"  style="border-color:#003068;width:16px;height:16px" title="Delete"/></a>';     
+  }
+  else if(r.data.Profile == '') {
+   return '<a href="#" onclick="editRecord(\''+ r.data['id']+'\')" style="color:blue;text-decoration:none;" ><img src="{!URLFOR($Resource.Qrcode_edit)}" border="3"  style="border-color:#003068;width:16px;height:16px" title="Edit"/></a> | <a href=\'#\' onclick="deleteRecord(\''+ r.data['id']+'\')" style="color:blue;text-decoration:none;"><img src="{!URLFOR($Resource.Qrcode_delete)}" border="3"  style="border-color:#003068;width:16px;height:16px" title="Delete"/></a>';     
+  }  
+   else{
+     return '<a href="#" onclick="editRecord(\''+ r.data['id']+'\')" style="color:blue;text-decoration:none;" ><img src="{!URLFOR($Resource.Qrcode_edit)}" border="3"  style="border-color:#003068;width:16px;height:16px" title="Edit"/></a> ';     
+  }
+}
 },               
 {   
 header:"<b>Name</b>",flex:2, dataIndex:'name',
@@ -907,6 +988,7 @@ header:"<b>Name</b>",flex:2, dataIndex:'name',
 { header: "<b>Phone</b>",flex:1.5,  dataIndex: 'Phone' }, 
 { header: "<b>E-Mail</b>",flex:2, dataIndex: 'Email'},    
 { header: "<b>Company</b>",flex:2.5, dataIndex: 'Company'},
+{ header: "<b>Profile</b>",flex:1.5, dataIndex: 'Profile'},
 {
  header:"<b>Print Status</b>",flex:1.3, dataIndex:'printstatus', tips: {
 mouseOffset:[-125,-50],
@@ -994,15 +1076,13 @@ height: 350,
 width: '100%',
 title: GridTitle,
 stripeRows:true,
-bbar: new Ext.PagingToolbar({
-        store: store,
-        pageSize: 50,
-        displayInfo: true  
-}),
-renderTo: 'items-grid1'                            
+bbar: Ext.create('Ext.PagingToolbar', {
+            pageSize: 50,
+            store: store,
+            displayInfo: true
+})                           
 });
-
-  
+grid.render('items-grid1');
 store.load();
 
 });
@@ -1090,7 +1170,10 @@ store.load();
             
  <apex:actionFunction action="{!profileUpdateNotification}" name="profileUpdateNotification"/>
              
- <apex:actionFunction action="{!attendeedetail}" name="attendeedetail" reRender="foredit1" />  
+ <apex:actionFunction action="{!converLead}" name="converLead1"  />  
+                         
+ <apex:actionFunction action="{!attendeedetail}" name="attendeedetail" reRender="foredit1" />                          
+                        
                          
  <apex:actionFunction action="{!editAttendee}" name="editAttendee" /> 
  
@@ -1461,7 +1544,7 @@ store.load();
         </apex:outputText>
         <apex:outputText rendered="{!attendeeSetting.dob}"> 
         <tr><td width="20%" height="28px">
-        <apex:outputLabel value="DOB" style="color:Black; padding-left:50px; height:50px" /><apex:outputText rendered="{!attendeeSetting.Reqdob}"><font size="4" color="red">*</font></apex:outputText></td>
+        <apex:outputLabel value="DOB" style="color:Black; padding-left:50px; height:50px" /><apex:outputText rendered="{!attendeeSetting.Reqdob}" id="dateofbirth"><font size="4" color="red">*</font></apex:outputText></td>
         <td width="20%" height="28px">   
         <apex:inputField value="{!newAttendee.AS_BirthDate__c}" required="{!attendeeSetting.Reqdob}" onclick="swapYears,getYears" style="width:220px" id="dob"/>
         <style>
@@ -1726,7 +1809,7 @@ store.load();
         <tr><td width="50%" height="28px">
         <apex:outputLabel value="Zip Code" style="color:Black; padding-left:80px; height:50px"/><apex:outputText rendered="{!attendeeSetting.Reqworkinfo}"><font size="4" color="red">*</font></apex:outputText></td>
         <td width="50%" height="28px">
-        <apex:inputField value="{!newAttendee.AS_WorkZip__c}" required="{!attendeeSetting.Reqworkinfo}" style="width:220px;" id="work_zip"/></td></tr>
+        <apex:inputField value="{!newAttendee.AS_WorkZip__c}" required="{!attendeeSetting.Reqworkinfo}" style="width:220px;" id="work_zip" /></td></tr>
           
         </table>
           </div>
@@ -1741,7 +1824,7 @@ store.load();
                         <tr><td width="50%" height="28px">
                         <apex:outputLabel value="NAICS Code 1" style="color:Black; padding-left:80px; height:50px"/><apex:outputText rendered="{!attendeeSetting.ReqNAICSCode1}"><font size="4" color="red">*</font></apex:outputText></td>
                         <td width="50%" height="28px"> 
-                        <apex:inputText value="{!NAICS1Mod}" required="{!attendeeSetting.ReqNAICSCode1}" style="width:220px;" /> 
+                        <apex:inputText value="{!NAICS1Mod}" required="{!attendeeSetting.ReqNAICSCode1}" style="width:220px;" id="CodeOne"/> 
                  
                         </td></tr>
                         </apex:outputText>
@@ -1749,7 +1832,7 @@ store.load();
                      <apex:outputText rendered="{!attendeeSetting.NAICSCode2}"> 
                         <tr><td width="50%" height="28px">
                         <apex:outputLabel value="NAICS Code 2" style="color:Black; padding-left:80px; height:50px"/><apex:outputText rendered="{!attendeeSetting.ReqNAICSCode2}"><font size="4" color="red">*</font></apex:outputText></td><td width="50%" height="28px">
-                        <apex:inputText value="{!NAICS2Mod}" required="{!attendeeSetting.ReqNAICSCode2}" style="width:220px;" /> 
+                        <apex:inputText value="{!NAICS2Mod}" required="{!attendeeSetting.ReqNAICSCode2}" style="width:220px;" id="CodeTwo"/> 
                  
                         </td></tr>
                         </apex:outputText>
@@ -1758,7 +1841,7 @@ store.load();
                         <tr>
                         <td width="50%" height="28px"><apex:outputLabel value="NAICS Code 3" style="color:Black; padding-left:80px; height:50px"/><apex:outputText rendered="{!attendeeSetting.ReqNAICSCode3}"><font size="4" color="red">*</font></apex:outputText></td>
                         <td width="50%" height="28px">
-                        <apex:inputText value="{!NAICS3Mod}" required="{!attendeeSetting.ReqNAICSCode3}" style="width:220px;"/> 
+                        <apex:inputText value="{!NAICS3Mod}" required="{!attendeeSetting.ReqNAICSCode3}" style="width:220px;" id="CodeThree"/> 
                        
                          </td></tr>
                        </apex:outputText>
@@ -1767,7 +1850,7 @@ store.load();
                         <td width="50%" height="28px"><apex:outputLabel value="NAICS Code 4" style="color:Black; padding-left:80px; height:50px"/><apex:outputText rendered="{!attendeeSetting.ReqNAICSCode4}"><font size="4" color="red">*</font></apex:outputText></td>
                         <td width="50%" height="28px">
                        
-                        <apex:inputText value="{!NAICS4Mod}" required="{!attendeeSetting.ReqNAICSCode4}" style="width:220px;"/>
+                        <apex:inputText value="{!NAICS4Mod}" required="{!attendeeSetting.ReqNAICSCode4}" style="width:220px;" id="CodeFour"/>
                         
                          </td>
                         </tr>
@@ -1777,7 +1860,7 @@ store.load();
                         <td width="50%" height="28px"><apex:outputLabel value="NAICS Code 5" style="color:Black; padding-left:80px; height:50px"/><apex:outputText rendered="{!attendeeSetting.ReqNAICSCode5}"><font size="4" color="red">*</font></apex:outputText></td>
                         <td width="50%" height="28px">
                        
-                        <apex:inputText value="{!NAICS5Mod}" required="{!attendeeSetting.ReqNAICSCode5}" style="width:220px;"/>
+                        <apex:inputText value="{!NAICS5Mod}" required="{!attendeeSetting.ReqNAICSCode5}" style="width:220px;" id="CodeFive"/>
                         
                          </td>
                         </tr>
@@ -2050,9 +2133,53 @@ store.load();
 </apex:outputPanel>
 </apex:outputPanel>
 
+<!------------------------------------------------------Only two printers--------------------------->
+<apex:outputPanel >
+    <apex:outputPanel styleClass="popupBackground" layout="block"  rendered="{!fortwoprinters}" />
+         <apex:outputPanel styleClass="custPopup" layout="block"  style="width:50%;" rendered="{!fortwoprinters}" >
+        <table width="100%" cellpadding="0" cellspacing="0" border="0" valign="top">
+<tr bgcolor="#75b9fe" height="35px">    
+    <td colspan="2" class="pophead" align="left">Select Desired Template
+         <div style="float:right;  padding-right:5px;">
+             <apex:commandButton action="{!cancel}" value="Close" image="{!$Resource.Close1}" style="height:25px; width:25px;"  /> </div>
+    </td>
+</tr>
 
 
 
+<tr>
+<td align="middle" width="50%">
+&nbsp;
+</td>
+<td width="50%">
+&nbsp;
+</td>
+</tr>
+<tr>
+<td align="right" width="50%">
+Select Label:
+</td>
+<td width="50%">
+<apex:selectList value="{!SelectedValues}" multiselect="false" size="1">
+<apex:selectOptions value="{!SelectedValuesfortwoprinters}">
+</apex:selectOptions>
+</apex:selectList>
+</td>
+</tr>
+<tr><td colspan="2">
+</td>
+<td>
+<apex:outputText value="{!EventReqString1}" style="color:#FF0000;Font-size:1.875em;font-style:italic;font-family:Times New Roman;" rendered="{!EventReqStringBool}"></apex:outputText>
+</td>
+</tr>
+<tr><td>
+<apex:commandButton value="Print" action="{!printfromsaveandprint}"/>
+</td></tr>
+</table>
+
+
+</apex:outputPanel>
+</apex:outputPanel>
 <!----------------------------------------------End of DYMO---------------------------------------------------------->
 
     

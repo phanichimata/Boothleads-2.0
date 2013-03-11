@@ -1,0 +1,14 @@
+<apex:page showHeader="false" controller="Boothadmin_Scan_trackingCon" tabStyle="Account">
+ <apex:form >
+  <apex:actionPoller action="{!showBoothadmin}" rerender="counter" interval="5"/>
+ <br />
+ <apex:pageBlock id="counter">
+   <apex:pageBlockTable value="{!inn}" var="r" >
+    <apex:column value="{!r.lastName} {!r.firstName}" headerValue="Name OF Booth Admin"/>
+     <apex:column value="{!r.numberOfscans} " headerValue="No OF Scans"/>
+   </apex:pageBlockTable>
+   </apex:pageBlock>
+  </apex:form> 
+  
+  
+</apex:page>

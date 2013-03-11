@@ -237,17 +237,32 @@ START -->
  <script>
    var hdneventName; 
  </script>
- 
- <script type="text/javascript" charset="utf-8" src="http://cdn.sencha.io/ext-4.0.7-gpl/ext-all.js"></script>
- <link rel="stylesheet" type="text/css" href="http://cdn.sencha.io/ext-4.0.7-gpl/resources/css/ext-all.css"/>      
-       
-<script>
+<!--
+<script type="text/javascript" charset="utf-8" src="http://cdn.sencha.io/ext-4.0.7-gpl/ext-all.js"></script>
+<link rel="stylesheet" type="text/css" href="http://cdn.sencha.io/ext-4.0.7-gpl/resources/css/ext-all.css"/> 
+
+<link rel="Stylesheet" type="text/css" href="{!$Resource.extjs4_5}/extjs4_5/resources/css/ext-all.css"/>
+<script type="text/javascript" src="{!$Resource.extjs4_1}/extjs4_1/ext-all.js"></script>
+<script type="text/javascript" src="{!$Resource.extjs4_3}/extjs4_3/examples/ux/data/PagingMemoryProxy.js"></script>
+<script type="text/javascript" src="{!$Resource.extjs4_3}/extjs4_3/examples/ux/ProgressBarPager.js"></script>
+<script type="text/javascript" src="{!$Resource.extjs4_3}/extjs4_2/examples/grid-plugins.js"></script>
+<script type="text/javascript" src="{!$Resource.extjs4_3}/extjs4_2/examples/paging.js"></script>
+<script type="text/javascript" src="{!$Resource.extjs4_3}/extjs4_3/examples/ux/CheckColumn.js"></script>
+<script type="text/javascript" src="{!$Resource.extjs4_5}/extjs4_5/src/selection/CheckboxModel.js"></script>
+<link rel="Stylesheet" type="text/css" href="{!$Resource.extjs4_3}/extjs4_3/examples/ux/grid/css/GridFilters.css"/>
+-->
+<!-- load ExtJS -->
+<apex:stylesheet value="{!$Resource.ExtJS4}/resources/css/ext-all.css" />
+<apex:includeScript value="{!$Resource.ExtJS4}/ext-all.js"/>  
+<apex:includeScript value="{!$Resource.ExtJS4}/resources/Direct.js"/>  
+<apex:includeScript value="{!$Resource.ExtJS4}/resources/PagingMemoryProxy.js"/>  
+<apex:includeScript value="{!$Resource.ExtJS4}/resources/PagingSelectionPersistence.js"/>      
+ <script>
 var temp= new Array();
-</script>  
-        
+</script>         
 <script type="text/javascript"> 
     
- var grid, store;
+var grid, store;
 var GridTitle='Leads';   
 Ext.onReady(function(){
 
@@ -265,25 +280,6 @@ Ext.onReady(function(){
   myData1.push(rowArray); 
            
 </apex:repeat>   
-        
- 
- var myDirectfn = function(opts, fn, proxy) {
-    var start = opts.start,
-        end = opts.limit+opts.start,
-        data = [];
-    if (end > myData1.length) end = myData1.length;
-    for (var i = start; i < end; i++)
-        data.push(myData1[i]);
-    data.total = myData1.length;
-    fn(data, {
-        status: true,
-        result: data
-    });
-};
-
-myDirectfn.directCfg = {
-    method: {len:1}
-};
 
 
 if(myData1.length<=0)
@@ -295,16 +291,17 @@ if(myData1.length<=0)
 
 store = new Ext.data.SimpleStore({
 fields:[{name:'id'},{name:'Report_Name__c'},{name:'Report_Description__c'}],
-pageSize: 50,
+remoteSort: true,
+pageSize: 10,
 proxy: {
-type: 'direct',
-directFn: myDirectfn,
-reader: {
-type: 'array'
+ type: 'pagingmemory',
+ data: myData1,
+ reader: {
+  type: 'array'
+ }
 }
-},
 });
-store.loadData(myData1);
+
 
 function openrender(value, p, r)
 {
@@ -341,15 +338,14 @@ height: 350,
 width: '100%',
 title: GridTitle,
 stripeRows:true,
-bbar: new Ext.PagingToolbar({
-        store: store,
-        pageSize: 50,
-        displayInfo: true  
-}),
-renderTo: 'items-grid1'                            
+bbar: Ext.create('Ext.PagingToolbar', {
+            pageSize: 10,
+            store: store,
+            displayInfo: true
+})                           
 });
-
-store.loadPage(1);
+grid.render('items-grid1');
+store.load();
 });
 // -------------------------------------- Grid End --------------------------------------   
                 
@@ -427,19 +423,6 @@ store.loadPage(1);
          
     
 </script>
-<script type="text/javascript" charset="utf-8" src="http://cdn.sencha.io/ext-4.0.7-gpl/ext-all.js"></script>
-<link rel="stylesheet" type="text/css" href="http://cdn.sencha.io/ext-4.0.7-gpl/resources/css/ext-all.css"/> 
-<!--
-<link rel="Stylesheet" type="text/css" href="{!$Resource.extjs4_5}/extjs4_5/resources/css/ext-all.css"/>
-<script type="text/javascript" src="{!$Resource.extjs4_1}/extjs4_1/ext-all.js"></script>
-<script type="text/javascript" src="{!$Resource.extjs4_3}/extjs4_3/examples/ux/data/PagingMemoryProxy.js"></script>
-<script type="text/javascript" src="{!$Resource.extjs4_3}/extjs4_3/examples/ux/ProgressBarPager.js"></script>
-<script type="text/javascript" src="{!$Resource.extjs4_3}/extjs4_2/examples/grid-plugins.js"></script>
-<script type="text/javascript" src="{!$Resource.extjs4_3}/extjs4_2/examples/paging.js"></script>
-<script type="text/javascript" src="{!$Resource.extjs4_3}/extjs4_3/examples/ux/CheckColumn.js"></script>
-<script type="text/javascript" src="{!$Resource.extjs4_5}/extjs4_5/src/selection/CheckboxModel.js"></script>
-<link rel="Stylesheet" type="text/css" href="{!$Resource.extjs4_3}/extjs4_3/examples/ux/grid/css/GridFilters.css"/>
--->
         
        
 <script>
@@ -449,253 +432,55 @@ var temp= new Array();
 <script type="text/javascript"> 
 // -------------------------------------------- ExtJS Grid Start ---------------------------------------------------      
 
-Ext.define('Ext.ux.grid.plugin.PagingSelectionPersistence', {
-alias: 'plugin.pagingselectpersist',
-extend: 'Ext.AbstractPlugin',
-pluginId: 'pagingSelectionPersistence',
 
-//array of selected records
-selection: [],
-//hash map of record id to selected state
-selected: {},
-    
-init: function(grid) {
- 
- this.grid = grid;
- this.selModel = this.grid.getSelectionModel();
- this.isCheckboxModel = (this.selModel.$className == 'Ext.selection.CheckboxModel');
- this.origOnHeaderClick = this.selModel.onHeaderClick;
- this.bindListeners();
-},
-
-
-destroy: function() {
- this.selection = [];
- this.selected = {};
- this.disable();
-},
-
-enable: function() {
- var me = this;
- if(this.disabled && this.grid) {
-  this.grid.getView().on('refresh', this.onViewRefresh, this);
-  this.selModel.on('select', this.onRowSelect, this);
-  this.selModel.on('deselect', this.onRowDeselect, this);
-  if(this.isCheckboxModel) {
-   this.selModel.onHeaderClick = function(headerCt, header, e) {
-   var isChecked = header.el.hasCls(Ext.baseCSSPrefix + 'grid-hd-checker-on');
-   me.origOnHeaderClick.apply(this, arguments);        
-   if(isChecked) {
-    me.onDeselectPage();
-   }
-   else {
-    me.onSelectPage();
-    }
-   };
-  }
- }
- this.callParent();
-},
-    
-disable: function() {
- if(this.grid) {
-  this.grid.getView().un('refresh', this.onViewRefresh, this);
-  this.selModel.un('select', this.onRowSelect, this);
-  this.selModel.un('deselect', this.onRowDeselect, this);
-  this.selModel.onHeaderClick = this.origOnHeaderClick;
- }
- this.callParent();
-},
-
-
-bindListeners: function() {
- var disabled = this.disabled;
- this.disable();
- if(!disabled) {
-  this.enable();
- }
-},
-
-   
-onViewRefresh : function(view, eOpts) {
- var store = this.grid.getStore(),
- sel = [],
- hdSelectState,
- rec,
- i;
- this.ignoreChanges = true;
- for(i = store.getCount() - 1; i >= 0; i--) {
-  rec = store.getAt(i);
-  if(this.selected[rec.getId()]) {
-   sel.push(rec);
-  }
- }
- this.selModel.select(sel, false);
-
- if(this.isCheckboxModel) {
-  hdSelectState = (this.selModel.selected.getCount() === this.grid.getStore().getCount());
-  this.selModel.toggleUiHeader(hdSelectState);
- }
- this.ignoreChanges = false;
-},
-    
-onRowSelect: function(sm, rec, idx, eOpts) {
- if(this.ignoreChanges === true) {
-  return;
- }
- if(!this.selected[rec.getId()]) 
- {  
-  this.selection.push(rec);
-  this.selected[rec.getId()] = true;
- }
-  var r = grid.getSelectionModel().getSelection();  
-   for(i=0; i<=r.length-1; i++){
-    var checkarray=r[i].get('id');   
-   }
-  temp.push(checkarray);
-},
-   
-    
-onRowDeselect: function(sm, rec, idx, eOpts) {
- var i; 
- if(this.ignoreChanges === true) {
-  return;
- }    
- if(this.selected[rec.getId()])
- {  
-  for(i = this.selection.length - 1; i >= 0; i--) {
-   if(this.selection[i].getId() == rec.getId()) {
-    this.selection.splice(i, 1);
-    this.selected[rec.getId()] = false;
-    break;
-   }
-  }
- }
- var r = grid.getSelectionModel().getSelection();  
-  for(i=0; i<=r.length-1; i++){
-   var checkarray=r[i].get('id');   
-  }
- temp.pop(checkarray);
-},
-    
-onSelectPage: function(){ 
- var sel = this.selModel.getSelection(),
- selectedCheckboxLength= this.getPersistedSelection().length, 
- i;
- for(i = 0; i < sel.length; i++) {
-  selection1=this.onRowSelect(this.selModel, sel[i]); 
- }
- if(selectedCheckboxLength!== this.getPersistedSelection().length) {
-  this.selModel.fireEvent('selectionchange', this.selModel, [], {});
- }
- var r = grid.getSelectionModel().getSelection();  
-  for(i=0; i<=r.length-1; i++){  
-   var checkarray=r[i].get('id');  
-   temp.push(checkarray);
-  }
-},
- 
-    
-onDeselectPage: function() {
- var store = this.grid.getStore(),
- selectedCheckboxLength= this.getPersistedSelection().length,
- i;
-    
- for(i = store.getCount() - 1; i >= 0; i--) {
-  this.onRowDeselect(this.selModel, store.getAt(i));
- }        
- if(selectedCheckboxLength!== this.getPersistedSelection().length) {
-  this.selModel.fireEvent('selectionchange', this.selModel, [], {});
- }
- var r = grid.getSelectionModel().getSelection();  
-  for(i=0; i<=r.length-1; i++){  
-   var checkarray=r[i].get('id');  
-   temp.pop(checkarray);
-  }
-},
-  
-    
-getPersistedSelection: function() {
-  return [].concat(this.selection);
-},    
-clearPersistedSelection: function(){ 
-    var changed = (this.selection.length > 0);   
-    this.selection = [];
-    this.selected = {};
-    this.onViewRefresh();    
-    if(changed) {
-     this.selModel.fireEvent('selectionchange', this.selModel, [], {});
-   }
-}
-});
-
-var grid, store;
-var GridTitle='Leads';   
+var grid1, store1;
+var GridTitle1='Leads';   
 Ext.onReady(function(){
 
- var myData1=new Array();
+ var myData2=new Array();
         
 <apex:repeat value="{!boothVisiteds}"  var="row1">  
 <apex:repeat value="{!row1}"  var="row">  
-  var rowArray1=new Array();
-  rowArray1[0]=  '{!row.BVS_id__r.id}';  
+  var rowArray2=new Array();
+  rowArray2[0]=  '{!row.BVS_id__r.id}';  
   
   var fName ="{!row.BVS_id__r.BVS_FirstName__c}";
-  rowArray1[1]=  fName.replace(/\'/g,'\'');
+  rowArray2[1]=  fName.replace(/\'/g,'\'');
   
   var lName ="{!row.BVS_id__r.BVS_LastName__c}";
-  rowArray1[2]=  lName.replace(/\'/g,'\'');
+  rowArray21[2]=  lName.replace(/\'/g,'\'');
   
-  rowArray1[3]=  '{!row.BVS_id__r.BVS_PhoneNumber__c}';
-  rowArray1[4]=  '{!row.BVS_id__r.BVS_Email__c}';
+  rowArray2[3]=  '{!row.BVS_id__r.BVS_PhoneNumber__c}';
+  rowArray2[4]=  '{!row.BVS_id__r.BVS_Email__c}';
   var ccc= "{!row.BVS_id__r.BVS_Company__c}";
-  rowArray1[5]=  ccc.replace(/\'/g,'\'');
+  rowArray2[5]=  ccc.replace(/\'/g,'\'');
   
-  rowArray1[6]='{!row.BVS_id__r.BVS_State__c}';
-  rowArray1[7]='{!row.BVS_id__r.EA_AttendeeBarcode__r.AS_id__r.AS_PrimaryBusinessCategory1__c}';
-  myData1.push(rowArray1); 
+  rowArray2[6]='{!row.BVS_id__r.BVS_State__c}';
+  rowArray2[7]='{!row.BVS_id__r.EA_AttendeeBarcode__r.AS_id__r.AS_PrimaryBusinessCategory1__c}';
+  myData2.push(rowArray2); 
 </apex:repeat>  
 </apex:repeat>    
-        
- 
- var myDirectfn = function(opts, fn, proxy) {
-    var start = opts.start,
-        end = opts.limit+opts.start,
-        data = [];
-    if (end > myData1.length) end = myData1.length;
-    for (var i = start; i < end; i++)
-        data.push(myData1[i]);
-    data.total = myData1.length;
-    fn(data, {
-        status: true,
-        result: data
-    });
-};
-
-myDirectfn.directCfg = {
-    method: {len:1}
-};
 
 
-if(myData1.length<=0)
+if(myData2.length<=0)
 {
- GridTitle=GridTitle+' - <span style=\'padding-left:200px\'><font color=\'red\'>No Records Found</font></span>';
+ GridTitle1=GridTitle1+' - <span style=\'padding-left:200px\'><font color=\'red\'>No Records Found</font></span>';
  tSize=0;        
 }
 
 
-store = new Ext.data.SimpleStore({
+store1 = new Ext.data.SimpleStore({
 fields:[{name:'id'},{name:'FirstName'},{name:'LastName'},{name:'PhoneNumber'},{name:'EmailId'},{name:'Company'},{name:'state'},{name:'primary'}],
+remoteSort: true,
 pageSize: 50,
 proxy: {
-type: 'direct',
-directFn: myDirectfn,
-reader: {
-type: 'array'
+ type: 'pagingmemory',
+ data: myData2,
+ reader: {
+  type: 'array'
+ }
 }
-},
 });
-store.loadData(myData1);
 
 function openrender(value, p, r)
 {
@@ -703,8 +488,8 @@ function openrender(value, p, r)
 }      
         
         
-grid = Ext.create('Ext.grid.Panel',{
-store: store, 
+grid1 = Ext.create('Ext.grid.Panel',{
+store: store1, 
 selModel: Ext.create('Ext.selection.CheckboxModel'),
 plugins: [{ptype : 'pagingselectpersist'}],
 viewConfig: {
@@ -733,16 +518,14 @@ height: 350,
 width: '100%',
 title: GridTitle,
 stripeRows:true,
-bbar: new Ext.PagingToolbar({
-        store: store,
-        pageSize: 50,
-        displayInfo: true  
-}),
-renderTo: 'items-grid2'                            
+bbar: Ext.create('Ext.PagingToolbar', {
+            pageSize: 50,
+            store: store1,
+            displayInfo: true
+})                           
 });
-
-store.loadPage(1);
-
+grid1.render('items-grid2');
+store1.load();
 });
 // -------------------------------------- Grid End --------------------------------------
                 

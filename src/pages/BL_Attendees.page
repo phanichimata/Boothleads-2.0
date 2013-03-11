@@ -1,8 +1,28 @@
-<apex:page showHeader="false" controller="BL_AttendeesCon" action="{!login}" standardStylesheets="false">
+<apex:page showHeader="false" controller="BL_AttendeesCon" action="{!login}" standardStylesheets="false" id="attendee">
  <apex:stylesheet value="{!URLFOR($Resource.FormultiEvent,"css/screen.css")}"/>
  
 <apex:stylesheet value="{!URLFOR($Resource.FormultiEvent,"css/datePicker.css")}"/>
  
+ <!--
+<script type="text/javascript" charset="utf-8" src="http://cdn.sencha.io/ext-4.0.7-gpl/ext-all.js"></script>
+<link rel="stylesheet" type="text/css" href="http://cdn.sencha.io/ext-4.0.7-gpl/resources/css/ext-all.css"/> 
+
+<link rel="Stylesheet" type="text/css" href="{!$Resource.extjs4_5}/extjs4_5/resources/css/ext-all.css"/>
+<script type="text/javascript" src="{!$Resource.extjs4_1}/extjs4_1/ext-all.js"></script>
+<script type="text/javascript" src="{!$Resource.extjs4_3}/extjs4_3/examples/ux/data/PagingMemoryProxy.js"></script>
+<script type="text/javascript" src="{!$Resource.extjs4_3}/extjs4_3/examples/ux/ProgressBarPager.js"></script>
+<script type="text/javascript" src="{!$Resource.extjs4_3}/extjs4_2/examples/grid-plugins.js"></script>
+<script type="text/javascript" src="{!$Resource.extjs4_3}/extjs4_2/examples/paging.js"></script>
+<script type="text/javascript" src="{!$Resource.extjs4_3}/extjs4_3/examples/ux/CheckColumn.js"></script>
+<script type="text/javascript" src="{!$Resource.extjs4_5}/extjs4_5/src/selection/CheckboxModel.js"></script>
+<link rel="Stylesheet" type="text/css" href="{!$Resource.extjs4_3}/extjs4_3/examples/ux/grid/css/GridFilters.css"/>
+-->
+<!-- load ExtJS -->
+<apex:stylesheet value="{!$Resource.ExtJS4}/resources/css/ext-all.css" />
+<apex:includeScript value="{!$Resource.ExtJS4}/ext-all.js"/>  
+<apex:includeScript value="{!$Resource.ExtJS4}/resources/Direct.js"/>  
+<apex:includeScript value="{!$Resource.ExtJS4}/resources/PagingMemoryProxy.js"/>  
+<apex:includeScript value="{!$Resource.ExtJS4}/resources/PagingSelectionPersistence.js"/>     
  <title>Boothleads</title>
  <script type="text/javascript">
    
@@ -14,7 +34,21 @@ x-grid3-hd-inner x-grid3-hd-GlobalNestEM__Event_Title__c
 background-color: #FFFFFF;
 }
 </style>
-
+<script>
+ function submitform()
+ {
+  var toemail = document.getElementById('{!$Component.attendee:BVSform:toemail}');
+ var mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+   
+if(toemail!=""&& toemail.match(mailformat)){
+return true;
+}
+else{
+alert('Please Enter Email address');
+return false;
+}
+ }
+</script>
 
 <!-- Start: page-top-outer -->
 <div id="page-top-outer">    
@@ -205,7 +239,7 @@ background-color: #FFFFFF;
   <tr><td width="30%" align="left" style="padding-left:10px;">
     
     <apex:outputText value="Events:    " style="font-weight:BOLD; Font-color:#RR0000;"></apex:outputText>  
-      <apex:selectList value="{!eventSelected}" multiselect="false" size="1">
+      <apex:selectList value="{!eventSelected}" multiselect="false" size="1" style="width:180px;">
        <apex:selectOptions value="{!selectEvents}"/>
       <apex:actionSupport action="{!getEvents}" event="onchange" reRender="frm2,pagemesageerror"/>
       </apex:selectList></td> <td width="40%" style="color:red;font-weight:bold;"><apex:pageMessages id="pagemesageerror" /></td>
@@ -299,209 +333,14 @@ background-color: #FFFFFF;
          
     
 </script>
-   <script type="text/javascript" charset="utf-8" src="http://cdn.sencha.io/ext-4.0.7-gpl/ext-all.js"></script>
-<link rel="stylesheet" type="text/css" href="http://cdn.sencha.io/ext-4.0.7-gpl/resources/css/ext-all.css"/> 
-<!--
-<link rel="Stylesheet" type="text/css" href="{!$Resource.extjs4_5}/extjs4_5/resources/css/ext-all.css"/>
-<script type="text/javascript" src="{!$Resource.extjs4_1}/extjs4_1/ext-all.js"></script>
-<script type="text/javascript" src="{!$Resource.extjs4_3}/extjs4_3/examples/ux/data/PagingMemoryProxy.js"></script>
-<script type="text/javascript" src="{!$Resource.extjs4_3}/extjs4_3/examples/ux/ProgressBarPager.js"></script>
-<script type="text/javascript" src="{!$Resource.extjs4_3}/extjs4_2/examples/grid-plugins.js"></script>
-<script type="text/javascript" src="{!$Resource.extjs4_3}/extjs4_2/examples/paging.js"></script>
-<script type="text/javascript" src="{!$Resource.extjs4_3}/extjs4_3/examples/ux/CheckColumn.js"></script>
-<script type="text/javascript" src="{!$Resource.extjs4_5}/extjs4_5/src/selection/CheckboxModel.js"></script>
-<link rel="Stylesheet" type="text/css" href="{!$Resource.extjs4_3}/extjs4_3/examples/ux/grid/css/GridFilters.css"/>
--->
-        
-       
+ 
+
 <script>
 var temp= new Array();
 </script>  
         
 <script type="text/javascript"> 
 // -------------------------------------------- ExtJS Grid Start ---------------------------------------------------      
-
-Ext.define('Ext.ux.grid.plugin.PagingSelectionPersistence', {
-alias: 'plugin.pagingselectpersist',
-extend: 'Ext.AbstractPlugin',
-pluginId: 'pagingSelectionPersistence',
-
-//array of selected records
-selection: [],
-//hash map of record id to selected state
-selected: {},
-    
-init: function(grid) {
- 
- this.grid = grid;
- this.selModel = this.grid.getSelectionModel();
- this.isCheckboxModel = (this.selModel.$className == 'Ext.selection.CheckboxModel');
- this.origOnHeaderClick = this.selModel.onHeaderClick;
- this.bindListeners();
-},
-
-
-destroy: function() {
- this.selection = [];
- this.selected = {};
- this.disable();
-},
-
-enable: function() {
- var me = this;
- if(this.disabled && this.grid) {
-  this.grid.getView().on('refresh', this.onViewRefresh, this);
-  this.selModel.on('select', this.onRowSelect, this);
-  this.selModel.on('deselect', this.onRowDeselect, this);
-  if(this.isCheckboxModel) {
-   this.selModel.onHeaderClick = function(headerCt, header, e) {
-   var isChecked = header.el.hasCls(Ext.baseCSSPrefix + 'grid-hd-checker-on');
-   me.origOnHeaderClick.apply(this, arguments);        
-   if(isChecked) {
-    me.onDeselectPage();
-   }
-   else {
-    me.onSelectPage();
-    }
-   };
-  }
- }
- this.callParent();
-},
-    
-disable: function() {
- if(this.grid) {
-  this.grid.getView().un('refresh', this.onViewRefresh, this);
-  this.selModel.un('select', this.onRowSelect, this);
-  this.selModel.un('deselect', this.onRowDeselect, this);
-  this.selModel.onHeaderClick = this.origOnHeaderClick;
- }
- this.callParent();
-},
-
-
-bindListeners: function() {
- var disabled = this.disabled;
- this.disable();
- if(!disabled) {
-  this.enable();
- }
-},
-
-   
-onViewRefresh : function(view, eOpts) {
- var store = this.grid.getStore(),
- sel = [],
- hdSelectState,
- rec,
- i;
- this.ignoreChanges = true;
- for(i = store.getCount() - 1; i >= 0; i--) {
-  rec = store.getAt(i);
-  if(this.selected[rec.getId()]) {
-   sel.push(rec);
-  }
- }
- this.selModel.select(sel, false);
-
- if(this.isCheckboxModel) {
-  hdSelectState = (this.selModel.selected.getCount() === this.grid.getStore().getCount());
-  this.selModel.toggleUiHeader(hdSelectState);
- }
- this.ignoreChanges = false;
-},
-    
-onRowSelect: function(sm, rec, idx, eOpts) {
- if(this.ignoreChanges === true) {
-  return;
- }
- if(!this.selected[rec.getId()]) 
- {  
-  this.selection.push(rec);
-  this.selected[rec.getId()] = true;
- }
-  var r = grid.getSelectionModel().getSelection();  
-   for(i=0; i<=r.length-1; i++){
-    var checkarray=r[i].get('id');   
-   }
-  temp.push(checkarray);
-},
-   
-    
-onRowDeselect: function(sm, rec, idx, eOpts) {
- var i; 
- if(this.ignoreChanges === true) {
-  return;
- }    
- if(this.selected[rec.getId()])
- {  
-  for(i = this.selection.length - 1; i >= 0; i--) {
-   if(this.selection[i].getId() == rec.getId()) {
-    this.selection.splice(i, 1);
-    this.selected[rec.getId()] = false;
-    break;
-   }
-  }
- }
- var r = grid.getSelectionModel().getSelection();  
-  for(i=0; i<=r.length-1; i++){
-   var checkarray=r[i].get('id');   
-  }
- temp.pop(checkarray);
-},
-    
-onSelectPage: function(){ 
- var sel = this.selModel.getSelection(),
- selectedCheckboxLength= this.getPersistedSelection().length, 
- i;
- for(i = 0; i < sel.length; i++) {
-  selection1=this.onRowSelect(this.selModel, sel[i]); 
- }
- if(selectedCheckboxLength!== this.getPersistedSelection().length) {
-  this.selModel.fireEvent('selectionchange', this.selModel, [], {});
- }
- var r = grid.getSelectionModel().getSelection();  
-  for(i=0; i<=r.length-1; i++){  
-   var checkarray=r[i].get('id');  
-   temp.push(checkarray);
-  }
-},
- 
-    
-onDeselectPage: function() {
- var store = this.grid.getStore(),
- selectedCheckboxLength= this.getPersistedSelection().length,
- i;
-    
- for(i = store.getCount() - 1; i >= 0; i--) {
-  this.onRowDeselect(this.selModel, store.getAt(i));
- }        
- if(selectedCheckboxLength!== this.getPersistedSelection().length) {
-  this.selModel.fireEvent('selectionchange', this.selModel, [], {});
- }
- var r = grid.getSelectionModel().getSelection();  
-  for(i=0; i<=r.length-1; i++){  
-   var checkarray=r[i].get('id');  
-   temp.pop(checkarray);
-  }
-},
-  
-    
-getPersistedSelection: function() {
-  return [].concat(this.selection);
-},    
-clearPersistedSelection: function(){ 
-    var changed = (this.selection.length > 0);   
-    this.selection = [];
-    this.selected = {};
-    this.onViewRefresh();    
-    if(changed) {
-     this.selModel.fireEvent('selectionchange', this.selModel, [], {});
-   }
-}
-
-});
-
 
 var grid, store;
 var GridTitle='Leads';   
@@ -550,24 +389,6 @@ Ext.onReady(function(){
        
   </apex:repeat>    
  </apex:repeat>  
- 
- var myDirectfn = function(opts, fn, proxy) {
-    var start = opts.start,
-        end = opts.limit+opts.start,
-        data = [];
-    if (end > myData1.length) end = myData1.length;
-    for (var i = start; i < end; i++)
-        data.push(myData1[i]);
-    data.total = myData1.length;
-    fn(data, {
-        status: true,
-        result: data
-    });
-};
-
-myDirectfn.directCfg = {
-    method: {len:1}
-};
 
 
 if(myData1.length<=0)
@@ -579,16 +400,16 @@ if(myData1.length<=0)
 
 store = new Ext.data.SimpleStore({
 fields:[{name:'id'},{name:'FirstName'},{name:'Company'},{name:'Email'},{name:'ScanedByName'},{name:'followup'},{name:'note'},{name:'img'},{name:'scan'}],
+remoteSort: true,
 pageSize: 50,
 proxy: {
-type: 'direct',
-directFn: myDirectfn,
-reader: {
-type: 'array'
+ type: 'pagingmemory',
+ data: myData1,
+ reader: {
+  type: 'array'
+ }
 }
-},
 });
-store.loadData(myData1);
 
 function openrender(value, p, r)
 {
@@ -598,7 +419,10 @@ function openrender(value, p, r)
 grid = Ext.create('Ext.grid.Panel',{
 store: store, 
 selModel: Ext.create('Ext.selection.CheckboxModel'),
-plugins: [{ptype : 'pagingselectpersist'}],
+plugins: [{ptype : 'pagingselectpersist'},
+{ptype:'cellediting',
+clicksToEdit:1
+}],
 viewConfig: {
 id: 'gv',
 trackOver: true,
@@ -617,13 +441,13 @@ columns: [
 {header:"<b>Image</b>",flex:1, dataIndex:'img',renderer: function(value,p,r){
  if(value !=''){
   if(value.indexOf('015O')!=-1){
-    return '<image src="/servlet/servlet.ImageServer?id='+value+'&oid=00DO000000097JW" height="30px" width="30px"/>';
+    return '<image src="/servlet/servlet.ImageServer?id='+value+'&oid=00DF0000000BpyH" height="30px" width="30px"/>';
  }
  else{
   return '<image src="/servlet/servlet.FileDownload?file='+value+'" height="30px" width="30px"/>';
  }
  }else{
-   return '<image src="/servlet/servlet.ImageServer?id=015O0000000En6b&oid=00DO000000097JW" height="30px" width="30px"/>';
+   return '<image src="/servlet/servlet.ImageServer?id=015F0000001vD0t&oid=00DF0000000BpyH" height="30px" width="30px"/>';
  }
  }            
 }, 
@@ -649,17 +473,14 @@ height: 350,
 width: '100%',
 title: GridTitle,
 stripeRows:true,
-bbar: new Ext.PagingToolbar({
-        store: store,
-        pageSize: 50,
-        displayInfo: true  
-}),
-renderTo: 'items-grid1'                            
+bbar: Ext.create('Ext.PagingToolbar', {
+            pageSize: 50,
+            store: store,
+            displayInfo: true
+})                           
 });
-
-  
-store.loadPage(1);
-
+grid.render('items-grid1');
+store.load();
 });
 // -------------------------------------- Grid End --------------------------------------
       
@@ -727,12 +548,12 @@ rendered="{!BVSDetail}" style="width:95%">
         </tr>
         <tr >
          <td style="padding-left:80px;" width="30%">
-         <apex:image value="/servlet/servlet.FileDownload?file={!attachmentIdOfImage}"   rendered="{!attachmentIdOfImage !=null }" style="max-height:200px;"/>
+         <apex:image value="/servlet/servlet.FileDownload?file={!attachmentIdOfImage}"   rendered="{!attachmentIdOfImage !=null }" style="max-width:150px;max-height:300px"/>
         
-        <apex:image value="/servlet/servlet.ImageServer?id={!urlIdOfImage}&oid=00DO000000097JW"   rendered="{!urlIdOfImage  !=null}" style="max-height:200px;"/>
+        <apex:image value="/servlet/servlet.ImageServer?id={!urlIdOfImage}&oid=00DF0000000BpyH"   rendered="{!urlIdOfImage  !=null}" style="max-width:150px;max-height:300px"/>
        
        
-       <apex:image value="/servlet/servlet.ImageServer?id=015O0000000En6b&oid=00DO000000097JW"  style="max-height:200px;"  rendered="{!And(urlIdOfImage   ==null ,attachmentIdOfImage ==null)}"/>
+       <apex:image value="/servlet/servlet.ImageServer?id=015F0000001vD0t&oid=00DF0000000BpyH" style="max-width:150px;max-height:300px" rendered="{!And(urlIdOfImage ==null ,attachmentIdOfImage ==null)}"/>
       
       
         
@@ -1368,10 +1189,10 @@ rendered="{!BVSDetail}" style="width:95%">
                     
                     <tr><td colspan="2">&nbsp;</td></tr>
                     
-                    <tr><td style="padding-left:30px;" colspan="2"><apex:commandButton value="Send" style="color:#FFFFFF;Font-weight:BOLD; background-color:#3476e3; border:0px; width:60px; -webkit-border-radius:3px; height:33px; -moz-border-radius:3px;" action="{!sendEmail}"  />
+                    <tr><td style="padding-left:30px;" colspan="2"><apex:commandButton value="Send" style="color:#FFFFFF;Font-weight:BOLD; background-color:#3476e3; border:0px; width:60px; -webkit-border-radius:3px; height:33px; -moz-border-radius:3px;" action="{!sendEmail}" onclick="return submitform();"  />
                                 &nbsp;&nbsp;&nbsp;<apex:commandButton value="Discard"  action="{!cancel}" style="color:#FFFFFF;Font-weight:BOLD; background-color:#d54433; border:0px; width:70px; -webkit-border-radius:3px; height:33px; -moz-border-radius:3px;"/> </td></tr>
                     <tr><td colspan="2">&nbsp;</td></tr>           
-                    <tr><td width="15%" style="padding-left:10px;"> TO :</td><td width="85%"> <apex:inputText value="{!EmailTo}" size="100" styleClass="width:10000"/> </td></tr>
+                    <tr><td width="15%" style="padding-left:10px;"> TO :</td><td width="85%"> <apex:inputText value="{!EmailTo}" size="100" styleClass="width:10000" id="toemail"/> </td></tr>
                     <tr> <td style="padding-left:10px;"> Subject : </td><td><apex:inputText value="{!subject}" size="100" styleClass="width:100%"/> </td></tr>
                     <tr> <td colspan="2" style="padding-left:10px;"> Mail Body </td></tr>
                     <tr> <td style="padding-left:40px;padding-right:20px" colspan="2"> <apex:inputTextarea value="{!body}" richText="true" rows="15" style="width:100%" styleClass="width:100%"/></td></tr>

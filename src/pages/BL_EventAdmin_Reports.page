@@ -1,8 +1,10 @@
 <apex:page controller="BL_EventAdmin_ReportsCon" showHeader="false" standardStylesheets="false" action="{!login}">
+
 <head>
 <title>Boothleads</title>
 </head>
 <apex:stylesheet value="{!URLFOR($Resource.FormultiEvent,"css/screen.css")}"/> 
+<apex:includeScript value="{!$Resource.AjaxLoaderJs}/AjaxLoader.js"/> 
 <!--
 <script type="text/javascript" charset="utf-8" src="http://cdn.sencha.io/ext-4.0.7-gpl/ext-all.js"></script>
 <link rel="stylesheet" type="text/css" href="http://cdn.sencha.io/ext-4.0.7-gpl/resources/css/ext-all.css"/> 
@@ -186,7 +188,7 @@ var GridTitle= 'Reports';
       rowArray[2]=  lName.replace(/\'/g,'\'');
       myData1.push(rowArray);             
  </apex:repeat>   
-alert(myData1.length);    
+   
  
 
 if(myData1.length<=0)
@@ -195,17 +197,19 @@ if(myData1.length<=0)
  tSize=0;        
 }
 
-var PAGE_SIZE=10;
-store = new Ext.data.ArrayStore({
+
+store = new Ext.data.SimpleStore({
 fields:[{name:'id'},{name:'ReportName'},{name:'ReportDescription'}],
-pageSize:PAGE_SIZE
+remoteSort: true,
+pageSize: 10,
+proxy: {
+ type: 'pagingmemory',
+ data: myData1,
+ reader: {
+  type: 'array'
+ }
+}
 });
-
-store.on('load', function(store, records, successful, operation) {
-        this.loadData(myData1.slice((this.currentPage-1)*PAGE_SIZE, (this.currentPage)*PAGE_SIZE));
-},store);
-
-store.load();
 
 
 function openrender(value, p, r)
@@ -249,15 +253,14 @@ height: 350,
 width: '100%',
 title: GridTitle,
 stripeRows:true,
-bbar: new Ext.PagingToolbar({
- pageSize: 10,
- store: store,
- displayInfo: true,
- sidebar: true
-}),
-renderTo: 'items-grid1'                            
+bbar: Ext.create('Ext.PagingToolbar', {
+            pageSize: 10,
+            store: store,
+            displayInfo: true
+})                    
 });
-
+grid.render('items-grid1');
+store.load();
 });
 // -------------------------------------- Grid End -------------------------------------- 
                       
@@ -395,23 +398,6 @@ myData1.push(rowArray);
 </apex:repeat>
 </apex:repeat>   
 
- var myDirectfn = function(opts, fn, proxy) {
-    var start = opts.start,
-        end = opts.limit+opts.start,
-        data = [];
-    if (end > myData1.length) end = myData1.length;
-    for (var i = start; i < end; i++)
-        data.push(myData1[i]);
-    data.total = myData1.length;
-    fn(data, {
-        status: true,
-        result: data
-    });
-};
-myDirectfn.directCfg = {
-    method: {len:1}
-};
-
 if(myData1.length<=0)
 {
  GridTitle=GridTitle+' - <span style=\'padding-left:200px\'><font color=\'red\'>No Records Found</font></span>';
@@ -420,17 +406,16 @@ if(myData1.length<=0)
 
 store = new Ext.data.SimpleStore({
 fields:[{name:'id'},{name:'FirstName'},{name:'LastName'},{name:'PhoneNumber'},{name:'EmailId'},{name:'Company'},{name:'state'},{name:'primary'}],
+remoteSort: true,
 pageSize: 50,
 proxy: {
- type: 'direct',
- directFn: myDirectfn,
- paramOrder: 'id',
+ type: 'pagingmemory',
+ data: myData1,
  reader: {
   type: 'array'
  }
- }
+}
 });
-store.loadData(myData1);
 
 function openrender(value, p, r)
 {
@@ -470,14 +455,14 @@ height: 350,
 width: '100%',
 title: GridTitle,
 stripeRows:true,
-bbar: new Ext.PagingToolbar({
-        store: store,
-        pageSize: 50,
-        displayInfo: true  
-}),
-renderTo: 'items-grid1'                            
+bbar: Ext.create('Ext.PagingToolbar', {
+            pageSize: 50,
+            store: store,
+            displayInfo: true
+})                          
 });
-store.loadPage(1);
+grid.render('items-grid1');
+store.load();
 });
 // -------------------------------------- Grid End --------------------------------------             
         

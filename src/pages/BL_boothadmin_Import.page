@@ -461,7 +461,7 @@ nav-outer-repeat................................................... END -->
                           <apex:column value="{!yu.dbFieldvalue}" headerValue="Available Fields" headerClass="headercls" style="height:30px;padding-left:15px;"/>
                             <apex:column headerValue="Your Fields" headerClass="headercls">
                             <apex:selectList value="{!yu.selectedValue}" size="1" multiselect="false" style="width:180px;">
-                          <apex:selectOptions value="{!yu.options}" /> 
+                         <apex:selectOptions value="{!CSVHeaders}" /> 
                         </apex:selectList> 
                      </apex:column>      
                   </apex:dataTable>
@@ -484,7 +484,59 @@ nav-outer-repeat................................................... END -->
       </apex:form>
       
       
+     <apex:form > 
+            <apex:outputPanel id="showpopup">
+         <apex:outputPanel styleClass="popupBackground" layout="block" rendered="{!Successbool}"  style="width:100%"/>
+         <apex:outputPanel styleClass="custPopup" layout="block"  rendered="{!Successbool}"  style="width:80%">
+                   
+         
+         <table border="0"  cellspacing="0" cellpadding="0" width="100%" class="tabs_table" >
+                <tr>
+                    <td  align="center" class="pophead">Records Status </td> 
+                </tr>
+                <tr>
+                   <td align="Center" >
+                     
+                      &nbsp;
+                   </td>
+                </tr>
+                   <tr>
+                       <td align="Center" colspan="2"> <apex:outputText >
+                       
+                           BoothLeads.com will now begin to import your file. You will be notified by email at <B style="color:#FF0000; Font-size:13px; Font-weight:bold; text-align:center;">  {!$User.Username}</B> when your import is completed.<br/><br/>Based on the current volume of import activity, we estimate that your import will be completed in approximately <B style="color:#177f0c; Font-size:13px; Font-weight:bold; text-align:center;"> 1 minutes</B>.
+                     
+                       </apex:outputText>
+                      </td>
+                </tr>
+                
+                
+                <tr>
+                   <td align="Center" >
+                   
+                    
+                   </td>
+                </tr>
+                
+                <tr>
+                   <td align="left" style="padding-left:70px;">
+                   
+               <font style="color:red;font-weight:bold;"> You want to import more users ?   </font> &nbsp; &nbsp;&nbsp;   <apex:commandbutton Value="yes" style="width:100px;" styleClass="awesome" action="{!Attendees}"/> 
+               &nbsp; &nbsp;&nbsp;   <apex:commandbutton Value="No" style="width:100px;" styleClass="awesome" action="{!movetoBoothpage}"/>    
+                   </td>
+               </tr>
+                <tr>
+                   <td align="Center">
+                     
+                      &nbsp;
+                   </td>
+                </tr>
+           </table>     
+                   
+          </apex:outputpanel>
+          </apex:outputpanel>
       
+                        
+      </apex:form>
         <!-------------------------------------------------- END of UTF8 Formate Error--------------------------------------------------------->
             <!--  start actions-box 
 

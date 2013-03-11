@@ -604,19 +604,19 @@ background-image: -webkit-gradient(linear,0 top,0 bottom,from(#f3f3f3),to(#eaeae
                         </td></tr>
                         </apex:outputText>
                         <apex:outputText rendered="{!attendeeSetting.dob}"> 
-                        <tr><td width="40%" height="28px">
+                        <tr><td width="20%" height="28px">
                         <apex:outputLabel value="DOB" style="color:Black; padding-left:50px; height:50px" /><apex:outputText rendered="{!attendeeSetting.Reqdob}"><font size="4" color="red">*</font></apex:outputText></td>
-                        <td width="40%" height="28px">   
-                       <c:RemoveLink id="SD">  
+                        <td width="20%" height="28px">   
+                  
                             <apex:inputField value="{!newAttendee.AS_BirthDate__c}" required="{!attendeeSetting.Reqdob}" onclick="swapYears(),getYears()" id="Text6"  style="width:95px;"/>
-                            <apex:inputField value="{!newAttendee.AS_BusinessEstablishedDate__c}" required="{!attendeeSetting.ReqBEDate}" onclick="swapYears,getYears"  style="width:220px;"/>
+                          
                            
                             <style>
                              .datePicker{
                                 z-index:10000;
                               }
                              </style>
-                       </c:RemoveLink> 
+                     
                         </td> </tr></apex:outputText> 
                         <apex:outputText rendered="{!attendeeSetting.AttendeePic}"><apex:outputText rendered="{!attendeeSetting.ReqAttendeePic}"><font size="4" color="red">*</font></apex:outputText> 
                         <tr> <td width="40%" height="28px">

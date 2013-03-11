@@ -1,5 +1,5 @@
 <apex:page Controller="BL_Eventadmin_SampleBoothCon1" showHeader="false" id="Thepage" standardStylesheets="false" action="{!checkUserId}">
-
+<apex:includeScript value="{!$Resource.AjaxLoaderJs}/AjaxLoader.js"/> 
 <head>
 <title>Boothleads</title>
 </head>
@@ -12,46 +12,57 @@ select, option{min-width:90px; max-width:170px}
 .eventhover{ background-color:#cccccc;}
 </style>
 <apex:includeScript value="{!$Resource.PhoneSetup}"/> 
+ <apex:outputPanel rendered="{!DisplayNoEventMessage}">
+  <script>
+   alert('No Booth Admins added for selected Event');
+  </script>
+                      </apex:outputPanel>
  <script language="JavaScript">
 
    
    function validateAddBoothFields()
    {    
-   //alert('============');
-       var lvBnId = document.getElementById('{!$Component.Thepage:Exhibitorform:Org1Name}').value;
-      // alert('============'+lvBnId);
-       var lvFnId = document.getElementById('{!$Component.Thepage:Exhibitorform:FirstName}').value;
-      // alert('============'+lvFnId);
+   
+       var lvBnId = document.getElementById('{!$Component.Thepage:Exhibitorform:BoothName}').value;
       
+       var lvFnId = document.getElementById('{!$Component.Thepage:Exhibitorform:FirstName}').value;           
        var lvLnId = document.getElementById('{!$Component.Thepage:Exhibitorform:LastName}').value;
        var Email = document.getElementById('{!$Component.Thepage:Exhibitorform:emailId}').value;
        var lvCnId = document.getElementById('{!$Component.Thepage:Exhibitorform:OrgName}').value;   
-       //var PhoneId = document.getElementById('{!$Component.Thepage:userpopup:phone}').value;
+      var AddZip = document.getElementById('{!$Component.Thepage:Exhibitorform:AZip}').value; 
+      
+       
+         lvBnId = lvBnId.trim();
+         lvFnId = lvFnId.trim();
+         lvLnId = lvLnId.trim();
+         Email = Email.trim(); 
+         lvCnId = lvCnId.trim();
+          AddZip = AddZip.trim();
       
        if(lvBnId == "" )
     {
-        alert("Please Enter Booth Name");
+        alert("Please enter Booth Name");
        
         return false;     
     }        
      
        if(lvFnId == ""   )
     {
-        alert("Please Enter First Name");
+        alert("Please enter First Name");
       
         return false;
     }  
        
      if(lvLnId == ""   )
     {
-        alert("Please Enter Last Name");
+        alert("Please enter Last Name");
         
         return false;
     }     
        
        
     if(Email == ""){
-    alert("Please Enter Email id");
+    alert("Please enter EmailId");
        
         return false;
     
@@ -59,11 +70,18 @@ select, option{min-width:90px; max-width:170px}
      
         
      if(lvCnId == ""){
-    alert("Please Enter Organization name");
+    alert("Please enter Organization Name");
        
         return false;
     
     }
+     if(AddZip != "")
+             {
+             if(validateZipCode(AddZip)== false){
+                alert("Please enter a valid ZIP Code ");                
+                return false;
+                }
+            }
  
    if(Email != "" )
         {
@@ -72,7 +90,7 @@ select, option{min-width:90px; max-width:170px}
            return boo;
         }
         
-        }
+   }    
    
     function validateEmail(var1)
     {
@@ -91,53 +109,66 @@ select, option{min-width:90px; max-width:170px}
         ChangeEventFunction(x);
     }
     
-    function ValidateBoothadminForm()
+    
+   function ValidateBoothadminForm()
     {
 
-           var lvFnId = document.getElementById('{!$Component.Thepage:BoothAdminform:FirstName}').value;
+           var FirstName = document.getElementById('{!$Component.Thepage:BoothAdminform:BAFirstName}').value;
           // alert('====================Fname================='+lvFnId)
-           var lvLnId = document.getElementById('{!$Component.Thepage:BoothAdminform:LastName}').value;
+           var LastName = document.getElementById('{!$Component.Thepage:BoothAdminform:BALastName}').value;
           // alert('====================Fname================='+lvLnId)
-           var lvEnId = document.getElementById('{!$Component.Thepage:BoothAdminform:emailId}').value;
-           var lvCnId = document.getElementById('{!$Component.Thepage:BoothAdminform:OrgName}').value;
+           var BAEmail = document.getElementById('{!$Component.Thepage:BoothAdminform:BAemailId}').value;
            
+           var BACoName = document.getElementById('{!$Component.Thepage:BoothAdminform:BAOrgName}').value;
+           var BAZipCode = document.getElementById('{!$Component.Thepage:BoothAdminform:BAZip}').value;
                   
+        
+         FirstName = FirstName.trim();
+         LastName = LastName.trim();
+         BAEmail = BAEmail.trim();
+         BACoName = BACoName.trim(); 
+          BAZipCode  = BAZipCode.trim();    
            
            
-           
-           
-        if(lvFnId == ""   )
+        if(FirstName == ""   )
         {
         
-            alert("Please Enter First Name");
+            alert("Please enter First Name");
             
             return false;
         } 
         
-        if(lvLnId == ""   )
+        if(LastName == ""   )
         {
-            alert("Please Enter Last Name");
+            alert("Please enter Last Name");
            
             return false;
         }   
         
-        if(lvEnId == ""   )
+        if(BAEmail == ""   )
         {
-            alert("Please Enter Email Id");
+            alert("Please enter Email Id");
             
             return false;
         }
         
-        if(lvCnId == ""   )
+        if(BACoName == ""   )
         {
-            alert("Please Enter Organisation Name");
+            alert("Please enter Organisation Name");
             
             return false;
         }
+        if(BAZipCode != "")
+             {
+             if(validateZipCode(BAZipCode )== false){
+                alert("Please enter a valid ZIP Code ");                
+                return false;
+                }
+            }
         
-        if(lvEnId !="" )
+        if(BAEmail !="" )
         {
-           var boo = validateEmail(lvEnId );
+           var boo = validateEmail(BAEmail);
            
            return boo;
         }
@@ -154,30 +185,36 @@ select, option{min-width:90px; max-width:170px}
       
        var EditLastName = document.getElementById('{!$Component.Thepage:edit:LastNameEdit}').value;
       
-        var EditOrgname = document.getElementById('{!$Component.Thepage:edit:EditOrgName}').value; 
+       var EditOrgname = document.getElementById('{!$Component.Thepage:edit:EditOrgName}').value; 
        
        
-    
+       var EditZip = document.getElementById('{!$Component.Thepage:edit:EZip}').value; 
+
        
+         EditBoothName = EditBoothName.trim();
+         EditFirstName = EditFirstName.trim();
+         EditLastName = EditLastName.trim();
+         EditOrgname = EditOrgname.trim(); 
+         EditZip = EditZip.trim();
       
        
               
        if(EditBoothName == "" )
     {
-        alert("Please Enter Booth Name");
+        alert("Please enter Booth Name");
        
         return false;     
     }
        if(EditFirstName == ""   )
     {
-        alert("Please Enter First Name");
+        alert("Please enter First Name");
       
         return false;
     }  
        
      if(EditLastName == ""   )
     {
-        alert("Please Enter Last Name");
+        alert("Please enter Last Name");
         
         return false;
     }     
@@ -185,14 +222,28 @@ select, option{min-width:90px; max-width:170px}
       
    
      if(EditOrgname == ""){
-    alert("Please Enter Organization name");
+    alert("Please enter Organization name");
        
         return false;
     
     }
- 
+    
+    
+    
+    if(EditZip != "")
+             {
+             if(validateZipCode(EditZip)== false){
+                alert("Please enter a valid Zip Code ");
+                //EditZip.focus();
+                return false;
+                }
+            }
+    
    } 
-   
+   function validateZipCode(elementname){
+         var zipCodePattern = /^\d{5}$|^\d{5}-\d{4}$/;
+        return zipCodePattern.test(elementname);
+    } 
     
     
    
@@ -321,36 +372,25 @@ select, option{min-width:90px; max-width:170px}
                           <apex:selectList size="1" multiselect="false" value="{!selectEvent}">
                           <apex:selectOptions value="{!eventslistforselect}"/>
                           
-                         <apex:actionSupport oncomplete="mallikoutpan" action="{!ListOfbooths1}" event="onchange" status="AjaxLoader" reRender="ButtonsForm,BoothForm,ListofBoothAdmins"/>                       
+                         <apex:actionSupport action="{!CommonMethod}" event="onchange" status="AjaxLoader" reRender="SelectedEventName,ButtonsForm,BoothForm,ListofBoothAdmins"/>                       
                            </apex:selectList>&nbsp;&nbsp;
                            <!--<apex:outputtext value="{!DisplayNoEvent}" rendered="{!DisplayNoEventMessage }" style="color:#FF0000;Font-size:1.875em;font-style:italic;font-family:Times New Roman;"/> -->                     
-                       <apex:outputPanel rendered="{!DisplayNoEventMessage}">
-  <script>
-   alert('Please select an Event...');
-  </script>
-                      </apex:outputPanel>
+                      
                                              
                            </td>
-                               
-                           
-                           <apex:outputPanel id="mallikoutpan">
-       <!-- <td width="40%" align="right" >
-        
-        <apex:commandButton value="Add Booth" action="{!AddBooth}" styleClass="awesome" title="Add Booth"  rendered="{!Button}"/>&nbsp;&nbsp;
-       <apex:commandButton action="{!AddBoothAdmin}" value="Add Booth Admin" styleClass="awesome" title="Add Booth Admin" rendered="{!showButton}"/></td>
-       -->
-        </apex:outputPanel>  
+                             
              
         </table>           
    </apex:form></div> 
-   <apex:form id="ButtonsForm"> 
+   <apex:form >
+   <apex:outputPanel id="ButtonsForm"> 
 <table align="right"><tr><td >
            <apex:commandButton value="Export Booth Admins" action="{!exportBoothadmins}" rendered="{!displayBoothExport}" styleClass="awesome"/> &nbsp;&nbsp;
       <apex:commandButton value="Import Booths" action="{!importBooths}" rendered="{!ImportButton}" styleClass="awesome"/> &nbsp;&nbsp;
        <apex:commandButton value="Add Booth" action="{!AddBooth}" styleClass="awesome" title="Add Booth"  rendered="{!Button}"/>&nbsp;&nbsp;
        <apex:commandButton action="{!AddBoothAdmin}" value="Add Booth Admin" styleClass="awesome" title="Add Booth Admin" rendered="{!showButton}"/></td>
           
-          </tr></table> </apex:form> <br/> <br/> 
+          </tr></table></apex:outputPanel>  </apex:form> <br/> <br/> 
     
    
     <table border="0" width="100%" cellpadding="0" cellspacing="0" id="content-table">
@@ -374,20 +414,21 @@ select, option{min-width:90px; max-width:170px}
   <tr>
       <td width="30%" style="background-color:#54b5f1; height:35px; color:#FFFFFF; Font-size:18px;padding-left:15px;border-right:3px solid #FFFFFF;"> Booths</td>
       <td width="70%" style="background-color:#54b5f1; height:35px; color:#FFFFFF; Font-size:18px;padding-left:15px;"> 
-      Booth Admins 
+      <apex:outputText id="SelectedEventName" value="Booth Admins {!SelectedEventName} {!selectedBoothName}"></apex:outputText>
+      
       </td>
      
   </tr>
   <tr>
-      <td> <div style="overflow:scroll; border:1px solid #CCCCCC;height:350px;">  <apex:form id="BoothForm">
+      <td valign="top"> <div style="overflow:scroll; border:1px solid #CCCCCC;height:350px;">  <apex:form id="BoothForm">
       <apex:actionFunction action="{!ListOfBoothAdmins}" name="ChangeEventFunction" reRender="BoothForm,ListofBoothAdmins">
              <apex:param name="BoothName" value=""/>
           </apex:actionFunction>
-      
+     
       <apex:dataTable value="{!B}" var="UPdatedList"  style="width:100%;" border="0" styleClass="attendee">
     
-      <apex:column styleClass="{!IF( UPdatedList.id == selectBooth ,  'eventtable' , 'eventselect')}" onclick="callingChangeEventFunction('{!UPdatedList.id}');"  >
-       <apex:commandLink action="{!ListOfBoothAdmins}" value="{!UPdatedList.BT_Name__c}" style="font-weight:bold;font-size:12px;Padding-Left:10px;font-family:Times New Roman, Times, serif; display: block;padding: 8px 0px 5px 8px; font-family:Arial;" reRender="ButtonsForm,ListofBoothAdmins"  status="AjaxLoader" >
+      <apex:column styleClass="{!IF( UPdatedList.id == selectBooth , 'eventselect',  'eventtable' )}" onclick="callingChangeEventFunction('{!UPdatedList.id}');"  >
+       <apex:commandLink action="{!ListOfBoothAdmins}" value="{!UPdatedList.BT_Name__c}" style="font-weight:bold;text-decoration:none;font-size:12px;Padding-Left:15px; display:block; padding: 8px 0px 5px 8px;" reRender="ButtonsForm,ListofBoothAdmins,SelectedEventName"  status="AjaxLoader" >
         <apex:param value="{!UPdatedList.Id}" name="BoothName"/>
         </apex:commandLink>
          
@@ -397,20 +438,14 @@ select, option{min-width:90px; max-width:170px}
       </apex:datatable></apex:form></div>
       </td>
  <td>
- <apex:form id="ListofBoothAdmins">
-<script type="text/javascript" charset="utf-8" src="http://cdn.sencha.io/ext-4.0.7-gpl/ext-all.js"></script>
-<link rel="stylesheet" type="text/css" href="http://cdn.sencha.io/ext-4.0.7-gpl/resources/css/ext-all.css"/> 
-<!--
-<link rel="Stylesheet" type="text/css" href="{!$Resource.extjs4_5}/extjs4_5/resources/css/ext-all.css"/>
-<script type="text/javascript" src="{!$Resource.extjs4_1}/extjs4_1/ext-all.js"></script>
-<script type="text/javascript" src="{!$Resource.extjs4_3}/extjs4_3/examples/ux/data/PagingMemoryProxy.js"></script>
-<script type="text/javascript" src="{!$Resource.extjs4_3}/extjs4_3/examples/ux/ProgressBarPager.js"></script>
-<script type="text/javascript" src="{!$Resource.extjs4_3}/extjs4_2/examples/grid-plugins.js"></script>
-<script type="text/javascript" src="{!$Resource.extjs4_3}/extjs4_2/examples/paging.js"></script>
-<script type="text/javascript" src="{!$Resource.extjs4_3}/extjs4_3/examples/ux/CheckColumn.js"></script>
-<script type="text/javascript" src="{!$Resource.extjs4_5}/extjs4_5/src/selection/CheckboxModel.js"></script>
-<link rel="Stylesheet" type="text/css" href="{!$Resource.extjs4_3}/extjs4_3/examples/ux/grid/css/GridFilters.css"/>
--->
+ <apex:form >
+ <apex:outputPanel id="ListofBoothAdmins">
+
+<apex:stylesheet value="{!$Resource.ExtJS4}/resources/css/ext-all.css" />
+<apex:includeScript value="{!$Resource.ExtJS4}/ext-all.js"/>  
+<apex:includeScript value="{!$Resource.ExtJS4}/resources/Direct.js"/>  
+<apex:includeScript value="{!$Resource.ExtJS4}/resources/PagingMemoryProxy.js"/>  
+<apex:includeScript value="{!$Resource.ExtJS4}/resources/PagingSelectionPersistence.js"/>  
 
 <script type="text/javascript"> 
 
@@ -454,24 +489,6 @@ var GridTitle= '';
 
         </apex:repeat>      
 
- var myDirectfn = function(opts, fn, proxy) {
-    var start = opts.start,
-        end = opts.limit+opts.start,
-        data = [];
-    if (end > myData1.length) end = myData1.length;
-    for (var i = start; i < end; i++)
-        data.push(myData1[i]);
-    data.total = myData1.length;
-    fn(data, {
-        status: true,
-        result: data
-    });
-};
-
-myDirectfn.directCfg = {
-    method: {len:1}
-};
-
 
 if(myData1.length<=0)
 {
@@ -482,16 +499,16 @@ if(myData1.length<=0)
 
 store = new Ext.data.SimpleStore({
 fields:[{name:'id'},{name:'FirstName'},{name:'LastName'},{name:'BoothName'},{name :'Location'},{name:'Email'},{name:'Phone'},{name:'Status'},{name:'LastLoginDate'}],
+remoteSort: true,
 pageSize: 50,
 proxy: {
-type: 'direct',
-directFn: myDirectfn,
-reader: {
-type: 'array'
+ type: 'pagingmemory',
+ data: myData1,
+ reader: {
+  type: 'array'
+ }
 }
-},
 });
-store.loadData(myData1);
 
 var newstore=new Ext.data.ArrayStore({
  fields: ['abbr', 'action'],
@@ -590,27 +607,21 @@ height: 350,
 width: '100%',
 title: GridTitle,
 stripeRows:true,
-bbar: new Ext.PagingToolbar({
-        store: store,
-        pageSize: 50,
-        displayInfo: true  
-}),
-renderTo: 'items-grid1'                            
+bbar: Ext.create('Ext.PagingToolbar', {
+            pageSize: 50,
+            store: store,
+            displayInfo: true
+}) 
+                         
 });
-
-  
-store.loadPage(1);
-
+grid.render('items-grid1');
+store.load();
 });
 // -------------------------------------- Grid End --------------------------------------  
   
   
      
-        function BoothDetails(BoothAdminId)
-        {       
-            hdneventName.value=BoothAdminId;                     
-            getOnlyBoothdetails(BoothAdminId);                     
-        } 
+       
          
         function BoothAdmindetails(BoothAdminId)
         {      
@@ -650,15 +661,12 @@ store.loadPage(1);
         </apex:actionFunction>
         <apex:actionFunction action="{!boothadminstatus}" name="boothadminstatus" reRender="DisplayExhibitors" status="AjaxLoader" >
         </apex:actionFunction>
-        <apex:actionFunction action="{!getOnlyBoothdetails}" name="getOnlyBoothdetails" reRender="UpdateBoothform">
-        </apex:actionFunction>
-        <!-- <apex:actionFunction action="{!Activeinactive}" name="Activeinactive" reRender="Statuspopup">
-        </apex:actionFunction>-->
+       
         <script>
         hdneventName = document.getElementById("{!$Component.eventNameValue}");
         </script>  
        
-     </apex:form>                     </td></tr>   </table>   
+    </apex:outPutPanel> </apex:form>                     </td></tr>   </table>   
 <!------------------ Adding Booth ----------------->
     <apex:form id="Exhibitorform">
                      <apex:outputPanel id="userpopup2">
@@ -677,7 +685,7 @@ store.loadPage(1);
       <tr>
          <td height="35px" align="left" valign="middle" bgcolor="#FFFFFF" style="padding-left:25px;">Booth Name<font size="4" color="red">*</font></td>
          <td height="35px" align="left" valign="middle" bgcolor="#FFFFFF" style="padding-left:5px">
-         <apex:inputfield value="{!Booth.BT_Name__c}" id="Org1Name" style="width:170px;"/></td>
+         <apex:inputfield value="{!Booth.BT_Name__c}" id="BoothName" style="width:170px;"/></td>
        </tr> 
        <tr>
          <td height="35px" align="left" valign="middle" bgcolor="#FFFFFF" style="padding-left:25px;">Booth Location</td>
@@ -765,7 +773,7 @@ store.loadPage(1);
        <tr>
          <td height="35px" align="left" valign="middle" bgcolor="#FFFFFF">Organization Zip Code</td>
          <td height="35px" align="left" valign="middle" bgcolor="#FFFFFF" style="padding-left:5px">
-         <apex:inputField value="{!BoothAdminUser.Zipcode__c}" style="width:170px;" id="Zip"/></td>
+         <apex:inputField value="{!BoothAdminUser.Zipcode__c}" style="width:170px;" id="AZip"/></td>
         </tr>
        <tr>
          <td height="35px" align="left" valign="middle" bgcolor="#FFFFFF">Organization PO Box</td>
@@ -891,7 +899,7 @@ store.loadPage(1);
        <tr>
          <td height="35px" align="left" valign="middle" bgcolor="#FFFFFF">Organization Zip Code</td>
          <td height="35px" align="left" valign="middle" bgcolor="#FFFFFF" style="padding-left:5px">
-         <apex:inputField value="{!Admin.Zipcode__c}" style="width:170px;" id="Zip"/></td>
+         <apex:inputField value="{!Admin.Zipcode__c}" style="width:170px;" id="EZip"/></td>
         </tr>
        <tr>
          <td height="35px" align="left" valign="middle" bgcolor="#FFFFFF">Organization PO Box</td>
@@ -1092,17 +1100,17 @@ store.loadPage(1);
        <tr>
          <td width="50%" height="35px" align="left" valign="middle" bgcolor="#FFFFFF" style="padding-left:25px;">First Name<font size="4" color="red">*</font></td>
          <td width="50%" height="35px" align="left" valign="middle" bgcolor="#FFFFFF" style="padding-left:5px">
-         <apex:inputtext value="{!BoothAdminUser.FirstName}"  id="FirstName" style="width:170px;"/></td>
+         <apex:inputtext value="{!BoothAdminUser.FirstName}"  id="BAFirstName" style="width:170px;"/></td>
         </tr>
        <tr>
          <td height="35px" align="left" valign="middle" bgcolor="#FFFFFF" style="padding-left:25px;">Last Name<font size="4" color="red">*</font></td>
          <td height="35px" align="left" valign="middle" bgcolor="#FFFFFF" style="padding-left:5px">
-         <apex:inputtext value="{!BoothAdminUser.LastName}" id="LastName" style="width:170px;"/></td>
+         <apex:inputtext value="{!BoothAdminUser.LastName}" id="BALastName" style="width:170px;"/></td>
         </tr>
        <tr>
          <td height="35px" align="left" valign="middle" bgcolor="#FFFFFF" style="padding-left:25px;"> Email ID<font size="4" color="red">*</font></td>
          <td height="35px" align="left" valign="middle" bgcolor="#FFFFFF" style="padding-left:5px">
-         <apex:inputtext value="{!Email}"  id="emailId" style="width:170px;"/>
+         <apex:inputtext value="{!Email}"  id="BAemailId" style="width:170px;"/>
            <!--<apex:outputPanel >
              <h4 style="color:red">{!displayerror}</h4>
            </apex:outputPanel>--></td>
@@ -1115,7 +1123,7 @@ store.loadPage(1);
        <tr>
          <td height="35px" align="left" valign="middle" bgcolor="#FFFFFF" style="padding-left:25px;">Organization Name<font size="4" color="red">*</font></td>
          <td height="35px" align="left" valign="middle" bgcolor="#FFFFFF" style="padding-left:5px">
-         <apex:inputtext value="{!BoothAdminUser.CompanyName}" id="OrgName" style="width:170px;"/></td>
+         <apex:inputtext value="{!BoothAdminUser.CompanyName}" id="BAOrgName" style="width:170px;"/></td>
         </tr>
        <tr>
          <td height="35px" align="left" valign="middle" bgcolor="#FFFFFF" style="padding-left:25px;"> Organization Phone Number</td>
@@ -1169,7 +1177,7 @@ store.loadPage(1);
        <tr>
          <td height="35px" align="left" valign="middle" bgcolor="#FFFFFF">Organization Zip Code</td>
          <td height="35px" align="left" valign="middle" bgcolor="#FFFFFF" style="padding-left:5px">
-         <apex:inputField value="{!BoothAdminUser.Zipcode__c}" style="width:170px;" id="Zip"/></td>
+         <apex:inputField value="{!BoothAdminUser.Zipcode__c}" style="width:170px;" id="BAZip"/></td>
         </tr>
        <tr>
          <td height="35px" align="left" valign="middle" bgcolor="#FFFFFF">Organization PO Box</td>

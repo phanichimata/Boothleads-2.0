@@ -1,0 +1,10 @@
+<apex:page controller="displayUsers" showheader="false">
+  <apex:form >
+   <apex:repeat value="{!listOfusers}" var="usersvalue">
+     {!usersvalue.userName}<br /><br />
+   
+   </apex:repeat>
+  
+  
+  </apex:form>
+</apex:page>

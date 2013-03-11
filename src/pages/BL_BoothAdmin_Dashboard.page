@@ -4,8 +4,27 @@
 </head>
 <apex:stylesheet value="{!URLFOR($Resource.FormultiEvent,"css/screen.css")}"/> 
 <c:AjaxLoader LoaderImage="{!$Resource.AjaxLoaderImage}"/>
+<!--
 <script type="text/javascript" charset="utf-8" src="http://cdn.sencha.io/ext-4.0.7-gpl/ext-all.js"></script>
 <link rel="stylesheet" type="text/css" href="http://cdn.sencha.io/ext-4.0.7-gpl/resources/css/ext-all.css"/> 
+
+<link rel="Stylesheet" type="text/css" href="{!$Resource.extjs4_5}/extjs4_5/resources/css/ext-all.css"/>
+<script type="text/javascript" src="{!$Resource.extjs4_1}/extjs4_1/ext-all.js"></script>
+<script type="text/javascript" src="{!$Resource.extjs4_3}/extjs4_3/examples/ux/data/PagingMemoryProxy.js"></script>
+<script type="text/javascript" src="{!$Resource.extjs4_3}/extjs4_3/examples/ux/ProgressBarPager.js"></script>
+<script type="text/javascript" src="{!$Resource.extjs4_3}/extjs4_2/examples/grid-plugins.js"></script>
+<script type="text/javascript" src="{!$Resource.extjs4_3}/extjs4_2/examples/paging.js"></script>
+<script type="text/javascript" src="{!$Resource.extjs4_3}/extjs4_3/examples/ux/CheckColumn.js"></script>
+<script type="text/javascript" src="{!$Resource.extjs4_5}/extjs4_5/src/selection/CheckboxModel.js"></script>
+<link rel="Stylesheet" type="text/css" href="{!$Resource.extjs4_3}/extjs4_3/examples/ux/grid/css/GridFilters.css"/>
+-->
+<!-- load ExtJS -->
+<apex:stylesheet value="{!$Resource.ExtJS4}/resources/css/ext-all.css" />
+<apex:includeScript value="{!$Resource.ExtJS4}/ext-all.js"/>  
+<apex:includeScript value="{!$Resource.ExtJS4}/resources/Direct.js"/>  
+<apex:includeScript value="{!$Resource.ExtJS4}/resources/PagingMemoryProxy.js"/>  
+<apex:includeScript value="{!$Resource.ExtJS4}/resources/PagingSelectionPersistence.js"/>  
+<apex:includeScript value="{!$Resource.AjaxLoaderJs}/AjaxLoader.js"/>  
 <apex:include pageName="dashboardicons"/>
 <style> 
 .round 
@@ -230,9 +249,14 @@ border:1px solid #414141;
             <td height="28" align="left" valign="middle" class="h4lightgreen"><h4><span><apex:outputText value="{!mobileusers}"/></span></h4></td>
           </tr>
           <tr>
-            <td height="28" align="left" valign="middle" class="h4maroon"><h4>Apple Device Users</h4></td>
-            <td height="28" align="left" valign="middle" class="h4maroon"><h4><span><apex:outputText value="{!applemobileusers}"/></span></h4></td>
-          </tr>       
+            <td height="28" align="left" valign="middle" class="h4maroon"><h4>BlackBerry Device Users</h4></td>
+            <td height="28" align="left" valign="middle" class="h4maroon"><h4><span><apex:outputText value="{!blackberrymobileusers}"/></span></h4></td>
+          </tr>
+          <tr>
+            <td height="28" align="left" valign="middle" class="h4green"><h4>iOS Device Users</h4></td>
+            <td height="28" align="left" valign="middle" class="h4green"><h4><span><apex:outputText value="{!applemobileusers}"/></span></h4></td>
+          </tr> 
+                
         </table></td>      
       </tr>
     </table>
@@ -284,24 +308,6 @@ Ext.onReady(function()
 var geographytitle='Leads by Geography';
 
 
-var myDirectfn = function(opts, fn, proxy) {
-    var start = opts.start,
-        end = opts.limit+opts.start,
-        data = [];
-    if (end > myData1.length) end = myData1.length;
-    for (var i = start; i < end; i++)
-        data.push(myData1[i]);
-    data.total = myData1.length;
-    fn(data, {
-        status: true,
-        result: data
-    });
-};
-
-myDirectfn.directCfg = {
-    method: {len:1}
-};
-
 // Geography report store
       
 var myData1=new Array();
@@ -333,16 +339,16 @@ if(myData1.length<=0)
 
 var geogridstore = new Ext.data.SimpleStore({
 fields:[{name:'id'},{name:'FirstName'},{name:'LastName'},{name:'State'},{name:'Phone'},{name:'Email'}],
+remoteSort: true,
 pageSize: 10,
 proxy: {
-type: 'direct',
-directFn: myDirectfn,
-reader: {
-type: 'array'
+ type: 'pagingmemory',
+ data: myData1,
+ reader: {
+  type: 'array'
+ }
 }
-},
 });
-geogridstore.loadData(myData1);
      
  
 // geography chart store 
@@ -408,10 +414,9 @@ items:
 [{
 xtype: 'chart', 
 id: 'chartCmp',
-animate: false,
+animate: true,
 store: store,
 layout: 'fit',
-shadow: true, 
 legend: 
 {
 position: 'right',
@@ -440,7 +445,7 @@ this.setTitle(storeItem.get('namegeo') + ' : ' + storeItem.get('datageo') + ((st
 },
 highlight: {  
 segment: { 
-margin: 10  
+margin: 20  
 } 
 }, 
 label: { 
@@ -459,9 +464,9 @@ id:'gridpanel',
 store: geogridstore,
 title: false,
 header: false,  
-bbar: new Ext.PagingToolbar({
-store: geogridstore,
+bbar: Ext.create('Ext.PagingToolbar', {
 pageSize: 10,
+store: geogridstore,
 displayInfo: true
 }),
 listeners:
@@ -489,7 +494,7 @@ renderer: function(value, p, r)
 ]
 }]
 });
- geogridstore .loadPage(1);
+ geogridstore.load();
  Ext.each(
   Ext.getCmp('chartCmp').legend.items, function(item) {
    item.un("mousedown", item.events.mousedown.listeners[0].fn);
@@ -507,24 +512,6 @@ renderer: function(value, p, r)
 Ext.onReady(function()
 {   
  var industrytitle='Leads by Industry';
-
-var myDirectfn1 = function(opts, fn, proxy) {
-    var start = opts.start,
-        end = opts.limit+opts.start,
-        data = [];
-    if (end > myData2.length) end = myData2.length;
-    for (var i = start; i < end; i++)
-        data.push(myData2[i]);
-    data.total = myData2.length;
-    fn(data, {
-        status: true,
-        result: data
-    });
-};
-
-myDirectfn1.directCfg = {
-    method: {len:1}
-};
  
  
 // Industry grid store
@@ -560,16 +547,16 @@ myData2.push(rowArray);
  
 var indusgridstore = new Ext.data.SimpleStore({
 fields:[{name:'id'},{name:'FirstName'},{name:'LastName'},{name:'Industry'},{name:'Phone'},{name:'Email'}],
+remoteSort: true,
 pageSize: 10,
 proxy: {
-type: 'direct',
-directFn: myDirectfn1,
-reader: {
-type: 'array'
-}
-}, 
+ type: 'pagingmemory',
+ data: myData2,
+ reader: {
+  type: 'array'
+ }
+} 
 });
-indusgridstore.loadData(myData2);
 
   
 // Industry chart store
@@ -696,9 +683,9 @@ id:'gridpanel1',
 store: indusgridstore,
 title: false,
 header: false,  
-bbar: new Ext.PagingToolbar({
-store: indusgridstore,
+bbar: Ext.create('Ext.PagingToolbar', {
 pageSize: 10,
+store: indusgridstore,
 displayInfo: true
 }),
 listeners:
@@ -722,10 +709,9 @@ columns: [
 { header: 'E-Mail', dataIndex: 'Email',flex:1},    
 { header: 'Industry', dataIndex: 'Industry',flex:1}
 ],
-}],
-
+}]
 });
-indusgridstore.loadPage(1);
+indusgridstore.load();
 });
 </script>
 </apex:outputPanel>

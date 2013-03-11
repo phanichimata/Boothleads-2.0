@@ -1,0 +1,46 @@
+<apex:page controller="saveattendee_print" sidebar="false" standardStylesheets="false" showHeader="false" contentType="application/pdf#Attendee_Badges.pdf" renderAs="pdf">
+
+<apex:stylesheet value="{!URLFOR($Resource.advancedpdfresource, 'qrstyle2.css')}"/>
+     <a href="attendee.pdf" data-ajax="false">
+<table  cellspacing="0" cellpadding="0" border="0" style="margin:0px -15px 0px -10px;">
+<tr>
+<td  align="right"  style="font-size:12pt;font-face:Calibri (Body);width:80%;" rowspan="2" colspan="2" >
+<div style="float:left;padding-Left:5px">
+<apex:outputPanel >
+
+<apex:image url="/servlet/servlet.FileDownload?file={!eventdetails.EV_EventLogo__c}" style="width:80px;height:45px;"/>
+</apex:outputPanel>
+
+</div>
+<span style="float:right; text-align:right; padding-left:10px; padding-right:10px;">{!eam1.TicketTypes__c}</span>
+</td></tr>
+
+
+<tr><td></td></tr>
+<tr><td align="center" style="padding:0;margin:0;font-size:30pt;font-face:Calibri (Body);"  colspan="2" >
+  <b>{!eam1.AS_id__r.AS_FirstName__c}</b>
+ <!--<div style="position:absolute; width:98%; float:left;font-size:8pt;padding-top:35px;text-align:center; padding:30px;padding-right:20px;  ">{!eventatt.AS_id__r.AS_Title__c}</div>-->
+</td></tr>
+<tr><td align="center" style="padding:0;margin:0;font-size:24pt;font-face:Calibri (Body);"  colspan="2" >
+{!eam1.AS_id__r.AS_LastName__c} 
+ <!--<div style="position:absolute; width:98%; float:left;font-size:8pt;padding-top:35px;text-align:center; padding:30px;padding-right:20px;  ">{!eventatt.AS_id__r.AS_Title__c}</div>-->
+</td></tr>
+
+
+
+
+
+
+<tr><td style="width:80%;font-size:15pt;font-face:Calibri (Body);" >
+{!eam1.AS_id__r.AS_Company__c}
+</td><td align="left" style="padding-top:1px;padding-left:5px" valign="top" rowspan="1">
+<apex:image value="https://chart.googleapis.com/chart?chs=100x100&cht=qr&chl={!eam1.EA_AttendeeBarcode__c}"/></td>
+</tr><!--
+<tr ><td style="background-color:skyblue;">
+<apex:image value="{!$Resource.badgefooter}" style="align:center"/>
+</td></tr>-->
+
+</table>
+</a>
+
+</apex:page>

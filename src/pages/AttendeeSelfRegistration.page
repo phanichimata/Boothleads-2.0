@@ -490,7 +490,7 @@ jQuery(document).ready(function($) {
      
       <tr>
         <td height="30"><label style="color:Black; padding-left:20px; height:50px">Zip</label></td>
-        <td height="30"><apex:inputField value="{!AttendeeSummary__c.AS_WorkZipCode__c}"   /></td>
+        <td height="30"><apex:inputField value="{!AttendeeSummary__c.AS_WorkZip__c}"   /></td>
         </tr>
     </table></td>
   </tr>
@@ -612,7 +612,7 @@ jQuery(document).ready(function($) {
       
       <tr>
         <td height="30"><label style="color:Black; padding-left:20px; height:50px">Zip</label></td>
-        <td height="30"><apex:inputField value="{!AttendeeSummary__c.AS_ShippingZipcode__c}"   /></td>
+        <td height="30"><apex:inputField value="{!AttendeeSummary__c.AS_shippingzip__c}"   /></td>
         </tr>
         <!--
         <apex:inputHidden value="{!AttendeeSummary__c.AS_FirstName__c}" />

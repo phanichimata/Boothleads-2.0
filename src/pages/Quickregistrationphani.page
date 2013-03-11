@@ -1,0 +1,13 @@
+<apex:page controller="Attendee_Details_PrintCon12" showHeader="false" id="thepage" standardStylesheets="false">
+
+
+
+ <apex:form >
+ <apex:messages />
+ <apex:inputFile value="{!blobvalue }" fileName="{!fileNAme1}" id="phani" required="true"/>
+  <apex:commandButton value="Save" action="{!save}"/>
+</apex:form>
+ 
+  
+  
+</apex:page>

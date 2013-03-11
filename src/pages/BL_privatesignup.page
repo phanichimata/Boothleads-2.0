@@ -21,22 +21,22 @@
         
          
          if(lvFn == ""){
-              alert("Please Furnish First Name");
+              alert("Please enter First Name");
               //lvFn.focus();
               return false;
          }
          if(lvLn == ""){
-              alert("Please Furnish Last Name");
+              alert("Please enter Last Name");
               //lvLn.focus();
               return false;
          }
          if(lvEn == ""){
-              alert("Please Furnish Email Id");
+              alert("Please enter Email Id");
               //lvEn.focus();
               return false;
          }
          if(lvCn == ""){
-              alert("Please Furnish Hosting Organization Name");
+              alert("Please enter Hosting Organization Name");
               //lvCn.focus();
               return false;
          }

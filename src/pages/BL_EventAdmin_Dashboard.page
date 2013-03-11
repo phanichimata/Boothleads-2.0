@@ -1,11 +1,23 @@
-<apex:page showHeader="false" controller="BL_EventAdmin_DashboardCon" action="{!checkUserId}">
+<apex:page showHeader="false" controller="BL_EventAdmin_DashboardCon" action="{!checkUserId}" docType="html-5.0">
 <head>
 <title>Boothleads</title>
+
+<meta http-equiv="X-UA-Compatible" content="IE=9" />
 </head>
 <apex:stylesheet value="{!URLFOR($Resource.FormultiEvent,"css/screen.css")}"/> 
 <c:AjaxLoader LoaderImage="{!$Resource.AjaxLoaderImage}"/>
+<!--
 <script type="text/javascript" charset="utf-8" src="http://cdn.sencha.io/ext-4.0.7-gpl/ext-all.js"></script>
 <link rel="stylesheet" type="text/css" href="http://cdn.sencha.io/ext-4.0.7-gpl/resources/css/ext-all.css"/> 
+-->
+<!-- load ExtJS  -->
+<apex:stylesheet value="{!$Resource.ExtJS4}/resources/css/ext-all.css" />
+<apex:includeScript value="{!$Resource.ExtJS4}/ext-all.js"/>  
+<apex:includeScript value="{!$Resource.ExtJS4}/resources/Direct.js"/>  
+<apex:includeScript value="{!$Resource.ExtJS4}/resources/PagingMemoryProxy.js"/>  
+<apex:includeScript value="{!$Resource.ExtJS4}/resources/PagingSelectionPersistence.js"/>  
+
+<apex:includeScript value="{!$Resource.AjaxLoaderJs}/AjaxLoader.js"/> 
 <apex:include pageName="dashboardicons"/>
 <style>
 .round 
@@ -26,11 +38,11 @@ box-shadow: 0 0 5px #888;
 border:1px solid #414141;
 -khtml-border-radius: 20px;
 }
+
 .h4green{color:#258d51; font-size:14px;}
 .h4lightblue{color:#00a2b1; font-size:14px;}
 .h4maroon{color:#ac1324; font-size:14px;}
 .h4lightgreen{ color:#94af0a; font-size:14px;}
-
 </style>
 <!-- Topbar block start-->
 <!-- Start: page-top-outer -->
@@ -84,10 +96,8 @@ border:1px solid #414141;
  <apex:outputLink value="/apex/BL_Eventadmin_Profile" style="text-style:bold; color:#FFFFFF; padding:10px 15px 0 0;">Profile</apex:outputLink> 
 <div class="nav-divider">&nbsp;</div>
  <apex:commandLink action="{!$Site.Prefix}/secur/logout.jsp" rendered="{!NOT(ISPICKVAL($User.UserType,'Guest'))}" style="text-style:bold; color:#FFFFFF; padding:10px 15px 0 0;">{!$Label.site.logout}</apex:commandLink>
-<!-- <div class="nav-divider">&nbsp;</div>
-   <apex:outputLink target="_new" value="/apex/BL_EventAdmin_Help" style="text-style:bold; color:#FFFFFF; padding:10px 15px 0 0;" >Help</apex:outputLink>
--->
-
+<div class="nav-divider">&nbsp;</div>
+<!--   <apex:outputLink target="_new" value="/apex/BL_EventAdmin_Help" style="text-style:bold; color:#FFFFFF; padding:10px 15px 0 0;" >Help</apex:outputLink> -->
 </apex:form>
 
 </div></div>   
@@ -174,7 +184,7 @@ filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#545454', endC
     <td width="20%" height="28" align="left" valign="middle" class="h4lightgreen"><h4><span><apex:outputText value="{!TotalAttendees}"/></span></h4></td>
   </tr>
   <tr>
-    <td height="28" align="left" valign="middle" class="h4maroon"><h4>Total No. of Visited Attendees </h4></td>
+    <td height="28" align="left" valign="middle" class="h4maroon"><h4>Total No. of Scanned Leads </h4></td>
     <td height="28" align="left" valign="middle" class="h4maroon"><h4><span><apex:outputText value="{!TotalVisitedAttendees}"/></span></h4></td>
   </tr>     
  </table>
@@ -219,7 +229,7 @@ background: -moz-linear-gradient(top, #545454, #292929);
 background-image: -o-linear-gradient(top, #545454, #292929);
 background-image: -ms-linear-gradient(top, #545454, #292929);
 filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#545454', endColorstr='#292929');">
-<h4>Dashboard</h4>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{!noeventmessage}
+<h4>Dashboard</h4>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{!noeventmessage}
 <div style="float:right; width: 60% ; text-align: right; padding-bottom: 3px; font-size:14px; padding-right: 10px ;">
 <h5><apex:outputLabel value="Select Event : " style="color:#FFFFFF;"></apex:outputLabel></h5>
   <apex:selectList value="{!EventString}" size="1">
@@ -234,7 +244,7 @@ filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#545454', endC
 <!-- Dashboard Header table End -->
 
 <apex:outputPanel rendered="{!NOT(noevents)}">  
- <div style="text-align:center; font-size:80px; font-family:sans-serif; font-weight:bolder; width:100%; padding:100px; color:#CCCCCC;"> No Events Found </div>
+        <div style="text-align:center; font-size:80px; font-family:sans-serif; font-weight:bolder; width:100%; padding:100px; color:#CCCCCC;"> No Events Found </div>
 </apex:outputPanel> 
 <apex:outputText rendered="{!noevents}">
 
@@ -248,23 +258,6 @@ filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#545454', endC
 Ext.onReady(function()
 {
  var geographytitle='Report by Geography';
- var myDirectfn = function(opts, fn, proxy) {
-    var start = opts.start,
-        end = opts.limit+opts.start,
-        data = [];
-    if (end > myData1.length) end = myData1.length;
-    for (var i = start; i < end; i++)
-        data.push(myData1[i]);
-    data.total = myData1.length;
-    fn(data, {
-        status: true,
-        result: data
-    });
- };
-
- myDirectfn.directCfg = {
-    method: {len:1}
- };
  
  // 'Report by Geography' Chart store 
 
@@ -281,6 +274,7 @@ var store = Ext.create('Ext.data.JsonStore', {
     </apex:repeat> 
  ]
 });  
+
 
 
 // 'Report by Geography' Grid store
@@ -304,7 +298,6 @@ rowArray[5]=  '{!row.AS_id__r.AS_CellPhone__c}';
 var eName ="{!row.AS_id__r.AS_Email__c}"; 
 rowArray[6]=  eName.replace(/\'/g,'\''); 
 myData1.push(rowArray);          
-
 </apex:repeat>
 </apex:repeat>
 
@@ -317,16 +310,17 @@ if(myData1.length<=0)
 var storegrid = new Ext.data.SimpleStore(
 {
 fields:[{name:'id'},{name:'FirstName'},{name:'LastName'},{name:'AS_id__r.AS_Company__c'},{name:'AS_id__r.AS_Work_States__c'},{name:'AS_id__r.AS_CellPhone__c'},{name:'AS_id__r.AS_Email__c'}],
+remoteSort: true,
 pageSize: 10,
 proxy: {
-type: 'direct',
-directFn: myDirectfn,
-reader: {
-type: 'array'
-}
+ type: 'pagingmemory',
+ data: myData1,
+ reader: {
+  type: 'array'
+ }
 }
 });
-storegrid.loadData(myData1);
+
 
 Ext.create('Ext.Panel',{
 title: geographytitle,  
@@ -372,14 +366,14 @@ items:
 [{
 xtype: 'chart', 
 id: 'chartCmp',
-animate: false,
+animate: true,
 store: store,
 layout: 'fit',
-shadow: true, 
 legend: 
 {
 position: 'right',
-labelFont: '11px Calibri'
+labelFont: '11px Calibri',
+spacing : 'absolute'
 },
 insetPadding: 30, 
 theme: 'Base:gradients',
@@ -403,7 +397,7 @@ this.setTitle(storeItem.get('namegeo') + ' : ' + storeItem.get('datageo') + ((st
 },
 highlight: {  
 segment: { 
-margin: 10  
+margin: 20  
 } 
 }, 
 label: { 
@@ -422,9 +416,9 @@ id:'gridpanel',
 store: storegrid,
 title: false,
 header: false, 
-bbar: new Ext.PagingToolbar({
-store: storegrid,
+bbar: Ext.create('Ext.PagingToolbar', {
 pageSize: 10,
+store: storegrid,
 displayInfo: true
 }),
 listeners:
@@ -451,7 +445,7 @@ columns: [
 ]
 }]
 });
- storegrid.loadPage(1);
+ storegrid.load();
 Ext.each(
   Ext.getCmp('chartCmp').legend.items, function(item) {
    item.un("mousedown", item.events.mousedown.listeners[0].fn);
@@ -470,26 +464,9 @@ Ext.each(
 Ext.onReady(function()
 {
  var industrytitle='Report by Industry';
- var myDirectfn1 = function(opts, fn, proxy) {
-    var start = opts.start,
-        end = opts.limit+opts.start,
-        data = [];
-    if (end > myData2.length) end = myData2.length;
-    for (var i = start; i < end; i++)
-        data.push(myData2[i]);
-    data.total = myData2.length;
-    fn(data, {
-        status: true,
-        result: data
-    });
-};
-
-myDirectfn1.directCfg = {
-    method: {len:1}
-};
 
 // 'Report by Industry' Chart store
- 
+
 var store1 = Ext.create('Ext.data.JsonStore', { 
 fields: ['nameindus', 'dataI'],
 data: [
@@ -537,16 +514,17 @@ if(myData2.length<=0)
 var storeindusgrid = new Ext.data.SimpleStore( 
 {
 fields: [{name:'id'},{name:'FirstName'},{name:'LastName'},{name:'AS_id__r.AS_PrimaryBusinessCategory1__c'},{name:'AS_id__r.AS_CellPhone__c'},{name:'AS_id__r.AS_Email__c'}],
+remoteSort: true,
 pageSize: 10,
 proxy: {
-type: 'direct',
-directFn: myDirectfn1,
-reader: {
-type: 'array'
-}
+ type: 'pagingmemory',
+ data: myData2,
+ reader: {
+  type: 'array'
+ }
 }
 });
-storeindusgrid.loadData(myData2);
+
 
 Ext.create('Ext.Panel',{
 xtype: 'panel',
@@ -652,9 +630,9 @@ id:'gridpanel1',
 store: storeindusgrid,
 title: false,
 header: false,  
-bbar: new Ext.PagingToolbar({
-store: storeindusgrid,
+bbar: Ext.create('Ext.PagingToolbar', {
 pageSize: 10,
+store: storeindusgrid,
 displayInfo: true
 }),
 listeners:
@@ -681,7 +659,7 @@ renderer: function(value, p, r)
 ]
 }]
 });
-storeindusgrid.loadPage(1);
+storeindusgrid.load();
 });
 </script>
 </apex:outputPanel>
@@ -696,6 +674,7 @@ Ext.onReady(function()
 {
  var scantitle='Hourly Scans (Event/Attendee Activity)';
 // Hourly Scans store
+
 
  var scanstore = Ext.create('Ext.data.JsonStore',
    {
@@ -712,12 +691,6 @@ Ext.onReady(function()
  ]
 });
 
-var recordscount;
-recordscount=scanstore.getCount();
-if(recordscount<=0)
-{
- scantitle=scantitle+' <span style=\'padding-left:70px\'><font color=\'red\'>No Records Found</font></span>';             
-};
 
 Ext.create('Ext.Panel',{
 title: scantitle,
@@ -730,7 +703,7 @@ renderTo: 'scanpaneldiv',
 tbar:[
 {
 xtype:'tbspacer',
-width:260
+width:250
 },
 {
 xtype: 'label',
@@ -812,9 +785,9 @@ tips:
 <script type="text/javascript">  
 Ext.onReady(function()
 {
- var iostitle='Device Usage (Apple vs Android)';
+ var iostitle='Device Usage (Android,BlackBerry and iOS)';
  // Device Usage store 
-  
+
 var iosstore = Ext.create('Ext.data.JsonStore',{
    fields: ['nameios', 'dataios'],
    data: [
@@ -833,7 +806,7 @@ var recordscount1;
 recordscount1=iosstore.getCount();
 if(recordscount1<=0)
 {
- iostitle=iostitle+' <span style=\'padding-left:100px\'><font color=\'red\'>No Records Found</font></span>';             
+ iostitle=iostitle+' <span style=\'padding-left:50px\'><font color=\'red\'>No Records Found</font></span>';             
 };
 
 Ext.create('Ext.Panel', { 
@@ -844,14 +817,14 @@ height: 340,
 iconCls: 'dev-icon',
 renderTo: 'devpaneldiv',
 layout: 'fit',
+insetPadding: 30, 
 items: [
 {
 xtype: 'chart',
 id:'devchart',
 layout:'fit',
-animate: false,
+animate: true,
 store: iosstore,
-shadow: true,
 theme: 'Base',
 series: [{
 type: 'pie',
@@ -868,15 +841,11 @@ iosstore.each(function(rec)
 {
 total += rec.get('dataios');
 });
-
  this.setTitle(storeItem.get('nameios') + ' : ' + storeItem.get('dataios') + ((storeItem.get('dataios')>1 || storeItem.get('dataios')==0)?" Users":" User"));
-
 }
 },
-highlight: 
-{
- segment: 
- {
+highlight:{
+ segment: {
   margin: 20
  }
 },

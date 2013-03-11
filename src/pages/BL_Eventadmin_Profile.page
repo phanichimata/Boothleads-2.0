@@ -1,15 +1,17 @@
 <apex:page controller="BL_Eventadmin_ProfileCon" sidebar="false" showHeader="false" id="Profile" action="{!checkUserId}" standardStylesheets="false">
+
+<apex:includeScript value="{!$Resource.PhoneSetup}"/>
 <!---------------------- Including Statements/Stylesheets From Static Resource -------------------->
 <head>
 <title>Boothleads</title>
 </head>
 <apex:stylesheet value="{!URLFOR($Resource.FormultiEvent,"css/screen.css")}"/> 
 <apex:stylesheet value="{!URLFOR($Resource.FormultiEvent,"css/datePicker.css")}"/>
-
+ 
 
 
 <!----------------------****************** END *****************-------------------------->
-<script>
+<script language="JavaScript">
     function submitform(){
     
     
@@ -18,9 +20,7 @@
     var lvStId = document.getElementById('{!$Component.Profile:formid:Lastname}');
      
     var lvEtId = document.getElementById('{!$Component.Profile:formid:Orgname}');
-     
-    var PhoneId = document.getElementById('{!$Component.Profile:formid:Phone}');
-     
+          
     var ZipId = document.getElementById('{!$Component.Profile:formid:Zip}');
    
    
@@ -37,20 +37,20 @@
     
                 if(lvTnId.value == "")
                   {
-                      alert("Please Furnish First Name");
+                      alert("Please enter First Name");
                       lvTnId.focus();
                       return false;
                   }
               
                    if(lvStId.value == "")
                    {
-                      alert("Please Furnish Last Name");
+                      alert("Please enter Last Name");
                       lvStId.focus();
                       return false;
                   }  
                   if(lvEtId.value == "")
                    {
-                      alert("Please Furnish Organization Name");
+                      alert("Please enter Organization Name");
                       lvEtId.focus();
                       return false;
                   }
@@ -78,21 +78,7 @@
          var zipCodePattern = /^\d{5}$|^\d{5}-\d{4}$/;
          return zipCodePattern.test(elementValue);
     } 
-    function validatePhone(field,alerttxt) 
-    {
-        if (field.match(/^\d{10}/))
-         {
-             return true;
-         } 
    
-        return false;
-    }
-    
-    function validatePhoneNumber(elementValue)
-    {  
-        var phoneNumberPattern = /^\(?(\d{3})\)?[- ]?(\d{3})[- ]?(\d{4})$/;  
-        return phoneNumberPattern.test(elementValue);  
-    }  
 </script>
 
 <!--MENU START-->
@@ -244,13 +230,13 @@ select, option{min-width:90px; max-width:180px}
   </tr>
   
   <tr>
-    <td width="25%" height="30" align="right">First Name:</td>
+    <td width="25%" height="30" align="right">First Name<font size="4" color="red">*</font>:</td>
     <td width="25%" height="30" align="left" style="padding-left:10px;"> <apex:inputField value="{!EventUser.FirstName}" style="width:180px;" id="firstname"/></td>
     <td align="right" style="text-align:right;">Organization Address1:</td>
     <td width="23%" height="30" align="left"  style="padding-left:10px;"><apex:inputField value="{!EventUser.CompanyAddr1__c}" style="width:180px;" /></td>
   </tr>
   <tr>
-    <td height="30" align="right" style="padding-left:15px;">Last Name:</td>
+    <td height="30" align="right" style="padding-left:15px;">Last Name<font size="4" color="red">*</font>:</td>
     <td height="30" align="left" style="padding-left:10px;"><apex:inputField value="{!EventUser.LastName}" style="width:180px;" id="Lastname"/></td>
     <td align="right" style="padding-left:15px;">Organization Address2:</td>
     <td height="30" align="left" style="padding-left:10px;"><apex:inputField value="{!EventUser.CompanyAddr2__c}" style="width:180px;" /></td>
@@ -262,7 +248,7 @@ select, option{min-width:90px; max-width:180px}
     <td height="30" align="left" style="padding-left:10px;"><apex:inputField value="{!EventUser.CompanyCity__c }" style="width:180px;"/></td>
   </tr>
   <tr>
-    <td height="30" align="right" style="padding-left:15px;">Organization Name:</td>
+    <td height="30" align="right" style="padding-left:15px;">Organization Name<font size="4" color="red">*</font>:</td>
     <td height="30" align="left" style="padding-left:10px;"><apex:inputField value="{!EventUser.companyName }" style="width:180px;" id="Orgname"/></td>
     <td align="right" style="padding-left:15px;">Organization Country:</td>
     <td height="30" align="left" style="padding-left:10px;">
@@ -272,7 +258,7 @@ select, option{min-width:90px; max-width:180px}
   </tr>
   <tr>
     <td height="30" align="right" style="padding-left:15px;">Organization Phone Number:</td>
-    <td height="30" align="left" style="padding-left:10px;"><apex:inputField value="{!EventUser.Companyphone__c}" style="width:180px;" id="Phone"/></td>
+    <td height="30" align="left" style="padding-left:10px;"><apex:inputField value="{!EventUser.Companyphone__c}" style="width:180px;" id="phone" onkeyup="javascript:keyUP(this,event);" onblur="javascript:validatePhone(this);"/></td>
     <td align="right" style="padding-left:15px;">Organization State:</td>
     <td height="30" align="left" style="padding-left:10px;">  
     <apex:inputField value="{!EventUser.States__c}" style="max-width:180px;"/>
@@ -286,7 +272,7 @@ select, option{min-width:90px; max-width:180px}
   </tr>
   <tr>
     <td height="30" align="right" style="padding-left:15px;">Organization Fax Number:</td>
-    <td height="30" align="left" style="padding-left:10px;"><apex:inputField value="{!EventUser.CompanyFaxNumber__c}" style="width:180px;"/></td>
+    <td height="30" align="left" style="padding-left:10px;"><apex:inputField value="{!EventUser.CompanyFaxNumber__c}" style="width:180px;" onkeyup="javascript:keyUP(this,event);" onblur="javascript:validatePhone(this);"/></td>
     <td align="right" style="padding-left:15px;"><span style=" text-align:right;padding-right:15px;">Organization PO Box:</span></td>
     <td height="30" align="left" style="padding-left:10px;"><apex:inputField value="{!EventUser.PoBox__c }" style="width:180px;"/></td>
   </tr>

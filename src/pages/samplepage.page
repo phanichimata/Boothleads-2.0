@@ -1,7 +1,4 @@
-<apex:page controller="sampleapgeUrl" showHeader="false">
-  <apex:form >
-  
-  
-  </apex:form>
+<apex:page controller="sampleapgeUrl" showHeader="false" tabStyle="Account" >
+
 
 </apex:page>
